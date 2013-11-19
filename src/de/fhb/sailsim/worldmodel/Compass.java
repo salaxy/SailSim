@@ -7,4 +7,6 @@ package de.fhb.sailsim.worldmodel;
 */
 public class Compass {
 
+	
+	
 }
