@@ -1,65 +1,37 @@
 package de.fhb.sailsim.userinterface;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
+/**
+*
+* @author Andy Klay <klay@fh-brandenburg.de>
+* 
+*/
 public class MotionPane extends AnchorPane {
 
 	private double myHeight = 300;
 	private double myWidth = 300;
-
-	private final Rectangle rect;
-	private int rectsize=15;
 	
 	/**
 	 * Konstruktor mit default HTML-Content
 	 */
 	public MotionPane() {
-		this.setStyle("-fx-background-color: blue;");
+		this.setStyle("-fx-background-color: #00FFFF;");
+//		motionSpace.setStyle("-fx-background-color: linear-gradient(#112200, #be1d00);");
 		
-		rect = new Rectangle(25,25,50, 50);
-        rect.setArcHeight(rectsize);
-        rect.setArcWidth(15);
-        rect.setFill(Color.CRIMSON);
-        rect.setTranslateX(50);
-        rect.setTranslateY(75);
-        this.getChildren().add(rect); 
-        
-        this.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-            public void handle(KeyEvent key) {
-
-                if(key.getCharacter().equals("w")){
-                	rectsize++;
-                	rect.setArcHeight(rectsize);
-                	System.out.println("w pressded");
-                }
-
-            }
-
-        });
 	}
 
 	/**
-	 * Konstruktor mit default HTML-Content
-	 * und Größen-Angabe
+	 * construktor
 	 * @param height
 	 * @param width
 	 */
 	public MotionPane(double height, double width) {
 		this();
 		myHeight = height;
-		myWidth = width;
-		
-		
+		myWidth = width;	
 	}
 
- public void keyInput(){
-	 
- }
 
 	@Override
 	protected void layoutChildren() {
@@ -87,10 +59,4 @@ public class MotionPane extends AnchorPane {
 		myWidth = width;
 	}
 
-	public void changeBlock() {
-    	rectsize++;
-    	rect.setHeight(rectsize);
-	}
-
-	
 }

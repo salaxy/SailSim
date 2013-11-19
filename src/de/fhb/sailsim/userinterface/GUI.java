@@ -1,16 +1,9 @@
 package de.fhb.sailsim.userinterface;
 
-import java.util.List;
-
-import com.sun.scenario.effect.impl.prism.PrImage;
-
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -20,13 +13,15 @@ import javafx.stage.Stage;
 
 /**
 *
-* @author Salaxy
+* @author Andy Klay <klay@fh-brandenburg.de>
+* 
 */
 public class GUI extends Application {
 
 	Group root;
 	Scene scene;
 
+	BoatSymbol sym ;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -76,7 +71,7 @@ public class GUI extends Application {
 		motionSpace.setLayoutX(200);
 		motionSpace.setLayoutY(50);
 		motionSpace.setPrefSize(600, 600);
-		motionSpace.setStyle("-fx-background-color: linear-gradient(#112200, #be1d00);");
+
 //		motionSpace.setStyle("-fx-background-image: url('water.jpg'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center;" );
 		FlowPane motionFlow = new FlowPane();
 		motionFlow.getChildren().add(TextBuilder.create().text("motionSpace").fill(Color.GREEN).build());
@@ -92,16 +87,28 @@ public class GUI extends Application {
 			private double value;
 
 			@Override
-			public void handle(KeyEvent ke) {
-				// TODO Auto-generated method stub
-				
-	               if (ke.getCode().isArrowKey()) {
-//	                   Platform.exit();
-	                   motionSpace.changeBlock();
+			public void handle(KeyEvent ke) {	
+	               
+	               switch(ke.getCode()){
+	               case UP :  
+	               sym.setPositionX(sym.getPositionX()+1);
+	               break;
+	               case DOWN :
+	            	   sym.setPositionX(sym.getPositionX()-1);
+	               break;
+	               case RIGHT:
+	            	   sym.setPositionY(sym.getPositionY()+1);
+	               break;
+	               case LEFT :
+	            	   sym.setPositionY(sym.getPositionY()-1);
+	               break;
 	               }
 				
 			}});
 		
+
+		 sym = new BoatSymbol(motionSpace, 100, 100);
+//		sym.draw();
 		
 		
 		primaryStage.show();
