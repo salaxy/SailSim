@@ -12,114 +12,103 @@ import javafx.scene.text.TextBuilder;
 import javafx.stage.Stage;
 
 /**
-*
-* @author Andy Klay <klay@fh-brandenburg.de>
-* 
-*/
+ * 
+ * @author Andy Klay <klay@fh-brandenburg.de>
+ * 
+ */
 public class GUI extends Application {
 
 	Group root;
 	Scene scene;
 
-	BoatSymbol sym ;
+	BoatSymbol boat;
+	ControlPane controlPane;
+	final MotionPane motionPane = new MotionPane();
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
 		root = new Group();
-//		root.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);");
-		
-		scene = new Scene(root, 800, 600,Color.BLACK);
+		scene = new Scene(root, 800, 600, Color.BLACK);
 		primaryStage.setScene(scene);
-		
-		
-//		HBox hbox= new HBox(2);
-////		hbox.setAlignment(Pos.BASELINE_LEFT);
-//		VBox vbox = new VBox(3);
-//		
-//		root.getChildren().add(hbox);
-//		hbox.getChildren().add(vbox);
-////		hbox.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);");
-//		vbox.getChildren().add(TextBuilder.create().text("Sailbootstate").fill(Color.BLUE).build());
-//		vbox.getChildren().add(TextBuilder.create().text("Windsettings").fill(Color.RED).build());
-//		vbox.getChildren().add(TextBuilder.create().text("Further Windsettings").fill(Color.RED).build());
-//		
-//		Group motionPane= new Group();
-//		motionPane.setStyle("-fx-background-color: linear-gradient(#ff2200, #be1d00);");
-////		motionPane.setMinSize(200, 300);
-//		motionPane.getChildren().add(TextBuilder.create().text("motionPane").fill(Color.GREEN).build());
-//		
-////		motionPane.setStyle("-fx-background-image: url('water.jpg'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center;");
-//		hbox.getChildren().add(motionPane);
-		
-		AnchorPane controlbar= new AnchorPane();
-		controlbar.setLayoutX(0);
-		controlbar.setLayoutY(10);
-		controlbar.setPrefSize(200, 600);
-		controlbar.setStyle("-fx-background-color: linear-gradient(#ff2200, #000000);");
-		
+
+		initialzeControlbar();
+		initializeMotionSpace();
+		root.getChildren().add(controlPane);
+		root.getChildren().add(motionPane);
+
+		// you can add Events only to scene or a focusalbe Node
+		scene.setOnKeyPressed(boatEventHandler);
+
+		boat = new BoatSymbol(motionPane, 100, 100);
+		motionPane.getChildren().add(boat);
+		primaryStage.show();
+	}
+
+	private void initializeMotionSpace() {
+		motionPane.setLayoutX(200);
+		motionPane.setLayoutY(50);
+		motionPane.setPrefSize(600, 600);
+
+		FlowPane motionFlow = new FlowPane();
+		//dummy fills
+		motionFlow.getChildren().add(
+				TextBuilder.create().text("motionSpace").fill(Color.GREEN)
+						.build());
+		motionPane.getChildren().add(motionFlow);
+	}
+
+	private void initialzeControlbar() {
+		controlPane = new ControlPane();
+		controlPane.setLayoutX(0);
+		controlPane.setLayoutY(10);
+		controlPane.setPrefSize(200, 600);
+		controlPane
+				.setStyle("-fx-background-color: linear-gradient(#ff2200, #000000);");
+
 		FlowPane flow = new FlowPane(1, 5);
 
-		
-		flow.getChildren().add(TextBuilder.create().text("Sailbootstate").fill(Color.BLUE).build());
-		flow.getChildren().add(TextBuilder.create().text("Windsettings").fill(Color.BLANCHEDALMOND).build());
-		flow.getChildren().add(TextBuilder.create().text("Further Windsettings").fill(Color.CADETBLUE).build());
-		
-		controlbar.getChildren().add(flow);
-		
-		final MotionPane motionSpace= new MotionPane();
-		motionSpace.setLayoutX(200);
-		motionSpace.setLayoutY(50);
-		motionSpace.setPrefSize(600, 600);
+		//dummy fills
+		flow.getChildren().add(
+				TextBuilder.create().text("Sailbootstate").fill(Color.BLUE)
+						.build());
+		flow.getChildren().add(
+				TextBuilder.create().text("Windsettings")
+						.fill(Color.BLANCHEDALMOND).build());
+		flow.getChildren().add(
+				TextBuilder.create().text("Further Windsettings")
+						.fill(Color.CADETBLUE).build());
 
-//		motionSpace.setStyle("-fx-background-image: url('water.jpg'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center;" );
-		FlowPane motionFlow = new FlowPane();
-		motionFlow.getChildren().add(TextBuilder.create().text("motionSpace").fill(Color.GREEN).build());
-		motionSpace.getChildren().add(motionFlow);
-		
-		
-		root.getChildren().add(controlbar);
-		root.getChildren().add(motionSpace);
-		
-		//you can add Events only to scene or a focusalbe Node 
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			private double value;
-
-			@Override
-			public void handle(KeyEvent ke) {	
-	               
-	               switch(ke.getCode()){
-	               case UP :  
-	               sym.setPositionX(sym.getPositionX()+1);
-	               break;
-	               case DOWN :
-	            	   sym.setPositionX(sym.getPositionX()-1);
-	               break;
-	               case RIGHT:
-	            	   sym.setPositionY(sym.getPositionY()+1);
-	               break;
-	               case LEFT :
-	            	   sym.setPositionY(sym.getPositionY()-1);
-	               break;
-	               }
-				
-			}});
-		
-
-		 sym = new BoatSymbol(motionSpace, 100, 100);
-//		sym.draw();
-		
-		
-		primaryStage.show();
-		
+		controlPane.getChildren().add(flow);
 	}
-	
+
 	/**
 	 * Programmstart - keine Argumente nötig
 	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	private EventHandler<KeyEvent> boatEventHandler = new EventHandler<KeyEvent>() {
+
+		@Override
+		public void handle(KeyEvent ke) {
+
+			switch (ke.getCode()) {
+			case UP:
+				boat.setPositionX(boat.getPositionX() + 1);
+				break;
+			case DOWN:
+				boat.setPositionX(boat.getPositionX() - 1);
+				break;
+			case RIGHT:
+				boat.setPositionY(boat.getPositionY() + 1);
+				break;
+			case LEFT:
+				boat.setPositionY(boat.getPositionY() - 1);
+				break;
+			}
+
+		}
+	};
 
 }

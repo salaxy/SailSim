@@ -5,7 +5,6 @@ import javafx.scene.layout.AnchorPane;
 /**
 *
 * @author Andy Klay <klay@fh-brandenburg.de>
-* 
 */
 public class MotionPane extends AnchorPane {
 
@@ -17,8 +16,8 @@ public class MotionPane extends AnchorPane {
 	 */
 	public MotionPane() {
 		this.setStyle("-fx-background-color: #00FFFF;");
+//		this.setStyle("-fx-background-image: url('water.jpg'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center;");
 //		motionSpace.setStyle("-fx-background-color: linear-gradient(#112200, #be1d00);");
-		
 	}
 
 	/**

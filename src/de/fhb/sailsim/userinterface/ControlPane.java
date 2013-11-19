@@ -1,6 +1,8 @@
 package de.fhb.sailsim.userinterface;
 
-public class ControlPane {
+import javafx.scene.layout.AnchorPane;
+
+public class ControlPane extends AnchorPane{
 	
 	
 
