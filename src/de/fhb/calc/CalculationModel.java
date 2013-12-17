@@ -7,5 +7,10 @@ public abstract class CalculationModel {
 
 	
 	public abstract void calculateNextState(BoatState boat, Enviroment world);
+
+	public void calculateNextState(BoatState boat, Enviroment world, long time) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

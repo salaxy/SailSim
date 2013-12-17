@@ -8,6 +8,16 @@ public class BoatState {
 	
 	/** meter per secound */
 	private double currentPropulsionVelocity;
+	
+	private double maxVelocity;
+
+	public double getMaxVelocity() {
+		return maxVelocity;
+	}
+
+	public void setMaxVelocity(double maxVelocity) {
+		this.maxVelocity = maxVelocity;
+	}
 
 	private double currentSpinVelocity;
 	
