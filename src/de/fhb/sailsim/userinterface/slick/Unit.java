@@ -368,8 +368,6 @@ public class Unit {
 	 * zeichnen des normalen Erscheinungs bildes ohne Effekte
 	 */
 	protected void drawFigure(Graphics graphics) {
-		// zeichne gefuelltes Quadrat
-		graphics.fillRect(-10, -10, 20, 20);
 		
         graphics.scale(2, 2);
         ArrayList<Vector2f> vektoren = new ArrayList<Vector2f>();

@@ -47,7 +47,7 @@ public class Gamemap {
 	public void zeichne(Graphics graphics, Player player) {
 
 		GraphicTools.calcDrawTransformationForSlick(player, graphics, new Vector2f(0, 0));
-		visibleMap.draw();
+		visibleMap.draw(0, 0);
 
 		// Feldumrandung zeichnen
 		// graphics.setColor(new Color(255, 255, 0,55));

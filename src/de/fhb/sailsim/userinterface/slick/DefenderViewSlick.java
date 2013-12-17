@@ -100,9 +100,14 @@ public class DefenderViewSlick extends BasicGameState{
 	    	}
 	   
 	    	if (mouseButton == 1) {		
-	    		control.zoomInterface(oldx, oldy, newx, newy);
-	    	}			
+//	    		control.zoomInterface(oldx, oldy, newx, newy);
+	    	}		
     }
+    
+    public void keyPressed(int key, char c){
+    	System.out.println("keypressed");
+    }
+    
     
     /**
      * What happens when mousewhell is scrolled
