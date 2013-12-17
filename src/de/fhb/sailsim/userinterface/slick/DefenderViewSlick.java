@@ -21,6 +21,11 @@ public class DefenderViewSlick extends BasicGameState {
 	 * Bildschirmbreite
 	 */
 	public static final int WIDTH = 1024;
+	
+	public static final int FRAMERATE = 20;
+	//berechne in Echtzeit, daher immer 1 Sekunde durch Framerate
+	public static final int CALCULATION_TIME = 1000/FRAMERATE;
+
 
 	/**
 	 * Bildschirmhöhe
@@ -46,13 +51,10 @@ public class DefenderViewSlick extends BasicGameState {
 			throws SlickException {
 
 		// gamelogic initialisieren
-		// TODO
 		control = new DefenderControl();
-		control.createTestUnits();
-		control.createTestUnits();
 
 		gc.setShowFPS(true);
-		gc.setTargetFrameRate(25);
+		gc.setTargetFrameRate(FRAMERATE);
 
 	}
 
@@ -112,18 +114,19 @@ public class DefenderViewSlick extends BasicGameState {
 		switch (key) {
 		case Input.KEY_UP:
 			System.out.println("pressed KEY_UP");
+			control.getBoatDrawing().speedUp();
 			break;
 		case Input.KEY_DOWN:
 			System.out.println("pressed KEY_DOWN");
-			;
+			control.getBoatDrawing().speedDown();
 			break;
 		case Input.KEY_RIGHT:
 			System.out.println("pressed KEY_RIGHT");
-			;
+			control.getBoatDrawing().turnRight();
 			break;
 		case Input.KEY_LEFT:
 			System.out.println("pressed KEY_LEFT");
-			;
+			control.getBoatDrawing().turnLeft();
 			break;
 		}
 

@@ -69,8 +69,8 @@ public class Unit {
 	 * legt das erscheinungbild der Einheit fest
 	 */
 	protected int mode;
-	
-	protected boolean isMoving=false;
+
+	protected boolean isMoving = false;
 
 	/**
 	 * sagt aus um welchen längenfaktor der Schweif erscheint
@@ -109,7 +109,6 @@ public class Unit {
 	 * Zielvektor der Einheit
 	 */
 	protected Vector2f destinationVector;
-
 
 	/**
 	 * 
@@ -241,7 +240,7 @@ public class Unit {
 	 * @param graphics
 	 */
 	protected void drawPulseIfActive(Player player, Graphics graphics) {
-		
+
 		this.drawNormalAppearance(player, graphics);
 	}
 
@@ -368,23 +367,22 @@ public class Unit {
 	 * zeichnen des normalen Erscheinungs bildes ohne Effekte
 	 */
 	protected void drawFigure(Graphics graphics) {
-		
-        graphics.scale(2, 2);
-        ArrayList<Vector2f> vektoren = new ArrayList<Vector2f>();
-        vektoren.add(new Vector2f(0, -8));
-        vektoren.add(new Vector2f(-8, 8));
-        vektoren.add(new Vector2f(-4, 6));
-        vektoren.add(new Vector2f(0, 8));
-        vektoren.add(new Vector2f(0, -8));
-        vektoren.add(new Vector2f(8, 8));
-        vektoren.add(new Vector2f(4, 6));
-        vektoren.add(new Vector2f(0, 8));
 
-        GraphicTools.zeicheFigurNachVektoren(vektoren, graphics);
+		graphics.scale(2, 2);
+		ArrayList<Vector2f> vektoren = new ArrayList<Vector2f>();
+		vektoren.add(new Vector2f(0, -8));
+		vektoren.add(new Vector2f(-8, 8));
+		vektoren.add(new Vector2f(-4, 6));
+		vektoren.add(new Vector2f(0, 8));
+		vektoren.add(new Vector2f(0, -8));
+		vektoren.add(new Vector2f(8, 8));
+		vektoren.add(new Vector2f(4, 6));
+		vektoren.add(new Vector2f(0, 8));
 
-        graphics.resetTransform();
+		GraphicTools.zeicheFigurNachVektoren(vektoren, graphics);
+
+		graphics.resetTransform();
 	}
-
 
 	/**
 	 * Berechnen des neuen Position, wenn in Bewegung
@@ -394,21 +392,21 @@ public class Unit {
 		Vector2f newPosition;
 
 		// wenn aktuelle position noch weit weg vom ziel, dann weiter bewegen
-		if (position.distance(destinationVector) > 3) {
+		// if (position.distance(destinationVector) > 3) {
 
-			// neue Position erechnen, normierten Richtungsvector zur position
-			// hinzurechnen
-			newPosition = VectorHelper.add(this.position,
-					VectorHelper.mult(direction, movementSpeed));
+		// neue Position erechnen, normierten Richtungsvector zur position
+		// hinzurechnen
+		newPosition = VectorHelper.add(this.position,
+				VectorHelper.mult(direction, movementSpeed));
 
-			// neue Position setzen
-			this.position = newPosition;
+		// neue Position setzen
+		this.position = newPosition;
 
-			isMoving = true;
+		isMoving = true;
 
-		} else {
-			isMoving = false;
-		}
+		// } else {
+		// isMoving = false;
+		// }
 
 	}
 
@@ -468,7 +466,6 @@ public class Unit {
 		return position;
 	}
 
-
 	/**
 	 * Berechnet Zeichnenposition und setzt
 	 * Abblidungsmatrix(Transformationsmatix)
@@ -484,4 +481,19 @@ public class Unit {
 
 	}
 
+	public void turnRight() {
+		this.actualAngle += 5;
+	}
+
+	public void turnLeft() {
+		this.actualAngle -= 5;
+	}
+
+	public void speedUp() {
+		this.movementSpeed += 0.5f;
+	}
+
+	public void speedDown() {
+		this.movementSpeed -= 0.5f;
+	}
 }
