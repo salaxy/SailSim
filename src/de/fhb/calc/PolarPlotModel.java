@@ -48,11 +48,5 @@ public class PolarPlotModel extends CalculationModel {
 
 	}
 
-	@Override
-	public void calculateNextState(BoatState boat, Enviroment world) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }
