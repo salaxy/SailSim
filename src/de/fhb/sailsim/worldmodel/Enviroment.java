@@ -3,13 +3,13 @@ package de.fhb.sailsim.worldmodel;
 public class Enviroment {
 	
 	private Wind wind;
-	private Compass compass;
+	private CompassSimulation compass;
 	
 	public Enviroment() {
 		super();
 		
 		wind= new Wind();
-		compass= new Compass();
+		compass= new CompassSimulation();
 	}
 	public Wind getWind() {
 		return wind;
@@ -17,10 +17,10 @@ public class Enviroment {
 	public void setWind(Wind wind) {
 		this.wind = wind;
 	}
-	public Compass getCompass() {
+	public CompassSimulation getCompass() {
 		return compass;
 	}
-	public void setCompass(Compass compass) {
+	public void setCompass(CompassSimulation compass) {
 		this.compass = compass;
 	}
 
