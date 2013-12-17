@@ -1,4 +1,4 @@
-package de.fhb.sailsim.userinterface;
+package de.fhb.sailsim.userinterface.jaxafx;
 
 import javafx.scene.layout.AnchorPane;
 
