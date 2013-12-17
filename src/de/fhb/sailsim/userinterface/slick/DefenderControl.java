@@ -15,8 +15,8 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class DefenderControl {
 
-	int width = 1024;
-	int height = 768;
+//	int width = 1024;
+//	int height = 768;
 
 	// Spielkonstanten
 	public static final int MOUSE_LEFT = 0;
@@ -174,6 +174,5 @@ public class DefenderControl {
 	public void createTestUnits() {
 		
 		new Unit(100, 100, Unit.MODE_NORMAL, this);
-
 	}
 }
