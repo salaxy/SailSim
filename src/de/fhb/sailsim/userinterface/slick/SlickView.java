@@ -15,17 +15,16 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Andy Klay <klay@fh-brandenburg.de>
  * 
  */
-public class DefenderViewSlick extends BasicGameState {
+public class SlickView extends BasicGameState {
+
+	public static final int FRAMERATE = 20;
+	// berechne in Echtzeit, daher immer 1 Sekunde durch Framerate
+	public static final int CALCULATION_TIME = 1000 / FRAMERATE;
 
 	/**
 	 * Bildschirmbreite
 	 */
 	public static final int WIDTH = 1024;
-	
-	public static final int FRAMERATE = 20;
-	//berechne in Echtzeit, daher immer 1 Sekunde durch Framerate
-	public static final int CALCULATION_TIME = 1000/FRAMERATE;
-
 
 	/**
 	 * Bildschirmhöhe
@@ -40,7 +39,7 @@ public class DefenderViewSlick extends BasicGameState {
 	/**
 	 * Control des Gesamtprogramms
 	 */
-	private DefenderControl control;
+	private ViewControl control;
 
 	private int mouseButton = 0;
 
@@ -50,8 +49,7 @@ public class DefenderViewSlick extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame game)
 			throws SlickException {
 
-		// gamelogic initialisieren
-		control = new DefenderControl();
+		control = new ViewControl();
 
 		gc.setShowFPS(true);
 		gc.setTargetFrameRate(FRAMERATE);
@@ -77,23 +75,21 @@ public class DefenderViewSlick extends BasicGameState {
 		g.setAntiAlias(true);
 		g.setBackground(Color.white);
 
-		// alles zeichnen
-		// TODO
 		this.control.drawAll(g);
 		this.control.updateGame();
 	}
 
-	// /**
-	// * What happens when mouse was clicked
-	// */
-	// public void mouseClicked(int button, int x, int y, int clickCount){
-	//
-	// //Klickvektor holen
-	// Vector2f clickVector=new Vector2f(x,y);
-	// Vector2f mapCoords = GraphicTools.calcInputVector(clickVector,
-	// control.getPlayerOne());
-	//
-	// }
+	/**
+	 * What happens when mouse was clicked
+	 */
+	public void mouseClicked(int button, int x, int y, int clickCount) {
+
+		// Klickvektor holen
+		Vector2f clickVector = new Vector2f(x, y);
+		Vector2f mapCoords = GraphicTools.calcInputVector(clickVector,
+				control.getPlayerOne());
+
+	}
 
 	/**
 	 * What happens when mouse is moving

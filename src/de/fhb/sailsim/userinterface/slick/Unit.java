@@ -1,7 +1,6 @@
 package de.fhb.sailsim.userinterface.slick;
 
 import java.util.ArrayList;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -11,12 +10,12 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class Unit {
 
-	protected DefenderControl gamelogic;
+	protected ViewControl gamelogic;
 
 	/**
 	 * Referenz auf Spielkarte
 	 */
-	protected Gamemap map;
+	protected Map map;
 
 	/**
 	 * beinhaltet alle Einheiten die existent sind
@@ -119,7 +118,7 @@ public class Unit {
 	 * @param gamelogic
 	 * @param unitColor
 	 */
-	public Unit(int x, int y, int mode, DefenderControl gamelogic) {
+	public Unit(int x, int y, int mode, ViewControl gamelogic) {
 
 		this.mode = mode;
 		this.position = new Vector2f(x, y);
@@ -473,27 +472,31 @@ public class Unit {
 	 * @return
 	 */
 	private void calcDrawPosition(Player player, Graphics graphics) {
-
 		GraphicTools.calcDrawTransformationForSlick(player, graphics, position);
-
 		// eigendrehung hinzurechnen
 		graphics.rotate(0, 0, this.actualAngle);
-
 	}
 
 	public void turnRight() {
 		this.actualAngle += 5;
+		System.out.println("Direction vector: " + this.direction.toString());
+		this.direction.add(5d);
+		System.out.println(this.actualAngle);
 	}
 
 	public void turnLeft() {
 		this.actualAngle -= 5;
+		this.direction.sub(5d);
+		System.out.println(this.actualAngle);
 	}
 
 	public void speedUp() {
 		this.movementSpeed += 0.5f;
+		System.out.println(this.movementSpeed);
 	}
 
 	public void speedDown() {
 		this.movementSpeed -= 0.5f;
+		System.out.println(this.movementSpeed);
 	}
 }
