@@ -129,8 +129,6 @@ public class Sailboat {
 		this.gamelogic = gamelogic;
 		this.map = gamelogic.getMap();
 
-		// fuegt sich selbst zur globalen Menge der Einheiten hinzu
-		this.gamelogic.getGlobalUnits().add(this);
 	}
 
 	/**

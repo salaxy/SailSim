@@ -44,7 +44,7 @@ public class Map {
 	 * @param graphics
 	 * @param player
 	 */
-	public void zeichne(Graphics graphics, Perspective player) {
+	public void paint(Graphics graphics, Perspective player) {
 
 		GraphicTools.calcDrawTransformationForSlick(player, graphics,
 				new Vector2f(0, 0));
