@@ -67,7 +67,7 @@ public class Player {
 
 	private int id;
 
-	public Player(ViewControl gamelogic, float generalAngle,
+	public Player(DefenderControl gamelogic, float generalAngle,
 			float actualZoom, Vector2f originPosition, Color unitColor, int id) {
 
 		this.id = id;

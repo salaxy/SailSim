@@ -6,7 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class Map {
+public class Gamemap {
 
 	/**
 	 * Sichtbare Karte
@@ -24,7 +24,7 @@ public class Map {
 	 * 
 	 * Lädt die Karte.
 	 */
-	public Map() {
+	public Gamemap() {
 
 		try {
 

@@ -15,7 +15,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Andy Klay <klay@fh-brandenburg.de>
  * 
  */
-public class SlickView extends BasicGameState {
+public class DefenderViewSlick extends BasicGameState {
 
 	public static final int FRAMERATE = 20;
 	// berechne in Echtzeit, daher immer 1 Sekunde durch Framerate
@@ -39,7 +39,7 @@ public class SlickView extends BasicGameState {
 	/**
 	 * Control des Gesamtprogramms
 	 */
-	private ViewControl control;
+	private DefenderControl control;
 
 	private int mouseButton = 0;
 
@@ -49,7 +49,7 @@ public class SlickView extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame game)
 			throws SlickException {
 
-		control = new ViewControl();
+		control = new DefenderControl();
 
 		gc.setShowFPS(true);
 		gc.setTargetFrameRate(FRAMERATE);

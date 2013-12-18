@@ -10,12 +10,12 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class Unit {
 
-	protected ViewControl gamelogic;
+	protected DefenderControl gamelogic;
 
 	/**
 	 * Referenz auf Spielkarte
 	 */
-	protected Map map;
+	protected Gamemap map;
 
 	/**
 	 * beinhaltet alle Einheiten die existent sind
@@ -118,7 +118,7 @@ public class Unit {
 	 * @param gamelogic
 	 * @param unitColor
 	 */
-	public Unit(int x, int y, int mode, ViewControl gamelogic) {
+	public Unit(int x, int y, int mode, DefenderControl gamelogic) {
 
 		this.mode = mode;
 		this.position = new Vector2f(x, y);

@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
  * 
  * @author Andy Klay <klay@fh-brandenburg.de>
  */
-public class ViewControl {
+public class DefenderControl {
 
 	// Spielkonstanten
 	public static final int MOUSE_LEFT = 0;
@@ -47,7 +47,7 @@ public class ViewControl {
 	/**
 	 * Spielkarte
 	 */
-	private Map map;
+	private Gamemap map;
 
 	private Unit boatDrawing;
 
@@ -55,10 +55,10 @@ public class ViewControl {
 		return boatDrawing;
 	}
 
-	public ViewControl() {
+	public DefenderControl() {
 
 		// map init
-		map = new Map();
+		map = new Gamemap();
 
 		// die beiden Spieler initialisieren
 		playerOne = new Player(this, 0, 1.5f, new Vector2f(0f, 0f), Color.blue,
@@ -69,7 +69,7 @@ public class ViewControl {
 
 	}
 
-	public Map getMap() {
+	public Gamemap getMap() {
 		return map;
 	}
 
