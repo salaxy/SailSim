@@ -4,23 +4,19 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+import de.fhb.sailsim.control.SimulationControl;
+
 /**
- * Diese Klasse stellt die Verbindung zwischen Anzeige, also dem PApplet dar und
- * dem eigentlichen Spielinhalt wie die Units, Spiellogik usw. (und noch
- * zukünftige dinge)
+ * Diese Klasse stellt die Verbindung zwischen Anzeige und Simulationslogik dar
  * 
  * @author Andy Klay <klay@fh-brandenburg.de>
  */
 public class ViewControl {
 
-	// Spielkonstanten
+	private SimulationControl simulation;
+	
 	public static final int MOUSE_LEFT = 0;
 	public static final int MOUSE_RIGHT = 1;
-
-	// Konstanten fuer Spielerzugehoerigheit
-	public static final int PLAYER_ONE_ID = 0;
-	public static final int PLAYER_TWO_ID = 1;
-	public static final int PLAYER_SYSTEM_ID = 2;
 
 	// Ursprungspunkte fuer Spielerviews
 	public final static Vector2f ORIGIN_POSITION_LEFT = new Vector2f(0f, 0f);
@@ -31,18 +27,13 @@ public class ViewControl {
 
 	public ViewControl() {
 		map = new Map();
-		perspectiveOne = new Perspective(this, 0, 1.5f, new Vector2f(0f, 0f), Color.blue, PLAYER_ONE_ID);
+		perspectiveOne = new Perspective(this, 0, 1.5f, new Vector2f(0f, 0f),
+				Color.blue);
 		boatSymbol = new Sailboat(100, 100, Sailboat.MODE_NORMAL, this);
+		simulation = new SimulationControl();
 	}
 
-	public Map getMap() {
-		return map;
-	}
-
-	/**
-	 * Zeichnet beide Spielfelder und Inhalte
-	 */
-	public void drawAll(Graphics graphics) {
+	public void drawViewContent(Graphics graphics) {
 		// zeichenbereich setzen
 		// graphics.setClip(0, 0, 510, 768);
 
@@ -101,20 +92,25 @@ public class ViewControl {
 		Vector2f tempVec = this.getPlayerOne().getOriginOffset().copy();
 		tempVec.y = tempVec.y + newy - oldy;
 		tempVec.x = tempVec.x + newx - oldx;
-
+		
 		this.getPlayerOne().setOriginOffset(tempVec);
 	}
 
 	public Sailboat getBoatDrawing() {
 		return boatSymbol;
 	}
-	
+
 	public void updateGame() {
+		this.simulation.execute(SlickView.CALCULATION_TIME);
 		this.getBoatDrawing().update();
 	}
 
 	public Perspective getPlayerOne() {
 		return perspectiveOne;
+	}
+
+	public Map getMap() {
+		return map;
 	}
 
 }

@@ -6,7 +6,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
- * Dies Klasse beinhaltet einstellungen und Positionen eines Spielers
+ * Dies Klasse beinhaltet Einstellungen der zu zeichneden Perspektive
  * 
  * @author Andy Klay <klay@fh-brandenburg.de>
  * 
@@ -14,12 +14,12 @@ import org.newdawn.slick.geom.Vector2f;
 public class Perspective {
 
 	/**
-	 * generelle Drehung der View des Spielers
+	 * generelle Drehung der View
 	 */
 	private float generalAngle;
 
 	/**
-	 * Position des Ursprungs auf dem Bildschirm fuer den Spieler
+	 * Position des Ursprungs auf dem Bildschirm
 	 */
 	private Vector2f originPosition;
 
@@ -28,25 +28,11 @@ public class Perspective {
 
 	/**
 	 * Relative Position der Sicht im Verhältnis zum Ursprung (originPosition)
-	 * des Spielers als Vektor
 	 */
 	private Vector2f originOffset = new Vector2f(0, 0);
 
-	// /**
-	// * Absoluter Sichtpunkt auf der karte
-	// */
-	// private Vector2f absolutViewPoint= new Vector2f(0,0);
-	//
-	// public Vector2f getAbsolutViewPoint() {
-	// return absolutViewPoint;
-	// }
-
-	// public void setAbsolutViewPoint(Vector2f absolutViewPoint) {
-	// this.absolutViewPoint = absolutViewPoint;
-	// }
-
 	/**
-	 * Zoomfaktor der aktuellen Spielersicht
+	 * Zoomfaktor der aktuellen view
 	 */
 	private float actualZoom;
 
@@ -65,12 +51,9 @@ public class Perspective {
 	 */
 	private CopyOnWriteArrayList<Sailboat> activeUnits;
 
-	private int id;
-
 	public Perspective(ViewControl gamelogic, float generalAngle,
-			float actualZoom, Vector2f originPosition, Color unitColor, int id) {
+			float actualZoom, Vector2f originPosition, Color unitColor) {
 
-		this.id = id;
 		this.generalAngle = generalAngle;
 		this.actualZoom = actualZoom;
 		this.originPosition = originPosition;
@@ -85,10 +68,6 @@ public class Perspective {
 
 	public CopyOnWriteArrayList<Sailboat> getActiveUnits() {
 		return activeUnits;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public int getCredits() {

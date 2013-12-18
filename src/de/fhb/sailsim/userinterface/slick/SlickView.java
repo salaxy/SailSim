@@ -75,7 +75,7 @@ public class SlickView extends BasicGameState {
 		g.setAntiAlias(true);
 		g.setBackground(Color.white);
 
-		this.control.drawAll(g);
+		this.control.drawViewContent(g);
 		this.control.updateGame();
 	}
 
