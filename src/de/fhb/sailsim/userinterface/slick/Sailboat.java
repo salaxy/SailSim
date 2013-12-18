@@ -8,14 +8,14 @@ import org.newdawn.slick.geom.Vector2f;
 /**
  * Klasse für die Units
  */
-public class Unit {
+public class Sailboat {
 
-	protected DefenderControl gamelogic;
+	protected ViewControl gamelogic;
 
 	/**
 	 * Referenz auf Spielkarte
 	 */
-	protected Gamemap map;
+	protected Map map;
 
 	/**
 	 * beinhaltet alle Einheiten die existent sind
@@ -118,7 +118,7 @@ public class Unit {
 	 * @param gamelogic
 	 * @param unitColor
 	 */
-	public Unit(int x, int y, int mode, DefenderControl gamelogic) {
+	public Sailboat(int x, int y, int mode, ViewControl gamelogic) {
 
 		this.mode = mode;
 		this.position = new Vector2f(x, y);
@@ -153,7 +153,7 @@ public class Unit {
 	 * @param focus
 	 *            - wird Unit Aktiv gezeichnet oder nicht
 	 */
-	public void paint(Player player, Graphics graphics, boolean drawActive) {
+	public void paint(Perspective player, Graphics graphics, boolean drawActive) {
 
 		// zeichne Schweif wenn in bewegung
 		if (this.isMoving) {
@@ -207,7 +207,7 @@ public class Unit {
 	 * @param player
 	 * @param graphics
 	 */
-	public void drawActiveAppearance(Player player, Graphics graphics) {
+	public void drawActiveAppearance(Perspective player, Graphics graphics) {
 
 		graphics.setColor(this.activeColor);
 		this.drawFigure(graphics);
@@ -220,7 +220,7 @@ public class Unit {
 	 * @param player
 	 * @param graphics
 	 */
-	protected void drawNormalAppearance(Player player, Graphics graphics) {
+	protected void drawNormalAppearance(Perspective player, Graphics graphics) {
 
 		// Umrechnung auf Spielersicht
 
@@ -238,7 +238,7 @@ public class Unit {
 	 * @param player
 	 * @param graphics
 	 */
-	protected void drawPulseIfActive(Player player, Graphics graphics) {
+	protected void drawPulseIfActive(Perspective player, Graphics graphics) {
 
 		this.drawNormalAppearance(player, graphics);
 	}
@@ -249,7 +249,7 @@ public class Unit {
 	 * @param player
 	 * @param graphics
 	 */
-	protected void drawPulseAppearance(Player player, Graphics graphics) {
+	protected void drawPulseAppearance(Perspective player, Graphics graphics) {
 
 		// solange die skala noch nicht durchlaufen ist
 		if (pulseStat < pulseSkala.length - 1) {
@@ -274,7 +274,7 @@ public class Unit {
 	 * @param player
 	 * @param graphics
 	 */
-	protected void drawHalo(Player player, Graphics graphics) {
+	protected void drawHalo(Perspective player, Graphics graphics) {
 
 		// Umrechnung auf Spielersicht
 		this.calcDrawPosition(player, graphics);
@@ -303,7 +303,7 @@ public class Unit {
 	 * @param player
 	 * @param graphics
 	 */
-	protected void drawRotateAppearance(Player player, Graphics graphics) {
+	protected void drawRotateAppearance(Perspective player, Graphics graphics) {
 
 		// solange die skala noch nicht durchlaufen ist
 		if (rotatingAngle < 360) {
@@ -329,7 +329,7 @@ public class Unit {
 	 * @param player
 	 * @param graphics
 	 */
-	protected void drawRotateAndPulseAppearance(Player player, Graphics graphics) {
+	protected void drawRotateAndPulseAppearance(Perspective player, Graphics graphics) {
 
 		// solange die skala noch nicht durchlaufen ist
 		if (rotatingAngle < (float) Math.PI * 2) {
@@ -412,7 +412,7 @@ public class Unit {
 	/**
 	 * Zeichne Schweif
 	 */
-	protected void drawTail(Player player, Graphics graphics) {
+	protected void drawTail(Perspective player, Graphics graphics) {
 
 		// Zielpunkt hinter der Einheit berechnen
 		// end Vektor fuer jeweiligen Spieler berechnen
@@ -471,7 +471,7 @@ public class Unit {
 	 * 
 	 * @return
 	 */
-	private void calcDrawPosition(Player player, Graphics graphics) {
+	private void calcDrawPosition(Perspective player, Graphics graphics) {
 		GraphicTools.calcDrawTransformationForSlick(player, graphics, position);
 		// eigendrehung hinzurechnen
 		graphics.rotate(0, 0, this.actualAngle);

@@ -49,7 +49,7 @@ public class GraphicTools {
 	 * @param position
 	 *            - Postion des zu zeichnenden Objekts
 	 */
-	public static void calcDrawTransformationForSlick(Player player, Graphics graphics, Vector2f position) {
+	public static void calcDrawTransformationForSlick(Perspective player, Graphics graphics, Vector2f position) {
 		
 		// Berechnung des neuen Koordinaten Ursprungs Vektors
 		Vector2f drawPosition = new Vector2f(0,0);		
@@ -68,7 +68,7 @@ public class GraphicTools {
 		graphics.translate(position.x, +position.y);		
 	}
 
-	public static Vector2f calcInputVector(Vector2f clickVector, Player player) {
+	public static Vector2f calcInputVector(Vector2f clickVector, Perspective player) {
 
 		// Klickvektor zurück rechnen auf spielkoordinaten
 		Vector2f realClickKoordinates = clickVector.copy();

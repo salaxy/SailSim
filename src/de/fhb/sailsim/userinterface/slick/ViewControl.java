@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
  * 
  * @author Andy Klay <klay@fh-brandenburg.de>
  */
-public class DefenderControl {
+public class ViewControl {
 
 	// Spielkonstanten
 	public static final int MOUSE_LEFT = 0;
@@ -32,53 +32,53 @@ public class DefenderControl {
 	/**
 	 * Globale Liste an zu zeichnende Objekte/Units
 	 */
-	private CopyOnWriteArrayList<Unit> globalUnits;
+	private CopyOnWriteArrayList<Sailboat> globalUnits;
 
 	/**
 	 * Spielerobjekt Spieler Eins
 	 */
-	private Player playerOne;
+	private Perspective playerOne;
 
 	/**
 	 * Spielerobjekt Spieler System
 	 */
-	private Player playerSystem;
+	private Perspective playerSystem;
 
 	/**
 	 * Spielkarte
 	 */
-	private Gamemap map;
+	private Map map;
 
-	private Unit boatDrawing;
+	private Sailboat boatDrawing;
 
-	public Unit getBoatDrawing() {
+	public Sailboat getBoatDrawing() {
 		return boatDrawing;
 	}
 
-	public DefenderControl() {
+	public ViewControl() {
 
 		// map init
-		map = new Gamemap();
+		map = new Map();
 
 		// die beiden Spieler initialisieren
-		playerOne = new Player(this, 0, 1.5f, new Vector2f(0f, 0f), Color.blue,
+		playerOne = new Perspective(this, 0, 1.5f, new Vector2f(0f, 0f), Color.blue,
 				PLAYER_ONE_ID);
-		globalUnits = new CopyOnWriteArrayList<Unit>();
+		globalUnits = new CopyOnWriteArrayList<Sailboat>();
 
-		boatDrawing = new Unit(100, 100, Unit.MODE_NORMAL, this);
+		boatDrawing = new Sailboat(100, 100, Sailboat.MODE_NORMAL, this);
 
 	}
 
-	public Gamemap getMap() {
+	public Map getMap() {
 		return map;
 	}
 
-	public CopyOnWriteArrayList<Unit> getGlobalUnits() {
+	public CopyOnWriteArrayList<Sailboat> getGlobalUnits() {
 		return globalUnits;
 
 	}
 
-	public Player getPlayerSystem() {
+	public Perspective getPlayerSystem() {
 		return playerSystem;
 	}
 
@@ -95,7 +95,7 @@ public class DefenderControl {
 		this.map.zeichne(graphics, playerOne);
 
 		// units playerOne zeichen
-		for (Unit unit : globalUnits) {
+		for (Sailboat unit : globalUnits) {
 			unit.paint(this.playerOne, graphics, false);
 		}
 
@@ -116,12 +116,12 @@ public class DefenderControl {
 	public void updateGame() {
 		// TODO stelle ist wichtig
 		// Berechnen der Positionen aller Units
-		for (Unit unit : globalUnits) {
+		for (Sailboat unit : globalUnits) {
 			unit.update();
 		}
 	}
 
-	public Player getPlayerOne() {
+	public Perspective getPlayerOne() {
 		return playerOne;
 	}
 

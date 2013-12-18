@@ -11,7 +11,7 @@ import org.newdawn.slick.geom.Vector2f;
  * @author Andy Klay <klay@fh-brandenburg.de>
  * 
  */
-public class Player {
+public class Perspective {
 
 	/**
 	 * generelle Drehung der View des Spielers
@@ -63,11 +63,11 @@ public class Player {
 	/**
 	 * Liste der aktivierten Units des Spielers
 	 */
-	private CopyOnWriteArrayList<Unit> activeUnits;
+	private CopyOnWriteArrayList<Sailboat> activeUnits;
 
 	private int id;
 
-	public Player(DefenderControl gamelogic, float generalAngle,
+	public Perspective(ViewControl gamelogic, float generalAngle,
 			float actualZoom, Vector2f originPosition, Color unitColor, int id) {
 
 		this.id = id;
@@ -75,7 +75,7 @@ public class Player {
 		this.actualZoom = actualZoom;
 		this.originPosition = originPosition;
 		this.originOffset = new Vector2f(0, 0);
-		this.activeUnits = new CopyOnWriteArrayList<Unit>();
+		this.activeUnits = new CopyOnWriteArrayList<Sailboat>();
 		this.unitColor = unitColor;
 	}
 
@@ -83,7 +83,7 @@ public class Player {
 		return unitColor;
 	}
 
-	public CopyOnWriteArrayList<Unit> getActiveUnits() {
+	public CopyOnWriteArrayList<Sailboat> getActiveUnits() {
 		return activeUnits;
 	}
 

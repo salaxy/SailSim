@@ -6,7 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class Gamemap {
+public class Map {
 
 	/**
 	 * Sichtbare Karte
@@ -24,7 +24,7 @@ public class Gamemap {
 	 * 
 	 * Lädt die Karte.
 	 */
-	public Gamemap() {
+	public Map() {
 
 		try {
 
@@ -44,7 +44,7 @@ public class Gamemap {
 	 * @param graphics
 	 * @param player
 	 */
-	public void zeichne(Graphics graphics, Player player) {
+	public void zeichne(Graphics graphics, Perspective player) {
 
 		GraphicTools.calcDrawTransformationForSlick(player, graphics,
 				new Vector2f(0, 0));
