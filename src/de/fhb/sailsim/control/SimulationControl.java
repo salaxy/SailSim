@@ -17,7 +17,7 @@ public class SimulationControl {
 
 		calculationModel = new PolarPlotModel();
 		enviroment = new Enviroment();
-		boatState = new BoatState();
+		boatState = new BoatState(100, 100);
 	}
 
 	public Enviroment getEnviroment() {

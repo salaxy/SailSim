@@ -2,7 +2,10 @@ package de.fhb.calc;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.geom.Vector2f;
+
 import de.fhb.sailsim.boat.BoatState;
+import de.fhb.sailsim.userinterface.slick.VectorHelper;
 import de.fhb.sailsim.worldmodel.Enviroment;
 
 public class PolarPlotModel extends CalculationModel {
@@ -16,7 +19,7 @@ public class PolarPlotModel extends CalculationModel {
 		double s;
 		
 		//Beschleunigung m pro sekunde quadrat
-		double a=2;
+		double a=0.0005f;
 		// zeit in milisecounds
 		long t=time;
 		t=50; //entspricht 20fps
@@ -35,6 +38,27 @@ public class PolarPlotModel extends CalculationModel {
 			v= a * t +v0;
 		}
 		
+		//Drehwinkel und dreh geschwindigkeit bestimmen
+		double rotateV=0;
+		double rotateS=0;
+		//TODO Berechnungen ergänzen
+		//als ergebnis wird roateV des bootes gesetzt
+		
+		//berechnen des Bewegungsvektors
+		Vector2f newPosition;
+		newPosition = VectorHelper.add(boat.getPosition(),VectorHelper.mult(boat.getDirection(), (float)s));
+		
+		//berechnen des neuen Winkels
+//		Vector2f newDirection=boat.getDirection().copy();
+		
+		if(rotateS>=0){
+			boat.getDirection().add(rotateS);
+		}else{
+			boat.getDirection().sub(rotateS);
+		}
+		
+		boat.setPosition(newPosition);
+//		boat.setDirection(newDirection);
 	}
 	
 	public double interpolateMaxV(PolarData valueMin, PolarData valueMax){
@@ -45,8 +69,6 @@ public class PolarPlotModel extends CalculationModel {
 	public void readInPolarPlotAsCsv(PolarData valueMin, PolarData valueMax){
 		//TODO
 
-
 	}
-
 
 }

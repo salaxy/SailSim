@@ -49,7 +49,7 @@ public class Perspective {
 	/**
 	 * Liste der aktivierten Units des Spielers
 	 */
-	private CopyOnWriteArrayList<Sailboat> activeUnits;
+	private CopyOnWriteArrayList<BoatSign> activeUnits;
 
 	public Perspective(ViewControl gamelogic, float generalAngle,
 			float actualZoom, Vector2f originPosition, Color unitColor) {
@@ -58,7 +58,7 @@ public class Perspective {
 		this.actualZoom = actualZoom;
 		this.originPosition = originPosition;
 		this.originOffset = new Vector2f(0, 0);
-		this.activeUnits = new CopyOnWriteArrayList<Sailboat>();
+		this.activeUnits = new CopyOnWriteArrayList<BoatSign>();
 		this.unitColor = unitColor;
 	}
 
@@ -66,7 +66,7 @@ public class Perspective {
 		return unitColor;
 	}
 
-	public CopyOnWriteArrayList<Sailboat> getActiveUnits() {
+	public CopyOnWriteArrayList<BoatSign> getActiveUnits() {
 		return activeUnits;
 	}
 

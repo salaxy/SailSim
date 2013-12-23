@@ -8,7 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 /**
  * Klasse für die Units
  */
-public class Sailboat {
+public class BoatSign {
 
 	protected ViewControl gamelogic;
 
@@ -86,12 +86,12 @@ public class Sailboat {
 	 */
 	protected float rotationSpeed = 10f;
 
-	/**
-	 * Bewegungsgeschwindigkeit
-	 */
-	// bei zu großen werten von movementSpeed kann das objekt zum schwingen
-	// kommen
-	protected float movementSpeed = 2f;
+//	/**
+//	 * Bewegungsgeschwindigkeit
+//	 */
+//	// bei zu großen werten von movementSpeed kann das objekt zum schwingen
+//	// kommen
+//	protected float movementSpeed = 2f;
 
 	/**
 	 * Farbe in der Einheit gezeichnet wird, wenn Einheit Aktiv ist, also
@@ -118,7 +118,7 @@ public class Sailboat {
 	 * @param gamelogic
 	 * @param unitColor
 	 */
-	public Sailboat(int x, int y, int mode, ViewControl gamelogic) {
+	public BoatSign(int x, int y, int mode, ViewControl gamelogic) {
 
 		this.mode = mode;
 		this.position = new Vector2f(x, y);
@@ -228,6 +228,7 @@ public class Sailboat {
 		// zeichnen
 		this.drawFigure(graphics);
 		graphics.resetTransform();
+		System.out.println("draw at " + this.position.toString());
 	}
 
 	/**
@@ -327,7 +328,8 @@ public class Sailboat {
 	 * @param player
 	 * @param graphics
 	 */
-	protected void drawRotateAndPulseAppearance(Perspective player, Graphics graphics) {
+	protected void drawRotateAndPulseAppearance(Perspective player,
+			Graphics graphics) {
 
 		// solange die skala noch nicht durchlaufen ist
 		if (rotatingAngle < (float) Math.PI * 2) {
@@ -381,31 +383,31 @@ public class Sailboat {
 		graphics.resetTransform();
 	}
 
-	/**
-	 * Berechnen des neuen Position, wenn in Bewegung
-	 */
-	public void update() {
-
-		Vector2f newPosition;
-
-		// wenn aktuelle position noch weit weg vom ziel, dann weiter bewegen
-		// if (position.distance(destinationVector) > 3) {
-
-		// neue Position erechnen, normierten Richtungsvector zur position
-		// hinzurechnen
-		newPosition = VectorHelper.add(this.position,
-				VectorHelper.mult(direction, movementSpeed));
-
-		// neue Position setzen
-		this.position = newPosition;
-
-		isMoving = true;
-
-		// } else {
-		// isMoving = false;
-		// }
-
-	}
+//	/**
+//	 * Berechnen des neuen Position, wenn in Bewegung
+//	 */
+//	public void update() {
+//
+//		Vector2f newPosition;
+//
+//		// wenn aktuelle position noch weit weg vom ziel, dann weiter bewegen
+//		// if (position.distance(destinationVector) > 3) {
+//
+//		// neue Position erechnen, normierten Richtungsvector zur position
+//		// hinzurechnen
+//		newPosition = VectorHelper.add(this.position,
+//				VectorHelper.mult(direction, movementSpeed));
+//
+//		// neue Position setzen
+//		this.position = newPosition;
+//
+//		isMoving = true;
+//
+//		// } else {
+//		// isMoving = false;
+//		// }
+//
+//	}
 
 	/**
 	 * Zeichne Schweif
@@ -451,6 +453,15 @@ public class Sailboat {
 		this.mode = mode;
 	}
 
+	public Vector2f getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Vector2f direction) {
+		this.direction = direction;
+		this.actualAngle=(float) direction.getTheta()+90;
+	}
+
 	/**
 	 * Berechnet Blickrichtung der Einheit nach dem Bewegungsvektor
 	 */
@@ -461,6 +472,10 @@ public class Sailboat {
 
 	public Vector2f getPosition() {
 		return position;
+	}
+
+	public void setPosition(Vector2f position) {
+		this.position = position;
 	}
 
 	/**
@@ -474,27 +489,5 @@ public class Sailboat {
 		// eigendrehung hinzurechnen
 		graphics.rotate(0, 0, this.actualAngle);
 	}
-
-	public void turnRight() {
-		this.actualAngle += 5;
-		System.out.println("Direction vector: " + this.direction.toString());
-		this.direction.add(5d);
-		System.out.println(this.actualAngle);
-	}
-
-	public void turnLeft() {
-		this.actualAngle -= 5;
-		this.direction.sub(5d);
-		System.out.println(this.actualAngle);
-	}
-
-	public void speedUp() {
-		this.movementSpeed += 0.5f;
-		System.out.println(this.movementSpeed);
-	}
-
-	public void speedDown() {
-		this.movementSpeed -= 0.5f;
-		System.out.println(this.movementSpeed);
-	}
+	
 }

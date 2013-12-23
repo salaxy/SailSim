@@ -110,19 +110,19 @@ public class SlickView extends BasicGameState {
 		switch (key) {
 		case Input.KEY_UP:
 			System.out.println("pressed KEY_UP");
-			control.getBoatDrawing().speedUp();
+			control.getSimulation().getBoatState().speedUp();
 			break;
 		case Input.KEY_DOWN:
 			System.out.println("pressed KEY_DOWN");
-			control.getBoatDrawing().speedDown();
+			control.getSimulation().getBoatState().speedDown();
 			break;
 		case Input.KEY_RIGHT:
 			System.out.println("pressed KEY_RIGHT");
-			control.getBoatDrawing().turnRight();
+			control.getSimulation().getBoatState().turnRight();
 			break;
 		case Input.KEY_LEFT:
 			System.out.println("pressed KEY_LEFT");
-			control.getBoatDrawing().turnLeft();
+			control.getSimulation().getBoatState().turnLeft();
 			break;
 		}
 

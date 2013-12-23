@@ -23,13 +23,25 @@ public class ViewControl {
 
 	private Perspective perspectiveOne;
 	private Map map;
-	private Sailboat boatSymbol;
+	private BoatSign boatSymbol;
+
+	public BoatSign getBoatSymbol() {
+		return boatSymbol;
+	}
+
+	public void setBoatSymbol(BoatSign boatSymbol) {
+		this.boatSymbol = boatSymbol;
+	}
+
+	public SimulationControl getSimulation() {
+		return simulation;
+	}
 
 	public ViewControl() {
 		map = new Map();
 		perspectiveOne = new Perspective(this, 0, 1.5f, new Vector2f(0f, 0f),
 				Color.blue);
-		boatSymbol = new Sailboat(100, 100, Sailboat.MODE_NORMAL, this);
+		boatSymbol = new BoatSign(100, 100, BoatSign.MODE_NORMAL, this);
 		simulation = new SimulationControl();
 	}
 
@@ -96,13 +108,15 @@ public class ViewControl {
 		this.getPlayerOne().setOriginOffset(tempVec);
 	}
 
-	public Sailboat getBoatDrawing() {
+	public BoatSign getBoatDrawing() {
 		return boatSymbol;
 	}
 
 	public void updateGame() {
 		this.simulation.execute(SlickView.CALCULATION_TIME);
-		this.getBoatDrawing().update();
+		this.boatSymbol.setPosition(this.simulation.getBoatState().getPosition());
+		this.boatSymbol.setDirection(this.simulation.getBoatState().getDirection());
+//		this.getBoatDrawing().update();
 	}
 
 	public Perspective getPlayerOne() {

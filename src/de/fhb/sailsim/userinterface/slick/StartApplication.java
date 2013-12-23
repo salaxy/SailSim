@@ -6,12 +6,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class StartGame extends StateBasedGame {
+public class StartApplication extends StateBasedGame {
 
 	/**
 	 *  Konstruktor
 	 */
-	public StartGame() {
+	public StartApplication() {
 		super("SailSim v.0.0.1");
 	}
 
@@ -30,7 +30,7 @@ public class StartGame extends StateBasedGame {
 	 * @throws SlickException 
 	 */
 	public static void main(String[] args) throws SlickException {
-        AppGameContainer defender = new AppGameContainer(new StartGame());
+        AppGameContainer defender = new AppGameContainer(new StartApplication());
         defender.setDisplayMode(SlickView.WIDTH, SlickView.HEIGHT, false);
         defender.setVSync(true);
         defender.setShowFPS(false);
