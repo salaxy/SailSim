@@ -1,8 +1,11 @@
 package de.fhb.sailsim.userinterface.slick;
 
 import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -11,6 +14,8 @@ import org.newdawn.slick.geom.Vector2f;
 public class BoatSign {
 
 	protected ViewControl gamelogic;
+	
+	private final int SIZE=20;
 
 	/**
 	 * Referenz auf Spielkarte
@@ -226,7 +231,27 @@ public class BoatSign {
 		graphics.setColor(this.passiveColor);
 
 		// zeichnen
-		this.drawFigure(graphics);
+//		this.drawFigure(graphics);
+		
+		
+		graphics.scale(1.0f, 1.0f);
+
+		graphics.drawRect(-15, -14, 30, 30);
+		Image image = null;
+
+		try {
+			image = new Image("boat/myBoatSymbol.gif");
+			image = image.getScaledCopy(SIZE*2, SIZE);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		graphics.rotate(0, 0, 90);
+		//TODO Bootsposition korrigieren
+		graphics.drawImage(image, -image.getHeight() / 2, -image.getWidth() / 2, SIZE*2, SIZE, 0f, 0f);
+		
+		graphics.resetTransform();
+		
+		
 		graphics.resetTransform();
 		System.out.println("draw at " + this.position.toString());
 	}

@@ -41,7 +41,7 @@ public class ViewControl {
 		map = new Map();
 		perspectiveOne = new Perspective(this, 0, 1.5f, new Vector2f(0f, 0f),
 				Color.blue);
-		boatSymbol = new BoatSign(100, 100, BoatSign.MODE_NORMAL, this);
+		boatSymbol = new BoatSign(0, 0, BoatSign.MODE_NORMAL, this);
 		simulation = new SimulationControl();
 	}
 
