@@ -119,7 +119,7 @@ public class BoatSign {
 	 * @param x
 	 * @param y
 	 * @param mode
-	 * @param player
+	 * @param perspective
 	 * @param gamelogic
 	 * @param unitColor
 	 */
@@ -151,50 +151,50 @@ public class BoatSign {
 	/**
 	 * zeichnet die Einheit, wird je Frame 1 mal aufgerufen!
 	 * 
-	 * @param player
+	 * @param perspective
 	 * @param graphics
 	 * @param focus
 	 *            - wird Unit Aktiv gezeichnet oder nicht
 	 */
-	public void paint(Perspective player, Graphics graphics, boolean drawActive) {
+	public void paint(Perspective perspective, Graphics graphics, boolean drawActive) {
 
 		// zeichne Schweif wenn in bewegung
 		if (this.isMoving) {
-			drawTail(player, graphics);
+			drawTail(perspective, graphics);
 
 		}
 
 		// Umrechnung auf Spielersicht
 		// Transformationen
-		calcDrawPosition(player, graphics);
+		calcDrawPosition(perspective, graphics);
 
 		if (drawActive) {
 
-			this.drawActiveAppearance(player, graphics);
+			this.drawActiveAppearance(perspective, graphics);
 
 		} else {
 
 			// entscheide ueber erscheinungsbild
 			switch (mode) {
 			case MODE_ROTATE:
-				this.drawRotateAppearance(player, graphics);
+				this.drawRotateAppearance(perspective, graphics);
 				break;
 			case MODE_PULSE:
-				this.drawPulseAppearance(player, graphics);
+				this.drawPulseAppearance(perspective, graphics);
 				break;
 			case MODE_ROTATE_AND_PULSE:
-				this.drawRotateAndPulseAppearance(player, graphics);
-				this.drawHalo(player, graphics);
+				this.drawRotateAndPulseAppearance(perspective, graphics);
+				this.drawHalo(perspective, graphics);
 				break;
 			case MODE_HALO:
-				this.drawHalo(player, graphics);
-				this.drawNormalAppearance(player, graphics);
+				this.drawHalo(perspective, graphics);
+				this.drawNormalAppearance(perspective, graphics);
 				break;
 			case MODE_NORMAL:
-				this.drawNormalAppearance(player, graphics);
+				this.drawNormalAppearance(perspective, graphics);
 				break;
 			case MODE_PULSE_IF_ACTIVE:
-				this.drawPulseIfActive(player, graphics);
+				this.drawPulseIfActive(perspective, graphics);
 				break;
 			}
 		}
@@ -207,10 +207,10 @@ public class BoatSign {
 	/**
 	 * Zeichne Figur im Aktiven Zustand
 	 * 
-	 * @param player
+	 * @param perspective
 	 * @param graphics
 	 */
-	public void drawActiveAppearance(Perspective player, Graphics graphics) {
+	public void drawActiveAppearance(Perspective perspective, Graphics graphics) {
 
 		graphics.setColor(this.activeColor);
 		this.drawFigure(graphics);
@@ -220,10 +220,10 @@ public class BoatSign {
 	/**
 	 * zeichne Figur im Normalen Zustand
 	 * 
-	 * @param player
+	 * @param perspective
 	 * @param graphics
 	 */
-	protected void drawNormalAppearance(Perspective player, Graphics graphics) {
+	protected void drawNormalAppearance(Perspective perspective, Graphics graphics) {
 
 		// Umrechnung auf Spielersicht
 
@@ -259,21 +259,21 @@ public class BoatSign {
 	/**
 	 * zeichne Figur im Normalen Zustand, wenn Aktiv dann pulsierend
 	 * 
-	 * @param player
+	 * @param perspective
 	 * @param graphics
 	 */
-	protected void drawPulseIfActive(Perspective player, Graphics graphics) {
+	protected void drawPulseIfActive(Perspective perspective, Graphics graphics) {
 
-		this.drawNormalAppearance(player, graphics);
+		this.drawNormalAppearance(perspective, graphics);
 	}
 
 	/**
 	 * zeichne Figur im pulsierend
 	 * 
-	 * @param player
+	 * @param perspective
 	 * @param graphics
 	 */
-	protected void drawPulseAppearance(Perspective player, Graphics graphics) {
+	protected void drawPulseAppearance(Perspective perspective, Graphics graphics) {
 
 		// solange die skala noch nicht durchlaufen ist
 		if (pulseStat < pulseSkala.length - 1) {
@@ -295,13 +295,13 @@ public class BoatSign {
 	/**
 	 * zeichne Halo
 	 * 
-	 * @param player
+	 * @param perspective
 	 * @param graphics
 	 */
-	protected void drawHalo(Perspective player, Graphics graphics) {
+	protected void drawHalo(Perspective perspective, Graphics graphics) {
 
 		// Umrechnung auf Spielersicht
-		this.calcDrawPosition(player, graphics);
+		this.calcDrawPosition(perspective, graphics);
 
 		// solange die skala noch nicht durchlaufen ist
 		if (haloStat < haloSkala.length - 1) {
@@ -324,10 +324,10 @@ public class BoatSign {
 	/**
 	 * zeichne Figur im rotierend
 	 * 
-	 * @param player
+	 * @param perspective
 	 * @param graphics
 	 */
-	protected void drawRotateAppearance(Perspective player, Graphics graphics) {
+	protected void drawRotateAppearance(Perspective perspective, Graphics graphics) {
 
 		// solange die skala noch nicht durchlaufen ist
 		if (rotatingAngle < 360) {
@@ -350,10 +350,10 @@ public class BoatSign {
 	/**
 	 * zeichne Figur im rotierend und pulsierend
 	 * 
-	 * @param player
+	 * @param perspective
 	 * @param graphics
 	 */
-	protected void drawRotateAndPulseAppearance(Perspective player,
+	protected void drawRotateAndPulseAppearance(Perspective perspective,
 			Graphics graphics) {
 
 		// solange die skala noch nicht durchlaufen ist
@@ -437,7 +437,7 @@ public class BoatSign {
 	/**
 	 * Zeichne Schweif
 	 */
-	protected void drawTail(Perspective player, Graphics graphics) {
+	protected void drawTail(Perspective perspective, Graphics graphics) {
 
 		// Zielpunkt hinter der Einheit berechnen
 		// end Vektor fuer jeweiligen Spieler berechnen
@@ -449,7 +449,7 @@ public class BoatSign {
 
 		// Berechne Zeichnenposition und setzte
 		// Abblidungsmatrix(Transformationsmatix)
-		calcDrawPosition(player, graphics);
+		calcDrawPosition(perspective, graphics);
 
 		// Eigendrehung ausgleichen (wird in calcDrawPostion gesetzt)
 		graphics.rotate(0, 0, -this.actualAngle);
@@ -509,8 +509,8 @@ public class BoatSign {
 	 * 
 	 * @return
 	 */
-	private void calcDrawPosition(Perspective player, Graphics graphics) {
-		GraphicTools.calcDrawTransformationForSlick(player, graphics, position);
+	private void calcDrawPosition(Perspective perspective, Graphics graphics) {
+		GraphicTools.calcDrawTransformationForSlick(perspective, graphics, position);
 		// eigendrehung hinzurechnen
 		graphics.rotate(0, 0, this.actualAngle);
 	}

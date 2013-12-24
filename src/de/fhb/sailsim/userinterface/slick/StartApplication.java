@@ -30,13 +30,13 @@ public class StartApplication extends StateBasedGame {
 	 * @throws SlickException 
 	 */
 	public static void main(String[] args) throws SlickException {
-        AppGameContainer defender = new AppGameContainer(new StartApplication());
-        defender.setDisplayMode(SlickView.WIDTH, SlickView.HEIGHT, false);
-        defender.setVSync(true);
-        defender.setShowFPS(false);
-        defender.setAlwaysRender(true);
+        AppGameContainer simulatorView = new AppGameContainer(new StartApplication());
+        simulatorView.setDisplayMode(SlickView.WIDTH, SlickView.HEIGHT, false);
+        simulatorView.setVSync(true);
+        simulatorView.setShowFPS(false);
+        simulatorView.setAlwaysRender(true);
         //TODO schickes Icon
 //        defender.setIcon("data/logos/DefenderTouchDeluxe32.png");
-        defender.start();
+        simulatorView.start();
 	}
 }
