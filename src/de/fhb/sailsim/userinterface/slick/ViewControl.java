@@ -54,8 +54,9 @@ public class ViewControl {
 		// graphics.setClip(0, 0, 510, 768);
 
 		this.map.paint(graphics, perspectiveOne);
-		this.boatSymbol.paint(this.perspectiveOne, graphics, false);
+		
 		this.historie.paint(this.perspectiveOne, graphics);
+		this.boatSymbol.paint(this.perspectiveOne, graphics, false);
 
 		// info zeichnen
 		graphics.setColor(Color.black);

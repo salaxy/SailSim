@@ -91,13 +91,6 @@ public class BoatSign {
 	 */
 	protected float rotationSpeed = 10f;
 
-//	/**
-//	 * Bewegungsgeschwindigkeit
-//	 */
-//	// bei zu groﬂen werten von movementSpeed kann das objekt zum schwingen
-//	// kommen
-//	protected float movementSpeed = 2f;
-
 	/**
 	 * Farbe in der Einheit gezeichnet wird, wenn Einheit Aktiv ist, also
 	 * Einheit Steuerbar ist
@@ -225,32 +218,25 @@ public class BoatSign {
 	 */
 	protected void drawNormalAppearance(Perspective perspective, Graphics graphics) {
 
-		// Umrechnung auf Spielersicht
-
 		// farben setzen
+		
 		graphics.setColor(this.passiveColor);
-
-		// zeichnen
-//		this.drawFigure(graphics);
-		
-		
-		graphics.scale(1.0f, 1.0f);
-
-		graphics.drawRect(-15, -14, 30, 30);
 		Image image = null;
 
 		try {
 			image = new Image("boat/myBoatSymbol.gif");
 			image = image.getScaledCopy(SIZE*2, SIZE);
+			graphics.rotate(0, 0, 270);
+			graphics.drawImage(image, -SIZE, -SIZE/2);
+			
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		graphics.rotate(0, 0, 90);
-		//TODO Bootsposition korrigieren
-		graphics.drawImage(image, -image.getHeight() / 2, -image.getWidth() / 2, SIZE*2, SIZE, 0f, 0f);
 		
-		graphics.resetTransform();
-		
+		//Zeichne Baum
+		//TODO in depence of sail angle
+		graphics.setLineWidth(3);
+		graphics.drawLine(0, 0, -SIZE, 0);
 		
 		graphics.resetTransform();
 		System.out.println("draw at " + this.position.toString());
