@@ -2,6 +2,10 @@ package de.fhb.sailsim.worldmodel;
 
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * Data-Format for BoatHistory
+ *
+ */
 public class HistoryData {
 
 	private Vector2f point;

@@ -15,7 +15,7 @@ public class BoatState {
 	/** meter per secound */
 	private double currentPropulsionVelocity;
 
-	private double maxVelocity=1;
+	private double maxVelocity=0.01;
 
 	public double getMaxVelocity() {
 		return maxVelocity;

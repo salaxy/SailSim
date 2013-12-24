@@ -11,7 +11,7 @@ import de.fhb.sailsim.userinterface.slick.GraphicTools;
 import de.fhb.sailsim.userinterface.slick.Perspective;
 import de.fhb.sailsim.userinterface.slick.VectorHelper;
 
-public class History {
+public class BoatHistory {
 	
 	private final float LINE_LENGTH = 10;
 	private final float LINE_WIDTH = 2;
