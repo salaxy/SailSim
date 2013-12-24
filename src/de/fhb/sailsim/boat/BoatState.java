@@ -139,11 +139,19 @@ public class BoatState {
 	}
 
 	public void speedUp() {
-		this.currentPropulsionVelocity += 0.5f;
+		this.currentPropulsionVelocity += 0.01f;
 	}
 
 	public void speedDown() {
-		this.currentPropulsionVelocity -= 0.5f;
+		this.currentPropulsionVelocity -= 0.01f;
+	}
+
+	public boolean isMoving() {
+		if(this.getCurrentPropulsionVelocity()>0d){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

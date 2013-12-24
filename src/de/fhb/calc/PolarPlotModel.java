@@ -36,6 +36,7 @@ public class PolarPlotModel extends CalculationModel {
 			//boot geschwindigkeit erhöhen
 			//berechne neue geschwindigkeit
 			v= a * t +v0;
+			boat.setCurrentPropulsionVelocity(v);
 		}
 		
 		//Drehwinkel und dreh geschwindigkeit bestimmen

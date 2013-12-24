@@ -5,7 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import de.fhb.sailsim.control.SimulationControl;
-import de.fhb.sailsim.worldmodel.Historie;
+import de.fhb.sailsim.worldmodel.History;
 
 /**
  * Diese Klasse stellt die Verbindung zwischen Anzeige und Simulationslogik dar
@@ -26,7 +26,7 @@ public class ViewControl {
 	private Map map;
 	private BoatSign boatSymbol;
 
-	private Historie historie;
+	private History historie;
 
 	public BoatSign getBoatSymbol() {
 		return boatSymbol;
@@ -46,7 +46,7 @@ public class ViewControl {
 				Color.blue);
 		boatSymbol = new BoatSign(0, 0, BoatSign.MODE_NORMAL, this);
 		simulation = new SimulationControl();
-		historie = new Historie();
+		historie = new History();
 	}
 
 	public void drawViewContent(Graphics graphics) {
@@ -121,8 +121,7 @@ public class ViewControl {
 		this.simulation.execute(SlickView.CALCULATION_TIME);
 		this.boatSymbol.setPosition(this.simulation.getBoatState().getPosition());
 		this.boatSymbol.setDirection(this.simulation.getBoatState().getDirection());
-		this.historie.getPositions().add(this.simulation.getBoatState().getPosition().copy());
-//		this.getBoatDrawing().update();
+		this.historie.addPosition(this.simulation.getBoatState());
 	}
 
 	public Perspective getPlayerOne() {
