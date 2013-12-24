@@ -10,6 +10,8 @@ import de.fhb.sailsim.worldmodel.Enviroment;
 
 public class PolarPlotModel extends CalculationModel {
 	
+	private final double ACCELERATION=0.00005d;
+	
 	private ArrayList<PolarData> polarPlot = new ArrayList<PolarData>();
 
 	@Override
@@ -19,7 +21,7 @@ public class PolarPlotModel extends CalculationModel {
 		double s;
 		
 		//Beschleunigung m pro sekunde quadrat
-		double a=0.0005f;
+		double a=this.ACCELERATION;
 		// zeit in milisecounds
 		long t=time;
 		t=50; //entspricht 20fps
@@ -32,7 +34,7 @@ public class PolarPlotModel extends CalculationModel {
 		//berechne zurückgelegten Weg
 		s= (0.5*a) * (t*t) + (v0*t);
 
-		if(boat.getCurrentPropulsionVelocity()>=boat.getMaxVelocity()){
+		if(boat.getCurrentPropulsionVelocity()<=boat.getMaxVelocity()){
 			//boot geschwindigkeit erhöhen
 			//berechne neue geschwindigkeit
 			v= a * t +v0;
@@ -47,7 +49,7 @@ public class PolarPlotModel extends CalculationModel {
 		
 		//berechnen des Bewegungsvektors
 		Vector2f newPosition;
-		newPosition = VectorHelper.add(boat.getPosition(),VectorHelper.mult(boat.getDirection(), (float)s));
+		newPosition = VectorHelper.add(boat.getPosition(),VectorHelper.mult(boat.getDirection().normalise(), (float)s));
 		
 		//berechnen des neuen Winkels
 //		Vector2f newDirection=boat.getDirection().copy();
