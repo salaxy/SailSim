@@ -135,21 +135,19 @@ public class BoatState {
 	public void turnRight() {
 		// TODO delete direction here, direction is only calculated by executing
 		// simulation routine
-		// this.direction.add(45d);
 		this.setRuderPostion(ruderPostion + 5);
 	}
 
 	public void turnLeft() {
-		// this.direction.sub(45d);
 		this.setRuderPostion(ruderPostion - 5);
 	}
 
 	public void speedUp() {
-		this.currentPropulsionVelocity += 0.01f;
+		this.currentPropulsionVelocity += 0.2f;
 	}
 
 	public void speedDown() {
-		this.currentPropulsionVelocity -= 0.01f;
+		this.currentPropulsionVelocity -= 0.2f;
 	}
 
 	public boolean isMoving() {
@@ -158,6 +156,10 @@ public class BoatState {
 		} else {
 			return false;
 		}
+	}
+
+	public void stop() {
+		this.currentPropulsionVelocity = 0.0f;
 	}
 
 }

@@ -215,7 +215,7 @@ public class BoatSign {
 		
 		//TODO ist noch buggy, Vektor verhält sich nciht so wie er soll
 		//60 grad entspriht hierbei 90 grad ??? wtf
-		Vector2f ruderDirection = new Vector2f(40,0);
+		Vector2f ruderDirection = new Vector2f(100,0);
 		double ausgangstellung = 180d;
 		ruderDirection.setTheta(180);
 		
@@ -227,6 +227,9 @@ public class BoatSign {
 		
 		System.out.println("ruder at " + this.ruderAngle);
 		System.out.println("ruderDirection at " + ruderDirection.getTheta());
+		
+		ruderDirection=ruderDirection.getNormal().scale(40);
+		System.out.println("ruder length: " + ruderDirection.length());
 		
 		graphics.drawLine(-SIZE/2 -10, 0 , ruderDirection.x,ruderDirection.y);
 		graphics.resetTransform();
