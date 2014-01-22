@@ -16,6 +16,16 @@ public class BoatSign {
 	protected ViewControl gamelogic;
 	
 	private final int SIZE=20;
+	
+	private double ruderAngle=0d;
+
+	public double getRuderAngle() {
+		return ruderAngle;
+	}
+
+	public void setRuderAngle(double ruderAngle) {
+		this.ruderAngle = ruderAngle;
+	}
 
 	/**
 	 * Referenz auf Spielkarte
@@ -154,7 +164,6 @@ public class BoatSign {
 		// zeichne Schweif wenn in bewegung
 		if (this.isMoving) {
 			drawTail(perspective, graphics);
-
 		}
 
 		// Umrechnung auf Spielersicht
@@ -167,29 +176,30 @@ public class BoatSign {
 
 		} else {
 
-			// entscheide ueber erscheinungsbild
-			switch (mode) {
-			case MODE_ROTATE:
-				this.drawRotateAppearance(perspective, graphics);
-				break;
-			case MODE_PULSE:
-				this.drawPulseAppearance(perspective, graphics);
-				break;
-			case MODE_ROTATE_AND_PULSE:
-				this.drawRotateAndPulseAppearance(perspective, graphics);
-				this.drawHalo(perspective, graphics);
-				break;
-			case MODE_HALO:
-				this.drawHalo(perspective, graphics);
-				this.drawNormalAppearance(perspective, graphics);
-				break;
-			case MODE_NORMAL:
-				this.drawNormalAppearance(perspective, graphics);
-				break;
-			case MODE_PULSE_IF_ACTIVE:
-				this.drawPulseIfActive(perspective, graphics);
-				break;
-			}
+			this.drawNormalAppearance(perspective, graphics);
+//			// entscheide ueber erscheinungsbild
+//			switch (mode) {
+//			case MODE_ROTATE:
+//				this.drawRotateAppearance(perspective, graphics);
+//				break;
+//			case MODE_PULSE:
+//				this.drawPulseAppearance(perspective, graphics);
+//				break;
+//			case MODE_ROTATE_AND_PULSE:
+//				this.drawRotateAndPulseAppearance(perspective, graphics);
+//				this.drawHalo(perspective, graphics);
+//				break;
+//			case MODE_HALO:
+//				this.drawHalo(perspective, graphics);
+//				this.drawNormalAppearance(perspective, graphics);
+//				break;
+//			case MODE_NORMAL:
+//				this.drawNormalAppearance(perspective, graphics);
+//				break;
+//			case MODE_PULSE_IF_ACTIVE:
+//				this.drawPulseIfActive(perspective, graphics);
+//				break;
+//			}
 		}
 
 		// zurücksetzen der Umgebung, Seiteneffekte vermeiden
@@ -236,10 +246,37 @@ public class BoatSign {
 		//Zeichne Baum
 		//TODO in depence of sail angle
 		graphics.setLineWidth(3);
-		graphics.drawLine(0, 0, -SIZE, 0);
+		graphics.drawLine(0, 0, -SIZE +10, 0);
+		
+		
+		//Zeichne Ruder
+		graphics.setLineWidth(2);
+		
+		//TODO ist noch buggy, Vektor verhält sich nciht so wie er soll
+		//60 grad entspriht hierbei 90 grad ??? wtf
+		Vector2f ruderDirection = new Vector2f(40,0);
+		double ausgangstellung = 180d;
+		ruderDirection.setTheta(180);
+		
+		if(ruderAngle<=90 && ruderAngle>0)
+		ruderDirection.setTheta(ausgangstellung+ruderAngle);
+//		ruderDirection.add(ruderAngle);
+		
+		if(ruderAngle>=-90 && ruderAngle<0)
+			ruderDirection.setTheta(ausgangstellung+ruderAngle);
+//		ruderDirection.normalise();
+		
+//		ruderDirection.sub(-ruderAngle);
+		
+		System.out.println("ruder at " + this.ruderAngle);
+		System.out.println("ruderDirection at " + ruderDirection.getTheta());
+		
+//		ruderDirection=ruderDirection.normalise();
+//		graphics.drawLine( ruderDirection.x,ruderDirection.y, -SIZE/2 -10, 0);
+		graphics.drawLine(-SIZE/2 -10, 0 , ruderDirection.x,ruderDirection.y);
 		
 		graphics.resetTransform();
-		System.out.println("draw at " + this.position.toString());
+//		System.out.println("draw at " + this.position.toString());
 	}
 
 	/**

@@ -8,6 +8,8 @@ public class BoatState {
 
 	private Vector2f direction = new Vector2f(0, 1);
 
+	private Vector2f ruderDirection = new Vector2f(1, 0);
+
 	private GPS gpsPostition;
 
 	private Compass compass;
@@ -15,7 +17,7 @@ public class BoatState {
 	/** meter per secound */
 	private double currentPropulsionVelocity;
 
-	private double maxVelocity=0.01;
+	private double maxVelocity = 0.01;
 
 	public double getMaxVelocity() {
 		return maxVelocity;
@@ -31,7 +33,7 @@ public class BoatState {
 	private int sailWinch;
 
 	/** from 90 degree to - 90 degree */
-	private int ruderPostion;
+	private int ruderPostion = 0;
 
 	public BoatState(GPS gpsPostition, Compass compass,
 			double currentPropulsionVelocity, double currentSpinVelocity,
@@ -108,7 +110,9 @@ public class BoatState {
 	}
 
 	public void setRuderPostion(int ruderPostion) {
-		this.ruderPostion = ruderPostion;
+		if (ruderPostion <= 90 && ruderPostion >= -90) {
+			this.ruderPostion = ruderPostion;
+		}
 	}
 
 	public Vector2f getDirection() {
@@ -131,11 +135,15 @@ public class BoatState {
 	// *****************************************************
 
 	public void turnRight() {
-		this.direction.add(5d);
+		// TODO delete direction here, direction is only calculated by executing
+		// simulation routine
+		// this.direction.add(45d);
+		this.setRuderPostion(ruderPostion + 5);
 	}
 
 	public void turnLeft() {
-		this.direction.sub(5d);
+		// this.direction.sub(45d);
+		this.setRuderPostion(ruderPostion - 5);
 	}
 
 	public void speedUp() {
@@ -147,9 +155,9 @@ public class BoatState {
 	}
 
 	public boolean isMoving() {
-		if(this.getCurrentPropulsionVelocity()>0d){
+		if (this.getCurrentPropulsionVelocity() > 0d) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}

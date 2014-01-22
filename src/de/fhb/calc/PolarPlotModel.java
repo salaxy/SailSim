@@ -10,9 +10,15 @@ import de.fhb.sailsim.worldmodel.Enviroment;
 
 public class PolarPlotModel extends CalculationModel {
 	
-	private final double ACCELERATION=0.00005d;
+//	private final double ACCELERATION=0.00005d;
+	private final double ACCELERATION=0.0000d;
+	
+	//in grad pro sekunde
+	private final double ANGLE_VELOCITY=0.5d;
 	
 	private ArrayList<PolarData> polarPlot = new ArrayList<PolarData>();
+	
+	private final double zielWinkel=0;
 
 	@Override
 	public void calculateNextState(BoatState boat, Enviroment world, long time) {

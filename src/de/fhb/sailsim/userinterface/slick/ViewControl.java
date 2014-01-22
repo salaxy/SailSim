@@ -118,11 +118,23 @@ public class ViewControl {
 		return boatSymbol;
 	}
 
+
 	public void updateGame() {
+		//calculate states
 		this.simulation.execute(SlickView.CALCULATION_TIME);
+		//sync displayed things
+		syncBoatSymbolWithBoatState();
+		//add position to history
+		this.historie.addPosition(this.simulation.getBoatState());
+	}
+
+	/**
+	 * sync BoatSymbol With BoatState
+	 */
+	private void syncBoatSymbolWithBoatState() {
 		this.boatSymbol.setPosition(this.simulation.getBoatState().getPosition());
 		this.boatSymbol.setDirection(this.simulation.getBoatState().getDirection());
-		this.historie.addPosition(this.simulation.getBoatState());
+		this.boatSymbol.setRuderAngle(this.simulation.getBoatState().getRuderPostion());
 	}
 
 	public Perspective getPlayerOne() {
