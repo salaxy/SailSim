@@ -8,8 +8,6 @@ public class BoatState {
 
 	private Vector2f direction = new Vector2f(0, 1);
 
-	private Vector2f ruderDirection = new Vector2f(1, 0);
-
 	private GPS gpsPostition;
 
 	private Compass compass;

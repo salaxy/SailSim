@@ -118,7 +118,6 @@ public class ViewControl {
 		return boatSymbol;
 	}
 
-
 	public void updateGame() {
 		//calculate states
 		this.simulation.execute(SlickView.CALCULATION_TIME);

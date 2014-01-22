@@ -161,50 +161,13 @@ public class BoatSign {
 	 */
 	public void paint(Perspective perspective, Graphics graphics, boolean drawActive) {
 
-		// zeichne Schweif wenn in bewegung
-		if (this.isMoving) {
-			drawTail(perspective, graphics);
-		}
-
-		// Umrechnung auf Spielersicht
-		// Transformationen
+		// Transformationen auf Perspektive
 		calcDrawPosition(perspective, graphics);
-
-		if (drawActive) {
-
-			this.drawActiveAppearance(perspective, graphics);
-
-		} else {
-
-			this.drawNormalAppearance(perspective, graphics);
-//			// entscheide ueber erscheinungsbild
-//			switch (mode) {
-//			case MODE_ROTATE:
-//				this.drawRotateAppearance(perspective, graphics);
-//				break;
-//			case MODE_PULSE:
-//				this.drawPulseAppearance(perspective, graphics);
-//				break;
-//			case MODE_ROTATE_AND_PULSE:
-//				this.drawRotateAndPulseAppearance(perspective, graphics);
-//				this.drawHalo(perspective, graphics);
-//				break;
-//			case MODE_HALO:
-//				this.drawHalo(perspective, graphics);
-//				this.drawNormalAppearance(perspective, graphics);
-//				break;
-//			case MODE_NORMAL:
-//				this.drawNormalAppearance(perspective, graphics);
-//				break;
-//			case MODE_PULSE_IF_ACTIVE:
-//				this.drawPulseIfActive(perspective, graphics);
-//				break;
-//			}
-		}
+		
+		this.drawNormalAppearance(perspective, graphics);
 
 		// zurücksetzen der Umgebung, Seiteneffekte vermeiden
 		graphics.resetTransform();
-
 	}
 
 	/**
@@ -229,7 +192,6 @@ public class BoatSign {
 	protected void drawNormalAppearance(Perspective perspective, Graphics graphics) {
 
 		// farben setzen
-		
 		graphics.setColor(this.passiveColor);
 		Image image = null;
 
@@ -248,7 +210,6 @@ public class BoatSign {
 		graphics.setLineWidth(3);
 		graphics.drawLine(0, 0, -SIZE +10, 0);
 		
-		
 		//Zeichne Ruder
 		graphics.setLineWidth(2);
 		
@@ -260,21 +221,14 @@ public class BoatSign {
 		
 		if(ruderAngle<=90 && ruderAngle>0)
 		ruderDirection.setTheta(ausgangstellung+ruderAngle);
-//		ruderDirection.add(ruderAngle);
 		
 		if(ruderAngle>=-90 && ruderAngle<0)
 			ruderDirection.setTheta(ausgangstellung+ruderAngle);
-//		ruderDirection.normalise();
-		
-//		ruderDirection.sub(-ruderAngle);
 		
 		System.out.println("ruder at " + this.ruderAngle);
 		System.out.println("ruderDirection at " + ruderDirection.getTheta());
 		
-//		ruderDirection=ruderDirection.normalise();
-//		graphics.drawLine( ruderDirection.x,ruderDirection.y, -SIZE/2 -10, 0);
 		graphics.drawLine(-SIZE/2 -10, 0 , ruderDirection.x,ruderDirection.y);
-		
 		graphics.resetTransform();
 //		System.out.println("draw at " + this.position.toString());
 	}

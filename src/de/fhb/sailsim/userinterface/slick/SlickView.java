@@ -89,7 +89,6 @@ public class SlickView extends BasicGameState {
 		Vector2f clickVector = new Vector2f(x, y);
 		Vector2f mapCoords = GraphicTools.calcInputVector(clickVector,
 				control.getPlayerOne());
-
 	}
 
 	/**
