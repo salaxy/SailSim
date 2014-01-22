@@ -5,16 +5,18 @@ import java.util.ArrayList;
 import org.newdawn.slick.geom.Vector2f;
 
 import de.fhb.sailsim.boat.BoatState;
+import de.fhb.sailsim.userinterface.slick.SlickView;
 import de.fhb.sailsim.userinterface.slick.VectorHelper;
 import de.fhb.sailsim.worldmodel.Enviroment;
 
 public class PolarPlotModel extends CalculationModel {
-	
+
+	//pixel/meter per sec
 //	private final double ACCELERATION=0.00005d;
 	private final double ACCELERATION=0.0000d;
 	
 	//in grad pro sekunde
-	private final double ANGLE_VELOCITY=0.5d;
+	private final double ANGLE_VELOCITY=10d;
 	
 	private ArrayList<PolarData> polarPlot = new ArrayList<PolarData>();
 	
@@ -27,12 +29,12 @@ public class PolarPlotModel extends CalculationModel {
 		double s;
 		
 		//Beschleunigung m pro sekunde quadrat
-		double a=this.ACCELERATION;
+		double a=this.ACCELERATION/SlickView.FRAMERATE;
 		// zeit in milisecounds
 		long t=time;
 		t=50; //entspricht 20fps
 		//anfangsgeschwindigkeit meter pro sekunde
-		double v0=boat.getCurrentPropulsionVelocity();
+		double v0=boat.getCurrentPropulsionVelocity()/SlickView.FRAMERATE;
 		
 		//neue geschwindigkeit nach t
 		double v=v0;
@@ -52,6 +54,14 @@ public class PolarPlotModel extends CalculationModel {
 		double rotateS=0;
 		//TODO Berechnungen ergänzen
 		//als ergebnis wird roateV des bootes gesetzt
+		double winkelgeschwindigkeit=this.ANGLE_VELOCITY/SlickView.FRAMERATE;
+		int ruderAngle=boat.getRuderPostion();
+		
+		if(ruderAngle<=90 && ruderAngle>0)
+			rotateV=-winkelgeschwindigkeit;
+		
+		if(ruderAngle>=-90 && ruderAngle<0)
+			rotateV=winkelgeschwindigkeit;
 		
 		//berechnen des Bewegungsvektors
 		Vector2f newPosition;
@@ -61,9 +71,9 @@ public class PolarPlotModel extends CalculationModel {
 //		Vector2f newDirection=boat.getDirection().copy();
 		
 		if(rotateS>=0){
-			boat.getDirection().add(rotateS);
+			boat.getDirection().add(rotateV);
 		}else{
-			boat.getDirection().sub(rotateS);
+			boat.getDirection().sub(rotateV);
 		}
 		
 		boat.setPosition(newPosition);
