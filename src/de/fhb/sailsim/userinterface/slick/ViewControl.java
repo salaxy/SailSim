@@ -135,6 +135,7 @@ public class ViewControl {
 		this.boatSymbol.setRuderAngle(this.simulation.getBoatState().getRuderPostion());
 		this.windSymbol.setDirection(this.simulation.getEnviroment().getWindState().getDirection());
 		this.windSymbol.setStrength(this.simulation.getEnviroment().getWindState().getStrength());
+		this.windSymbol.setWindToBoat(this.simulation.getEnviroment().getWindState().getWindToBoat());
 	}
 
 	public Perspective getPlayerOne() {

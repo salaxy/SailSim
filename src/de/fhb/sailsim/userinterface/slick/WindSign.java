@@ -17,6 +17,8 @@ public class WindSign {
 	// 0 to 359 degree, 0=north, 90=east, 180=south, 270=west
 	private double direction = 0;
 
+	private int windToBoat = 180;
+
 	public WindSign(double strength, double direction) {
 		super();
 		this.strength = strength;
@@ -41,6 +43,14 @@ public class WindSign {
 		if (direction >= 0 && direction <= 359) {
 			this.direction = direction;
 		}
+	}
+
+	public int getWindToBoat() {
+		return windToBoat;
+	}
+
+	public void setWindToBoat(int windToBoat) {
+		this.windToBoat = windToBoat;
 	}
 
 	public void paint(Perspective perspective, Graphics graphics, boolean b) {
@@ -70,9 +80,11 @@ public class WindSign {
 		// graphics.scale(0.9f, 0.9f);
 		graphics.drawString("Direction: " + this.getDirection(), X_POS, Y_POS
 				+ LENGTH);
-
 		graphics.drawString("Strength: " + this.getStrength(), X_POS, Y_POS
 				+ LENGTH + 20);
+		graphics.drawString("WindToBoat: " + this.getWindToBoat(), X_POS, Y_POS
+				+ LENGTH + 40);
+
 		graphics.resetTransform();
 	}
 

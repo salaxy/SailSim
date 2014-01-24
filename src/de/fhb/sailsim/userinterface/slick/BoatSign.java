@@ -225,8 +225,8 @@ public class BoatSign {
 		if(ruderAngle>=-90 && ruderAngle<0)
 			ruderDirection.setTheta(ausgangstellung+ruderAngle);
 		
-		System.out.println("ruder at " + this.ruderAngle);
-		System.out.println("ruderDirection at " + ruderDirection.getTheta());
+//		System.out.println("ruder at " + this.ruderAngle);
+//		System.out.println("ruderDirection at " + ruderDirection.getTheta());
 		
 		ruderDirection=ruderDirection.getNormal().scale(40);
 		System.out.println("ruder length: " + ruderDirection.length());
