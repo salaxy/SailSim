@@ -11,17 +11,13 @@ public class Enviroment {
 		wind= new WindState();
 		compass= new CompassSimulation();
 	}
-	public WindState getWind() {
+	
+	public WindState getWindState () {
 		return wind;
 	}
-	public void setWind(WindState wind) {
-		this.wind = wind;
-	}
+	
 	public CompassSimulation getCompass() {
 		return compass;
 	}
-	public void setCompass(CompassSimulation compass) {
-		this.compass = compass;
-	}
-
+	
 }

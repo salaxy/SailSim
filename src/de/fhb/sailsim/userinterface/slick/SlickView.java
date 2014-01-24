@@ -110,31 +110,39 @@ public class SlickView extends BasicGameState {
 		switch (key) {
 		case Input.KEY_UP:
 			System.out.println("pressed KEY_UP");
-			control.getSimulation().getBoatState().speedUp();
+			control.getSimulationControl().getBoatState().speedUp();
 			break;
 		case Input.KEY_DOWN:
 			System.out.println("pressed KEY_DOWN");
-			control.getSimulation().getBoatState().speedDown();
+			control.getSimulationControl().getBoatState().speedDown();
 			break;
 		case Input.KEY_RIGHT:
 			System.out.println("pressed KEY_RIGHT");
-			control.getSimulation().getBoatState().turnRight();
+			control.getSimulationControl().getBoatState().turnRight();
 			break;
 		case Input.KEY_LEFT:
 			System.out.println("pressed KEY_LEFT");
-			control.getSimulation().getBoatState().turnLeft();
+			control.getSimulationControl().getBoatState().turnLeft();
 			break;
 		case Input.KEY_SPACE:
 			System.out.println("pressed KEY_SPACE");
-			control.getSimulation().getBoatState().stop();
+			control.getSimulationControl().getBoatState().stop();
 			break;
 		case Input.KEY_W:
 			System.out.println("pressed KEY_W");
-			control.getSimulation().getWindState().turnLeft();
+			control.getSimulationControl().getEnviroment().getWindState().turnLeft();
 			break;
 		case Input.KEY_E:
 			System.out.println("pressed KEY_E");
-			control.getSimulation().getWindState().turnRight();
+			control.getSimulationControl().getEnviroment().getWindState().turnRight();
+			break;
+		case Input.KEY_R:
+			System.out.println("pressed KEY_R");
+			control.getSimulationControl().getEnviroment().getWindState().raiseStrength();
+			break;
+		case Input.KEY_F:
+			System.out.println("pressed KEY_F");
+			control.getSimulationControl().getEnviroment().getWindState().reduceStrength();
 			break;
 		}
 	}

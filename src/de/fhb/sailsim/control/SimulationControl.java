@@ -4,7 +4,6 @@ import de.fhb.calc.CalculationModel;
 import de.fhb.calc.PolarPlotModel;
 import de.fhb.sailsim.boat.BoatState;
 import de.fhb.sailsim.worldmodel.Enviroment;
-import de.fhb.sailsim.worldmodel.WindState;
 
 public class SimulationControl {
 
@@ -12,19 +11,13 @@ public class SimulationControl {
 	private CalculationModel calculationModel;
 	private Enviroment enviroment;
 	private BoatState boatState;
-	private WindState windState;
 
 	public SimulationControl() {
 		super();
 
 		calculationModel = new PolarPlotModel();
 		enviroment = new Enviroment();
-		boatState = new BoatState(100, 100);
-		windState = new WindState(0, 0);
-	}
-	
-	public WindState getWindState() {
-		return windState;
+		boatState = new BoatState(300, 100);
 	}
 
 	public Enviroment getEnviroment() {

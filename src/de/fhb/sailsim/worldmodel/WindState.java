@@ -45,12 +45,19 @@ public class WindState {
 	}
 
 	public void turnLeft() {
-		this.setDirection(direction+5);
-		
+		this.setDirection(direction + 5);
 	}
 
 	public void turnRight() {
-		this.setDirection(direction-5);		
+		this.setDirection(direction - 5);
+	}
+
+	public void raiseStrength() {
+		this.setStrength(strength + 3);
+	}
+
+	public void reduceStrength() {
+		this.setStrength(strength - 3);
 	}
 
 }

@@ -33,7 +33,7 @@ public class ViewControl {
 		return boatSymbol;
 	}
 
-	public SimulationControl getSimulation() {
+	public SimulationControl getSimulationControl() {
 		return simulation;
 	}
 
@@ -133,8 +133,8 @@ public class ViewControl {
 		this.boatSymbol.setPosition(this.simulation.getBoatState().getPosition());
 		this.boatSymbol.setDirection(this.simulation.getBoatState().getDirection());
 		this.boatSymbol.setRuderAngle(this.simulation.getBoatState().getRuderPostion());
-		this.windSymbol.setDirection(this.simulation.getWindState().getDirection());
-		this.windSymbol.setStrength(this.simulation.getWindState().getStrength());
+		this.windSymbol.setDirection(this.simulation.getEnviroment().getWindState().getDirection());
+		this.windSymbol.setStrength(this.simulation.getEnviroment().getWindState().getStrength());
 	}
 
 	public Perspective getPlayerOne() {

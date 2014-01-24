@@ -4,6 +4,9 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class BoatState {
 
+	private final int RUDER_STEP = 5;
+	private final float SPEEDUP_STEP = 0.2f;
+
 	private Vector2f position = new Vector2f(0, 0);
 
 	private Vector2f direction = new Vector2f(0, 1);
@@ -133,21 +136,19 @@ public class BoatState {
 	// *****************************************************
 
 	public void turnRight() {
-		// TODO delete direction here, direction is only calculated by executing
-		// simulation routine
-		this.setRuderPostion(ruderPostion + 5);
+		this.setRuderPostion(ruderPostion + RUDER_STEP);
 	}
 
 	public void turnLeft() {
-		this.setRuderPostion(ruderPostion - 5);
+		this.setRuderPostion(ruderPostion - RUDER_STEP);
 	}
 
 	public void speedUp() {
-		this.currentPropulsionVelocity += 0.2f;
+		this.currentPropulsionVelocity += SPEEDUP_STEP;
 	}
 
 	public void speedDown() {
-		this.currentPropulsionVelocity -= 0.2f;
+		this.currentPropulsionVelocity -= SPEEDUP_STEP;
 	}
 
 	public boolean isMoving() {
