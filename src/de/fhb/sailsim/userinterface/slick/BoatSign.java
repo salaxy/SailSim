@@ -196,7 +196,7 @@ public class BoatSign {
 		Image image = null;
 
 		try {
-			image = new Image("boat/myBoatSymbol.gif");
+			image = new Image("graphics/myBoatSymbol.gif");
 			image = image.getScaledCopy(SIZE*2, SIZE);
 			graphics.rotate(0, 0, 270);
 			graphics.drawImage(image, -SIZE, -SIZE/2);

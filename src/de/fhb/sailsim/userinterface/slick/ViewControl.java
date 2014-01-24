@@ -25,15 +25,12 @@ public class ViewControl {
 	private Perspective perspectiveOne;
 	private Map map;
 	private BoatSign boatSymbol;
+	private WindSign windSymbol;
 
 	private BoatHistory historie;
 
 	public BoatSign getBoatSymbol() {
 		return boatSymbol;
-	}
-
-	public void setBoatSymbol(BoatSign boatSymbol) {
-		this.boatSymbol = boatSymbol;
 	}
 
 	public SimulationControl getSimulation() {
@@ -45,6 +42,7 @@ public class ViewControl {
 		perspectiveOne = new Perspective(this, 0, 1.5f, new Vector2f(0f, 0f),
 				Color.blue);
 		boatSymbol = new BoatSign(0, 0, BoatSign.MODE_NORMAL, this);
+		windSymbol = new WindSign(0,0);
 		simulation = new SimulationControl();
 		historie = new BoatHistory();
 	}
@@ -57,6 +55,7 @@ public class ViewControl {
 		
 		this.historie.paint(this.perspectiveOne, graphics);
 		this.boatSymbol.paint(this.perspectiveOne, graphics, false);
+		this.windSymbol.paint(this.perspectiveOne, graphics, false);
 
 		// info zeichnen
 		graphics.setColor(Color.black);
@@ -122,7 +121,7 @@ public class ViewControl {
 		//calculate states
 		this.simulation.execute(SlickView.CALCULATION_TIME);
 		//sync displayed things
-		syncBoatSymbolWithBoatState();
+		synSymbolsWithStates();
 		//add position to history
 		this.historie.addPosition(this.simulation.getBoatState());
 	}
@@ -130,10 +129,12 @@ public class ViewControl {
 	/**
 	 * sync BoatSymbol With BoatState
 	 */
-	private void syncBoatSymbolWithBoatState() {
+	private void synSymbolsWithStates() {
 		this.boatSymbol.setPosition(this.simulation.getBoatState().getPosition());
 		this.boatSymbol.setDirection(this.simulation.getBoatState().getDirection());
 		this.boatSymbol.setRuderAngle(this.simulation.getBoatState().getRuderPostion());
+		this.windSymbol.setDirection(this.simulation.getWindState().getDirection());
+		this.windSymbol.setStrength(this.simulation.getWindState().getStrength());
 	}
 
 	public Perspective getPlayerOne() {
