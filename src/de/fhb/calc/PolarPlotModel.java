@@ -1,6 +1,7 @@
 package de.fhb.calc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.newdawn.slick.geom.Vector2f;
 
@@ -77,7 +78,7 @@ public class PolarPlotModel extends CalculationModel {
 		boat.setPosition(newPosition);
 	}
 	
-	public double interpolateMaxV(PolarData valueMin, PolarData valueMax){
+	private double interpolateMaxV(PolarData valueMin, PolarData valueMax){
 		//TODO
 		return 0;
 	}
@@ -86,5 +87,77 @@ public class PolarPlotModel extends CalculationModel {
 		//TODO
 
 	}
+	
+	public void calculateMaxVelocityDepencyOfWinddirection(BoatState boat, Enviroment world, long time){
+		
+//		int boatDirection=(int)boat.getDirection().getTheta();
+//		int boatDirection=
+//		int diffence = -
+
+		
+
+	}
+	
+	public void createTestPolar(){
+		
+		HashMap<Integer, HashMap<Integer, Double>> bigMap = new HashMap<Integer, HashMap<Integer, Double>>();
+		
+		HashMap<Integer, Double> hm30=new HashMap<Integer, Double>();
+		hm30.put(3,2d);
+		hm30.put(6,4d);
+		hm30.put(9,8d);
+		hm30.put(12,10d);
+		hm30.put(20,12d);
+		hm30.put(30,14d);
+		hm30.put(40,16d);
+		bigMap.put(30, hm30);
+		
+		HashMap<Integer, Double> hm60=new HashMap<Integer, Double>();
+		hm60.put(3,2d);
+		hm60.put(6,4d);
+		hm60.put(9,8d);
+		hm60.put(12,10d);
+		hm60.put(20,12d);
+		hm60.put(30,14d);
+		hm60.put(40,16d);
+		bigMap.put(60, hm60);
+		
+		HashMap<Integer, Double> hm90=new HashMap<Integer, Double>();
+		hm90.put(3,2d);
+		hm90.put(6,4d);
+		hm90.put(9,8d);
+		hm90.put(12,10d);
+		hm90.put(20,12d);
+		hm90.put(30,14d);
+		hm90.put(40,16d);
+		bigMap.put(90, hm90);
+		
+		HashMap<Integer, Double> hm120=new HashMap<Integer, Double>();
+		hm120.put(3,3d);
+		hm120.put(6,6d);
+		hm120.put(9,9d);
+		hm120.put(12,14d);
+		hm120.put(20,20d);
+		hm120.put(30,27d);
+		hm120.put(40,36d);
+		bigMap.put(120, hm120);
+		
+		HashMap<Integer, Double> hm180=new HashMap<Integer, Double>();
+		hm180.put(3,2d);
+		hm180.put(6,4d);
+		hm180.put(9,8d);
+		hm180.put(12,10d);
+		hm180.put(20,12d);
+		hm180.put(30,14d);
+		hm180.put(40,16d);
+		bigMap.put(180, hm180);
+		
+	}
+	
+	public void calculateIdealSailPosition(){
+		
+		
+	}
+	
 
 }
