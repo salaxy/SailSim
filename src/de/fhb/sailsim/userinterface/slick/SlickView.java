@@ -18,7 +18,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class SlickView extends BasicGameState {
 
 //	public static final int FRAMERATE = 20;
-	public static final int FRAMERATE = 20;
+	public static final int FRAMERATE = 5;
 	// berechne in Echtzeit, daher immer 1 Sekunde durch Framerate
 	public static final int CALCULATION_TIME = 1000 / FRAMERATE;
 

@@ -78,7 +78,7 @@ public class PolarPlotModel extends CalculationModel {
 		newPosition = VectorHelper.add(boat.getPosition(),VectorHelper.mult(boat.getDirection().normalise(), (float)s));
 		boat.setPosition(newPosition);
 		
-		this.calculateMaxVelocityDepencyOfWinddirection(boat, env, time);
+		this.calcAngleDifference(boat, env, time);
 	}
 	
 	private double interpolateMaxV(PolarData valueMin, PolarData valueMax){
@@ -90,31 +90,35 @@ public class PolarPlotModel extends CalculationModel {
 		//TODO
 
 	}
+
 	
-	public void calculateMaxVelocityDepencyOfWinddirection(BoatState boat, Enviroment env, long time){
-		
+//	public void calculateMaxVelocityDepencyOfWinddirection(BoatState boat, Enviroment env, long time){
+//		//TODO
+//		
+//	}
+	
+	public void calcAngleDifference(BoatState boat, Enviroment env, long time){
 		int boatDirection=(int)boat.getDirectionValue();
 		int boatTheta=(int)boat.getDirection().getTheta();
 		int windDirection=(int) env.getWindState().getDirection();
-		int diffence = windDirection - boatDirection ;
+		int diff = windDirection - boatDirection ;
 		
-		if(diffence<0){
-			diffence=-diffence;
-		}
+		if(diff<0){
+			diff=-diff;
+		}	
 		
-		if(windDirection>180){
-			diffence=180-diffence;
+		if(diff>180){
+			diff=180-diff;
+			if(diff<0){
+				diff=180+diff;
+			}
 		}
-//		diffence=180-diffence;
-		env.getWindState().setWindToBoat(diffence);
+		env.getWindState().setWindToBoat(diff);
 		
 		System.out.println("boat: " + boatDirection);
 		System.out.println("boat theta: " + boatTheta);
 		System.out.println("wind: " + windDirection);
-		System.out.println("boat to wind: " + diffence);
-
-		
-
+		System.out.println("boat to wind: " + diff);
 	}
 	
 	public void createTestPolar(){
