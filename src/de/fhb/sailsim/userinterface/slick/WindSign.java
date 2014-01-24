@@ -4,14 +4,13 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 
 public class WindSign {
-	
-	private final int X_POS=60;
-	private final int Y_POS=60;
-	private final int WIDTH=40;
-	private final int LENGTH=70;
+
+	private final int X_POS = 60;
+	private final int Y_POS = 60;
+	private final int WIDTH = 40;
+	private final int LENGTH = 70;
 
 	// in km per hour, 0 to 65
 	private double strength = 0;
@@ -45,37 +44,36 @@ public class WindSign {
 	}
 
 	public void paint(Perspective perspective, Graphics graphics, boolean b) {
-		
-		// Transformationen auf Perspektive
-//		calcDrawPosition(perspective, graphics);
-		
 
+		// TODO später noch schöner machen, Kreis mit Windrichtungen drumrum
 
-		
-		// farben setzen
-		graphics.setColor(Color.black);
 		Image image = null;
-
 		try {
 			image = new Image("graphics/myWindSymbol.gif");
-			image = image.getScaledCopy(WIDTH, LENGTH);
-			graphics.rotate(X_POS+image.getCenterOfRotationX(),Y_POS+ image.getCenterOfRotationY(), (float) this.direction+180);
+			image = image.getScaledCopy((int) (WIDTH + this.strength), LENGTH);
+			graphics.rotate(X_POS + image.getCenterOfRotationX(),
+					Y_POS + image.getCenterOfRotationY(),
+					(float) this.direction + 180);
 			graphics.drawImage(image, this.X_POS, this.Y_POS);
-			
+			// TODO Pfeil verschiebt sich etwas, wenn er breiter wird
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		
-		
-		// zurücksetzen der Umgebung, Seiteneffekte vermeiden
 		graphics.resetTransform();
-		
-		
+
+		displayInformationText(graphics);
 	}
-	
-	private void calcDrawPosition(Perspective perspective, Graphics graphics) {
-//		GraphicTools.calcDrawTransformationForSlick(perspective, graphics, position);
-		// eigendrehung hinzurechnen
-//		graphics.rotate(0, 0, this.actualAngle);
+
+	private void displayInformationText(Graphics graphics) {
+		graphics.setColor(Color.green);
+		// graphics.rotate(0, 0, 0);
+		// graphics.scale(0.9f, 0.9f);
+		graphics.drawString("Direction: " + this.getDirection(), X_POS, Y_POS
+				+ LENGTH);
+
+		graphics.drawString("Strength: " + this.getStrength(), X_POS, Y_POS
+				+ LENGTH + 20);
+		graphics.resetTransform();
 	}
+
 }
