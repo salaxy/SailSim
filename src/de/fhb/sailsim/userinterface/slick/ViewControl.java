@@ -43,7 +43,7 @@ public class ViewControl {
 				Color.blue);
 		simulation = new SimulationControl();
 		
-		boatSymbol = new BoatSign(0, 0,this, simulation.getBoatState());
+		boatSymbol = new BoatSign(simulation.getBoatState());
 		windSymbol = new WindSign(simulation.getEnviroment().getWindState());
 		historie = new BoatHistory();
 	}
