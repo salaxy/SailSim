@@ -1,8 +1,8 @@
 package de.fhb.sailsim.control;
 
-import de.fhb.calc.CalculationModel;
-import de.fhb.calc.PolarPlotModel;
 import de.fhb.sailsim.boat.BoatState;
+import de.fhb.sailsim.calc.CalculationModel;
+import de.fhb.sailsim.calc.PolarPlotModel;
 import de.fhb.sailsim.worldmodel.Enviroment;
 
 public class SimulationControl {

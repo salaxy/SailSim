@@ -1,4 +1,4 @@
-package de.fhb.calc;
+package de.fhb.sailsim.calc;
 
 public class PolarData {
 

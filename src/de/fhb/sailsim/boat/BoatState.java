@@ -5,7 +5,9 @@ import org.newdawn.slick.geom.Vector2f;
 public class BoatState {
 
 	private final int RUDER_STEP = 5;
-	private final float SPEEDUP_STEP = 0.2f;
+	private final float SPEEDUP_STEP = 0.1f;
+	
+	public static final int MAX_RUDER_AMPLITUDE = 60;
 
 	private Vector2f position = new Vector2f(0, 0);
 
@@ -35,7 +37,7 @@ public class BoatState {
 	/** 0 to 9 , = 0 deegree deflection, 9 = 90 degree deflection */
 	private int sailWinch;
 
-	/** from 90 degree to - 90 degree */
+	/** from 60 degree to - 60 degree */
 	private int ruderPostion = 0;
 
 	public BoatState(GPS gpsPostition, Compass compass,
@@ -113,7 +115,7 @@ public class BoatState {
 	}
 
 	public void setRuderPostion(int ruderPostion) {
-		if (ruderPostion <= 90 && ruderPostion >= -90) {
+		if (ruderPostion <= MAX_RUDER_AMPLITUDE && ruderPostion >= -MAX_RUDER_AMPLITUDE) {
 			this.ruderPostion = ruderPostion;
 		}
 	}

@@ -1,4 +1,4 @@
-package de.fhb.calc;
+package de.fhb.sailsim.calc;
 
 import de.fhb.sailsim.boat.BoatState;
 import de.fhb.sailsim.worldmodel.Enviroment;

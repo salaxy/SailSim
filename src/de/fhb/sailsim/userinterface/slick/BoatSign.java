@@ -70,7 +70,7 @@ public class BoatSign extends DrawingOnMap {
 		// System.out.println("ruderDirection at " + ruderDirection.getTheta());
 
 		ruderDirection = ruderDirection.getNormal().scale(40);
-		System.out.println("ruder length: " + ruderDirection.length());
+//		System.out.println("ruder length: " + ruderDirection.length());
 
 		graphics.drawLine(-SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
 		graphics.resetTransform();

@@ -39,7 +39,7 @@ public class ViewControl {
 
 	public ViewControl() {
 		map = new Map();
-		perspectiveOne = new Perspective(this, 0, 1.5f, new Vector2f(0f, 0f),
+		perspectiveOne = new Perspective(this, 0, 1.0f, new Vector2f(0f, 0f),
 				Color.blue);
 		simulation = new SimulationControl();
 		
