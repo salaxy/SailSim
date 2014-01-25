@@ -8,34 +8,14 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import de.fhb.sailsim.boat.BoatState;
+
 /**
  * Klasse für die Units
  */
 public class BoatSign {
-
-	protected ViewControl gamelogic;
 	
 	private final int SIZE=20;
-	
-	private double ruderAngle=0d;
-
-	public double getRuderAngle() {
-		return ruderAngle;
-	}
-
-	public void setRuderAngle(double ruderAngle) {
-		this.ruderAngle = ruderAngle;
-	}
-
-	/**
-	 * Referenz auf Spielkarte
-	 */
-	protected Map map;
-
-	/**
-	 * beinhaltet alle Einheiten die existent sind
-	 */
-	public static int idCounter = 0;
 
 	public static final int MODE_NORMAL = 0;
 	public static final int MODE_ROTATE = 1;
@@ -53,16 +33,6 @@ public class BoatSign {
 	 * Skala fuer den Radius des Halo
 	 */
 	protected float[] haloSkala;
-
-	/**
-	 * aktuelle Position der Einheit
-	 */
-	protected Vector2f position;
-
-	/**
-	 * legt die erste Blickrichtungfest
-	 */
-	protected Vector2f direction = new Vector2f(0, 1);
 
 	/**
 	 * aktueller rotationsgrad (aktuelle Drehung der Rotation)
@@ -87,11 +57,6 @@ public class BoatSign {
 	protected boolean isMoving = false;
 
 	/**
-	 * Blickrichtung
-	 */
-	protected float actualAngle = 0;
-
-	/**
 	 * Geschwindigkeitsfaktor der Rotation
 	 */
 	protected float rotationSpeed = 10f;
@@ -112,6 +77,8 @@ public class BoatSign {
 	 */
 	protected Vector2f destinationVector;
 
+	private BoatState boatState;
+
 	/**
 	 * 
 	 * @param x
@@ -121,16 +88,13 @@ public class BoatSign {
 	 * @param gamelogic
 	 * @param unitColor
 	 */
-	public BoatSign(int x, int y, int mode, ViewControl gamelogic) {
+	public BoatSign(int x, int y, ViewControl gamelogic,BoatState boatState) {
 
-		this.mode = mode;
-		this.position = new Vector2f(x, y);
+		this.boatState= boatState;
+		this.mode = BoatSign.MODE_NORMAL;
 		this.destinationVector = new Vector2f(x, y);
-		this.berechneNeueBlickrichtung();
 		this.initHaloSkala();
 		this.passiveColor = Color.black;
-		this.gamelogic = gamelogic;
-		this.map = gamelogic.getMap();
 	}
 
 	/**
@@ -198,6 +162,7 @@ public class BoatSign {
 		//60 grad entspriht hierbei 90 grad ??? wtf
 		Vector2f ruderDirection = new Vector2f(100,0);
 		double ausgangstellung = 180d;
+		int ruderAngle = this.boatState.getRuderPostion();
 		ruderDirection.setTheta(180);
 		
 		if(ruderAngle<=90 && ruderAngle>0)
@@ -369,31 +334,6 @@ public class BoatSign {
 		this.mode = mode;
 	}
 
-	public Vector2f getDirection() {
-		return direction;
-	}
-
-	public void setDirection(Vector2f direction) {
-		this.direction = direction;
-		this.actualAngle=(float) direction.getTheta()+90;
-	}
-
-	/**
-	 * Berechnet Blickrichtung der Einheit nach dem Bewegungsvektor
-	 */
-	protected void berechneNeueBlickrichtung() {
-		// berechne neue Blickrichtung
-		actualAngle = VectorHelper.angleBetween(direction, new Vector2f(0, -1));
-	}
-
-	public Vector2f getPosition() {
-		return position;
-	}
-
-	public void setPosition(Vector2f position) {
-		this.position = position;
-	}
-
 	/**
 	 * Berechnet Zeichnenposition und setzt
 	 * Abblidungsmatrix(Transformationsmatix)
@@ -401,9 +341,9 @@ public class BoatSign {
 	 * @return
 	 */
 	private void calcDrawPosition(Perspective perspective, Graphics graphics) {
-		GraphicTools.calcDrawTransformationForSlick(perspective, graphics, position);
+		GraphicTools.calcDrawTransformationForSlick(perspective, graphics, this.boatState.getPosition());
 		// eigendrehung hinzurechnen
-		graphics.rotate(0, 0, this.actualAngle);
+		graphics.rotate(0, 0, (float) this.boatState.getDirectionValue());
 	}
 	
 }

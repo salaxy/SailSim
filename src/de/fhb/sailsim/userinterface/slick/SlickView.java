@@ -124,6 +124,14 @@ public class SlickView extends BasicGameState {
 			System.out.println("pressed KEY_LEFT");
 			control.getSimulationControl().getBoatState().turnLeft();
 			break;
+		case Input.KEY_N:
+			System.out.println("pressed KEY_N");
+			control.getSimulationControl().getBoatState().directRight();
+			break;
+		case Input.KEY_M:
+			System.out.println("pressed KEY_M");
+			control.getSimulationControl().getBoatState().directLeft();
+			break;
 		case Input.KEY_SPACE:
 			System.out.println("pressed KEY_SPACE");
 			control.getSimulationControl().getBoatState().stop();

@@ -10,6 +10,7 @@ public class BoatState {
 	private Vector2f position = new Vector2f(0, 0);
 
 	private Vector2f direction = new Vector2f(0, 1);
+
 	private double directionValue = 180;
 
 	private GPS gpsPostition;
@@ -144,7 +145,7 @@ public class BoatState {
 			this.directionValue = directionValue;
 		}
 		if (this.directionValue < 0) {
-			this.directionValue = 360+this.directionValue;
+			this.directionValue = 360 + this.directionValue;
 		}
 	}
 
@@ -152,15 +153,21 @@ public class BoatState {
 	// *****************************************************
 
 	public void turnRight() {
-		// this.setRuderPostion(ruderPostion + RUDER_STEP);
+		this.setRuderPostion(ruderPostion + RUDER_STEP);
+	}
+
+	public void turnLeft() {
+		this.setRuderPostion(ruderPostion - RUDER_STEP);
+	}
+
+	public void directRight() {
 		this.direction.add(-5d);
 		this.setDirectionValue(directionValue - RUDER_STEP);
 	}
 
-	public void turnLeft() {
+	public void directLeft() {
 		this.direction.add(5d);
 		this.setDirectionValue(directionValue + RUDER_STEP);
-		// this.setRuderPostion(ruderPostion - RUDER_STEP);
 	}
 
 	public void speedUp() {
