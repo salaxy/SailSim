@@ -87,11 +87,6 @@ public class BoatSign {
 	protected boolean isMoving = false;
 
 	/**
-	 * sagt aus um welchen längenfaktor der Schweif erscheint
-	 */
-	protected int schweiflaenge = 40;
-
-	/**
 	 * Blickrichtung
 	 */
 	protected float actualAngle = 0;
@@ -136,7 +131,6 @@ public class BoatSign {
 		this.passiveColor = Color.black;
 		this.gamelogic = gamelogic;
 		this.map = gamelogic.getMap();
-
 	}
 
 	/**
@@ -167,19 +161,6 @@ public class BoatSign {
 		this.drawNormalAppearance(perspective, graphics);
 
 		// zurücksetzen der Umgebung, Seiteneffekte vermeiden
-		graphics.resetTransform();
-	}
-
-	/**
-	 * Zeichne Figur im Aktiven Zustand
-	 * 
-	 * @param perspective
-	 * @param graphics
-	 */
-	public void drawActiveAppearance(Perspective perspective, Graphics graphics) {
-
-		graphics.setColor(this.activeColor);
-		this.drawFigure(graphics);
 		graphics.resetTransform();
 	}
 
@@ -235,17 +216,7 @@ public class BoatSign {
 		graphics.resetTransform();
 //		System.out.println("draw at " + this.position.toString());
 	}
-
-	/**
-	 * zeichne Figur im Normalen Zustand, wenn Aktiv dann pulsierend
-	 * 
-	 * @param perspective
-	 * @param graphics
-	 */
-	protected void drawPulseIfActive(Perspective perspective, Graphics graphics) {
-
-		this.drawNormalAppearance(perspective, graphics);
-	}
+	
 
 	/**
 	 * zeichne Figur im pulsierend
@@ -387,67 +358,7 @@ public class BoatSign {
 
 		graphics.resetTransform();
 	}
-
-//	/**
-//	 * Berechnen des neuen Position, wenn in Bewegung
-//	 */
-//	public void update() {
-//
-//		Vector2f newPosition;
-//
-//		// wenn aktuelle position noch weit weg vom ziel, dann weiter bewegen
-//		// if (position.distance(destinationVector) > 3) {
-//
-//		// neue Position erechnen, normierten Richtungsvector zur position
-//		// hinzurechnen
-//		newPosition = VectorHelper.add(this.position,
-//				VectorHelper.mult(direction, movementSpeed));
-//
-//		// neue Position setzen
-//		this.position = newPosition;
-//
-//		isMoving = true;
-//
-//		// } else {
-//		// isMoving = false;
-//		// }
-//
-//	}
-
-	/**
-	 * Zeichne Schweif
-	 */
-	protected void drawTail(Perspective perspective, Graphics graphics) {
-
-		// Zielpunkt hinter der Einheit berechnen
-		// end Vektor fuer jeweiligen Spieler berechnen
-		Vector2f ende = direction.copy();
-		// Vektor auf laenge 1 kuerzen
-		ende.normalise();
-		// Richtungsvektor umkehren zum schweif
-		ende.scale(schweiflaenge * -2);
-
-		// Berechne Zeichnenposition und setzte
-		// Abblidungsmatrix(Transformationsmatix)
-		calcDrawPosition(perspective, graphics);
-
-		// Eigendrehung ausgleichen (wird in calcDrawPostion gesetzt)
-		graphics.rotate(0, 0, -this.actualAngle);
-
-		graphics.setColor(Color.orange);
-		// linien zeichnen
-		graphics.drawLine(0, 0, ende.x / 2, ende.y / 2);
-		graphics.drawLine(1, 1, ende.x / 2, ende.y / 2);
-		graphics.drawLine(-1, -1, ende.x / 2, ende.y / 2);
-
-		graphics.drawLine(ende.x / 2, ende.y / 2, ende.x, ende.y);
-		graphics.drawLine(ende.x * 1.1f, ende.y * 1.1f, ende.x * 1.2f,
-				ende.y * 1.2f);
-		graphics.drawLine(ende.x * 1.3f, ende.y * 1.3f, ende.x * 1.4f,
-				ende.y * 1.4f);
-
-		graphics.resetTransform();
-	}
+	
 
 	/**
 	 * legt das erscheinungbild der Einheit neu fest
