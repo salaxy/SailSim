@@ -244,8 +244,7 @@ public class DrawingOnMap {
 	 * @param focus
 	 *            - wird Unit Aktiv gezeichnet oder nicht
 	 */
-	public void paint(Perspective perspective, Graphics graphics,
-			boolean drawActive) {
+	public void paint(Perspective perspective, Graphics graphics) {
 
 		// Transformationen auf Perspektive
 		calcDrawPosition(perspective, graphics);

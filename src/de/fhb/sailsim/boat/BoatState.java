@@ -21,18 +21,11 @@ public class BoatState {
 
 	/** meter per secound */
 	private double currentPropulsionVelocity;
-
-	private double maxVelocity = 0.01;
-
-	public double getMaxVelocity() {
-		return maxVelocity;
-	}
-
-	public void setMaxVelocity(double maxVelocity) {
-		this.maxVelocity = maxVelocity;
-	}
-
+	
+	/** degree per secound */
 	private double currentSpinVelocity;
+
+	private double maxVelocity = 0.4f;
 
 	/** 0 to 9 , = 0 deegree deflection, 9 = 90 degree deflection */
 	private int sailWinch;
@@ -63,6 +56,14 @@ public class BoatState {
 		this.currentSpinVelocity = 0d;
 		this.sailWinch = 0;
 		this.ruderPostion = 0;
+	}
+	
+	public double getMaxVelocity() {
+		return maxVelocity;
+	}
+
+	public void setMaxVelocity(double maxVelocity) {
+		this.maxVelocity = maxVelocity;
 	}
 
 	public BoatState(float xCoord, float yCoord) {

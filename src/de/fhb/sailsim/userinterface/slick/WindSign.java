@@ -21,10 +21,9 @@ public class WindSign {
 		this.windState = windState;
 	}
 
-	public void paint(Perspective perspective, Graphics graphics, boolean b) {
+	public void paint(Perspective perspective, Graphics graphics) {
 
 		// TODO später noch schöner machen, Kreis mit Windrichtungen drumrum
-
 		Image image = null;
 		try {
 			image = new Image("graphics/myWindSymbol.gif");

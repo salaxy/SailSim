@@ -12,8 +12,7 @@ import de.fhb.sailsim.worldmodel.Enviroment;
 public class PolarPlotModel extends CalculationModel {
 
 	// pixel/meter per sec
-	// private final double ACCELERATION=0.00005d;
-	private final double ACCELERATION = 0.0000d;
+	private final double ACCELERATION = 0.00005d;
 
 	// in grad pro sekunde für eien geschwindigkeit von 10 m/s
 	private final double ANGLE_VELOCITY = 40d;
@@ -30,7 +29,7 @@ public class PolarPlotModel extends CalculationModel {
 
 		// Beschleunigung m pro sekunde quadrat
 		double a = this.ACCELERATION / SlickView.FRAMERATE;
-		// zeit in milisecounds
+		// zeit in sekunden
 		long t = time; // t=1000/SlickView.FRAMERATE;
 		// anfangsgeschwindigkeit meter pro sekunde
 		double propulsionV = boat.getCurrentPropulsionVelocity();
@@ -65,6 +64,7 @@ public class PolarPlotModel extends CalculationModel {
 			ruderHelper = -ruderAngle;
 		}
 		rotateV = (ruderHelper * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
+
 		System.out.println("rotateV: " + rotateV);
 
 		// berechnen des neuen Winkels
@@ -73,11 +73,14 @@ public class PolarPlotModel extends CalculationModel {
 			boat.setDirectionValue(boat.getDirectionValue() + rotateV);
 		}
 
+		//sync boatState
 		// berechnen der neuen Postionsvektors
 		Vector2f newPosition;
 		newPosition = VectorHelper.add(boat.getPosition(),
 				VectorHelper.mult(boat.getDirection().normalise(), (float) s));
 		boat.setPosition(newPosition);
+		
+		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
 
 		this.calcAngleDifference(boat, env, time);
 	}
