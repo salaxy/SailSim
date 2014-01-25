@@ -27,8 +27,7 @@ public class WindSign {
 		Image image = null;
 		try {
 			image = new Image("graphics/myWindSymbol.gif");
-			image = image.getScaledCopy(
-					(int) (WIDTH + this.windState.getStrength()), LENGTH);
+			image = image.getScaledCopy((int) (WIDTH + this.windState.getStrength()), LENGTH);
 			graphics.rotate(X_POS + image.getCenterOfRotationX(),
 					Y_POS + image.getCenterOfRotationY(),
 					(float) this.windState.getDirection() + 180);
@@ -46,12 +45,12 @@ public class WindSign {
 		graphics.setColor(Color.green);
 		// graphics.rotate(0, 0, 0);
 		// graphics.scale(0.9f, 0.9f);
-		graphics.drawString("Direction: " + this.windState.getDirection(),
-				X_POS, Y_POS + LENGTH);
-		graphics.drawString("Strength: " + this.windState.getStrength(), X_POS,
-				Y_POS + LENGTH + 20);
-		graphics.drawString("WindToBoat: " + this.windState.getWindToBoat(),
-				X_POS, Y_POS + LENGTH + 40);
+		graphics.drawString("Direction: " + this.windState.getDirection() + " degree", X_POS, Y_POS
+				+ LENGTH);
+		graphics.drawString("Strength: " + this.windState.getStrength() + " km/h", X_POS, Y_POS
+				+ LENGTH + 20);
+		graphics.drawString("WindToBoat: " + this.windState.getWindToBoat() + " degree", X_POS, Y_POS
+				+ LENGTH + 40);
 
 		graphics.resetTransform();
 	}
