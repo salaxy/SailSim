@@ -44,12 +44,47 @@ public class BoatSign extends DrawingOnMap {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-
+		
+		// Transformationen auf Perspektive
+		graphics.resetTransform();
+		calcDrawPosition(perspective, graphics);
+		graphics.rotate(0, 0, 270);
+		
 		// Zeichne Baum
 		// TODO in depence of sail angle
 		graphics.setLineWidth(3);
 		graphics.drawLine(0, 0, -SIZE + 10, 0);
+		
+		try {
+			image = new Image("graphics/sail_full_left.gif");
+			image = image.getScaledCopy(SIZE * 2, SIZE);
+			graphics.rotate(0, 0, 270);
+			graphics.drawImage(image, -SIZE, SIZE/2);
 
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		
+		// Transformationen auf Perspektive
+		graphics.resetTransform();
+		calcDrawPosition(perspective, graphics);
+		graphics.rotate(0, 0, 270);
+
+		try {
+			image = new Image("graphics/sail_full_right.gif");
+			image = image.getScaledCopy(SIZE * 2, SIZE);
+			graphics.rotate(0, 0, 270);
+			graphics.drawImage(image, -SIZE, SIZE/2);
+
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		
+		// Transformationen auf Perspektive
+		graphics.resetTransform();
+		calcDrawPosition(perspective, graphics);
+		graphics.rotate(0, 0, 270);
+		
 		// Zeichne Ruder
 		graphics.setLineWidth(2);
 
