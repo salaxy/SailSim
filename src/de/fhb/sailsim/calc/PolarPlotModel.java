@@ -126,7 +126,7 @@ public class PolarPlotModel extends CalculationModel {
 		if (diff > 180) {
 			diff = 180 - diff;
 			if (diff < 0) {
-				diff = 180 + diff;
+				diff = -(180 + diff);
 			}
 		}
 		env.getWindState().setWindToBoat(diff);
