@@ -13,7 +13,7 @@ import de.fhb.sailsim.boat.BoatState;
  */
 public class BoatSign extends DrawingOnMap {
 
-	private final int SIZE = 20;
+	private final int BOAT_SIZE = 20;
 
 	private BoatState boatState;
 
@@ -37,48 +37,48 @@ public class BoatSign extends DrawingOnMap {
 
 		try {
 			image = new Image("graphics/myBoatSymbol.gif");
-			image = image.getScaledCopy(SIZE * 2, SIZE);
+			image = image.getScaledCopy(BOAT_SIZE * 2, BOAT_SIZE);
 			graphics.rotate(0, 0, 270);
-			graphics.drawImage(image, -SIZE, -SIZE / 2);
+			graphics.drawImage(image, -BOAT_SIZE, -BOAT_SIZE / 2);
 
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		
-		// Transformationen auf Perspektive
-		graphics.resetTransform();
-		calcDrawPosition(perspective, graphics);
-		graphics.rotate(0, 0, 270);
 		
 		// Zeichne Baum
 		// TODO in depence of sail angle
 		graphics.setLineWidth(3);
-		graphics.drawLine(0, 0, -SIZE + 10, 0);
-		
-		try {
-			image = new Image("graphics/sail_full_left.gif");
-			image = image.getScaledCopy(SIZE * 2, SIZE);
-			graphics.rotate(0, 0, 270);
-			graphics.drawImage(image, -SIZE, SIZE/2);
-
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		graphics.drawLine(0, 0, -BOAT_SIZE + 10, 0);
 		
 		// Transformationen auf Perspektive
 		graphics.resetTransform();
 		calcDrawPosition(perspective, graphics);
-		graphics.rotate(0, 0, 270);
-
+//		graphics.rotate(0, 0, 90);
+		
 		try {
-			image = new Image("graphics/sail_full_right.gif");
-			image = image.getScaledCopy(SIZE * 2, SIZE);
-			graphics.rotate(0, 0, 270);
-			graphics.drawImage(image, -SIZE, SIZE/2);
+			image = new Image("graphics/sail_full_left.gif");
+			image = image.getScaledCopy(BOAT_SIZE * 2, BOAT_SIZE);
+			graphics.rotate(0, 0, 90 + this.boatState.getSailDeflection());
+			graphics.drawImage(image, -BOAT_SIZE + (int)(BOAT_SIZE/1.4), -BOAT_SIZE / 2 + 2);
 
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		
+//		// Transformationen auf Perspektive
+//		graphics.resetTransform();
+//		calcDrawPosition(perspective, graphics);
+//		graphics.rotate(0, 0, 270);
+//
+//		try {
+//			image = new Image("graphics/sail_full_right.gif");
+//			image = image.getScaledCopy(BOAT_SIZE * 2, BOAT_SIZE);
+//			graphics.rotate(0, 0, 270);
+//			graphics.drawImage(image, -BOAT_SIZE, BOAT_SIZE/2);
+//
+//		} catch (SlickException e) {
+//			e.printStackTrace();
+//		}
 		
 		// Transformationen auf Perspektive
 		graphics.resetTransform();
@@ -92,7 +92,7 @@ public class BoatSign extends DrawingOnMap {
 		// 60 grad entspriht hierbei 90 grad ??? wtf
 		Vector2f ruderDirection = new Vector2f(100, 0);
 		double ausgangstellung = 180d;
-		int ruderAngle = this.boatState.getRuderPostion();
+		int ruderAngle = this.boatState.getRuderDeflection();
 		ruderDirection.setTheta(180);
 
 		if (ruderAngle <= 90 && ruderAngle > 0)
@@ -107,7 +107,7 @@ public class BoatSign extends DrawingOnMap {
 		ruderDirection = ruderDirection.getNormal().scale(40);
 //		System.out.println("ruder length: " + ruderDirection.length());
 
-		graphics.drawLine(-SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
+		graphics.drawLine(-BOAT_SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
 		graphics.resetTransform();
 		// System.out.println("draw at " + this.position.toString());
 	}

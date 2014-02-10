@@ -8,6 +8,7 @@ public class BoatState {
 	private final float SPEEDUP_STEP = 0.1f;
 	
 	public static final int MAX_RUDER_AMPLITUDE = 60;
+	
 
 	private Vector2f position = new Vector2f(0, 0);
 
@@ -31,7 +32,10 @@ public class BoatState {
 	private int sailWinch;
 
 	/** from 60 degree to - 60 degree */
-	private int ruderPostion = 0;
+	private int ruderDeflection = 0;
+	
+	/** from 60 degree to - 60 degree */
+	private int sailDeflection = 0;
 
 	public BoatState(GPS gpsPostition, Compass compass,
 			double currentPropulsionVelocity, double currentSpinVelocity,
@@ -42,7 +46,7 @@ public class BoatState {
 		this.currentPropulsionVelocity = currentPropulsionVelocity;
 		this.currentSpinVelocity = currentSpinVelocity;
 		this.sailWinch = sailWinch;
-		this.ruderPostion = ruderPostion;
+		this.ruderDeflection = ruderPostion;
 	}
 
 	/**
@@ -55,7 +59,7 @@ public class BoatState {
 		this.currentPropulsionVelocity = 0d;
 		this.currentSpinVelocity = 0d;
 		this.sailWinch = 0;
-		this.ruderPostion = 0;
+		this.ruderDeflection = 0;
 	}
 	
 	public double getMaxVelocity() {
@@ -111,14 +115,22 @@ public class BoatState {
 		this.sailWinch = sailWinch;
 	}
 
-	public int getRuderPostion() {
-		return ruderPostion;
+	public int getRuderDeflection() {
+		return ruderDeflection;
 	}
 
-	public void setRuderPostion(int ruderPostion) {
+	public void setRuderDeflection(int ruderPostion) {
 		if (ruderPostion <= MAX_RUDER_AMPLITUDE && ruderPostion >= -MAX_RUDER_AMPLITUDE) {
-			this.ruderPostion = ruderPostion;
+			this.ruderDeflection = ruderPostion;
 		}
+	}
+
+	public int getSailDeflection() {
+		return sailDeflection;
+	}
+
+	public void setSailDeflection(int sailDeflection) {
+		this.sailDeflection = sailDeflection;
 	}
 
 	public Vector2f getDirection() {
@@ -156,11 +168,11 @@ public class BoatState {
 	// *****************************************************
 
 	public void turnRight() {
-		this.setRuderPostion(ruderPostion + RUDER_STEP);
+		this.setRuderDeflection(ruderDeflection + RUDER_STEP);
 	}
 
 	public void turnLeft() {
-		this.setRuderPostion(ruderPostion - RUDER_STEP);
+		this.setRuderDeflection(ruderDeflection - RUDER_STEP);
 	}
 
 	public void directRight() {

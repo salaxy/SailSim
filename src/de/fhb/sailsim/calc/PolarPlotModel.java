@@ -52,7 +52,7 @@ public class PolarPlotModel extends CalculationModel {
 		// ist das wirklich so, ist das real???
 		double rotateV = (propulsionV * ANGLE_VELOCITY)/ REFERENCE_PROPULSION_VELOCITY;
 		rotateV = rotateV / SlickView.FRAMERATE;
-		int ruderAngle = boat.getRuderPostion();
+		int ruderAngle = boat.getRuderDeflection();
 		
 		if (ruderAngle < 0) {
 			rotateV = -rotateV;
@@ -83,6 +83,18 @@ public class PolarPlotModel extends CalculationModel {
 		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
 
 		this.calcAngleDifference(boat, env, time);
+		
+		
+		//calculate sailDeflection
+		int boatToWind=env.getWindState().getWindToBoat();
+		
+		if(boatToWind>=0 && boatToWind<180){
+			boat.setSailDeflection((int)((180-boatToWind)/2));
+		}else if(boatToWind<=-10 && boatToWind<-180){
+			
+		}
+		
+		
 	}
 
 	private double interpolateMaxV(PolarData valueMin, PolarData valueMax) {
