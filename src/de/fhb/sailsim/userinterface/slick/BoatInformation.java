@@ -40,10 +40,10 @@ public class BoatInformation {
 				Y_POS);
 		graphics.drawString("Boat spinV: " + f.format(this.boatState.getCurrentSpinVelocity())+" °/s",
 				X_POS, Y_POS + 20);
-		// graphics.drawString("Boat proA: " + this.windState.getWindToBoat(),
-		// X_POS, Y_POS + 40);
-		 graphics.drawString("Sail angle: " + this.boatState.getSailDeflection(),
+		 graphics.drawString("Boat direct: " + this.boatState.getDirectionValue(),
 		 X_POS, Y_POS + 40);
+		 graphics.drawString("Sail angle: " + this.boatState.getSailDeflection(),
+		 X_POS, Y_POS + 60);
 
 		graphics.setLineWidth(3);
 		int measureLine = 100;

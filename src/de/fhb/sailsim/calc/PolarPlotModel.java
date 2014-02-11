@@ -43,7 +43,7 @@ public class PolarPlotModel extends CalculationModel {
 		if (boat.getCurrentPropulsionVelocity() <= boat.getMaxVelocity()) {
 			// boot geschwindigkeit erhöhen
 			// berechne neue geschwindigkeit
-			v = a * t + v;
+//			v = a * t + v; TODO wieder einkommentieren
 			boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
 		}
 
@@ -88,15 +88,58 @@ public class PolarPlotModel extends CalculationModel {
 	}
 
 	private void calcSailDeflection(BoatState boat, Enviroment env) {
+		
 		//calculate sailDeflection
 		int boatToWind=env.getWindState().getWindToBoat();
-		
+//		int newSailAngle= boat.getSailDeflection();
 		if(boatToWind>=0 && boatToWind<=180){
 			boat.setSailDeflection((int)((180-boatToWind)/2));
 		}else{
 			//if(boatToWind<0 && boatToWind>=-180)
-			boat.setSailDeflection(-(int)(+(180+boatToWind)/2));
+			boat.setSailDeflection(-(int)((180+boatToWind)/2));
 		}
+		
+		double boatAngle = boat.getDirectionValue();
+		double windAngle = env.getWindState().getDirection();
+		double sailAngle = boat.getSailDeflection();
+		
+//		if(boatToWind>=0 && sailAngle >=0){
+//			if(boatToWind>sailAngle){
+//				this.invert(boat);
+//			}
+//		}
+		
+		//falsche Segel stellungen durch Wende korrigieren bzw. patenthalse
+			if(windAngle>=boatAngle+60 && windAngle<=360){
+				this.invert(boat);				
+			}
+		
+//		if(boatAngle >=90 && boatAngle <= 120){
+//			if(windAngle>=90 && windAngle<=360){
+//				this.invert(boat);				
+//			}
+//		}else if(boatAngle >=90 && boatAngle <= 120){
+//			if(windAngle>=90 && windAngle<=360){
+//				this.invert(boat);				
+//			}
+//		}else if(boatAngle >=90 && boatAngle <= 120){
+//			if(windAngle>=90 && windAngle<=360){
+//				this.invert(boat);				
+//			}
+//		}else if(boatAngle >=90 && boatAngle <= 120){
+//			if(windAngle>=90 && windAngle<=360){
+//				this.invert(boat);				
+//			}
+//		}else if(boatAngle >=90 && boatAngle <= 120){
+//			if(windAngle>=90 && windAngle<=360){
+//				this.invert(boat);				
+//			}
+//		}
+		
+	}
+
+	private void invert(BoatState boat) {
+		boat.setSailDeflection(-boat.getSailDeflection());
 	}
 
 	private double interpolateMaxV(PolarData valueMin, PolarData valueMax) {
