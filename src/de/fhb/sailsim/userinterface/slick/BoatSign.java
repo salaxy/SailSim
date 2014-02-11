@@ -86,21 +86,21 @@ public class BoatSign extends DrawingOnMap {
 		// Transformationen auf Perspektive
 		graphics.resetTransform();
 		calcDrawPosition(perspective, graphics);
-		
+
 		try {
 			Image image = null;
-			
-			int Xposition = -BOAT_SIZE + (int)(BOAT_SIZE/1.4);
+
+			int Xposition = -BOAT_SIZE + (int) (BOAT_SIZE / 1.4);
 			int Yposition = -BOAT_SIZE / 2;
 			int deflection = this.boatState.getSailDeflection();
-			
-			if(deflection<5 && deflection>-5){
-				image = new Image("graphics/sail_flaped.gif");	
-				Yposition = Yposition +1;
-			}else if(this.boatState.getSailDeflection()<0){
-				image = new Image("graphics/sail_full_right.gif");	
+
+			if (deflection < 5 && deflection > -5) {
+				image = new Image("graphics/sail_flaped.gif");
+				Yposition = Yposition + 1;
+			} else if (deflection < 0) {
+				image = new Image("graphics/sail_full_right.gif");
 				Yposition = Yposition - 2;
-			}else{
+			} else {
 				image = new Image("graphics/sail_full_left.gif");
 				Yposition = Yposition + 2;
 			}

@@ -6,9 +6,8 @@ public class BoatState {
 
 	private final int RUDER_STEP = 5;
 	private final float SPEEDUP_STEP = 0.1f;
-	
+
 	public static final int MAX_RUDER_AMPLITUDE = 60;
-	
 
 	private Vector2f position = new Vector2f(0, 0);
 
@@ -22,7 +21,7 @@ public class BoatState {
 
 	/** meter per secound */
 	private double currentPropulsionVelocity;
-	
+
 	/** degree per secound */
 	private double currentSpinVelocity;
 
@@ -33,13 +32,16 @@ public class BoatState {
 
 	/** from 60 degree to - 60 degree */
 	private int ruderDeflection = 0;
-	
+
 	/** from 60 degree to - 60 degree */
 	private int sailDeflection = 0;
+	
+	/**start coordinates */
+	private float startX = 0f;
+	private float startY = 0f;
 
-	public BoatState(GPS gpsPostition, Compass compass,
-			double currentPropulsionVelocity, double currentSpinVelocity,
-			int sailWinch, int ruderPostion) {
+	public BoatState(GPS gpsPostition, Compass compass, double currentPropulsionVelocity,
+			double currentSpinVelocity, int sailWinch, int ruderPostion) {
 		super();
 		this.gpsPostition = gpsPostition;
 		this.compass = compass;
@@ -61,18 +63,20 @@ public class BoatState {
 		this.sailWinch = 0;
 		this.ruderDeflection = 0;
 	}
-	
+
+	public BoatState(float xCoord, float yCoord) {
+		this();
+		this.position = new Vector2f(xCoord, yCoord);
+		this.startX = xCoord;
+		this.startY = yCoord;
+	}
+
 	public double getMaxVelocity() {
 		return maxVelocity;
 	}
 
 	public void setMaxVelocity(double maxVelocity) {
 		this.maxVelocity = maxVelocity;
-	}
-
-	public BoatState(float xCoord, float yCoord) {
-		this();
-		position = new Vector2f(xCoord, yCoord);
 	}
 
 	public GPS getGpsPostition() {
@@ -202,6 +206,11 @@ public class BoatState {
 	}
 
 	public void stop() {
+		this.currentPropulsionVelocity = 0.0f;
+	}
+
+	public void setBack() {
+		this.position = new Vector2f(startX, startY);
 		this.currentPropulsionVelocity = 0.0f;
 	}
 
