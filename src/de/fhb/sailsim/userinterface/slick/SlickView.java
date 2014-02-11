@@ -19,7 +19,8 @@ public class SlickView extends BasicGameState {
 
 //	public static final int FRAMERATE = 20;
 	public static final int FRAMERATE = 25;
-	// berechne in Echtzeit, daher immer 1 Sekunde durch Framerate
+	// berechne milisekunden für Echtzeitberechnungen
+	//daher immer 1 Sekunde durch Framerate
 	public static final int CALCULATION_TIME = 1000 / FRAMERATE;
 
 	/**

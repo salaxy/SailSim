@@ -28,13 +28,12 @@ public class BoatSign extends DrawingOnMap {
 	 * @param perspective
 	 * @param graphics
 	 */
-	protected void drawNormalAppearance(Perspective perspective,
-			Graphics graphics) {
-		
-		drawBoatTorso(perspective,graphics);
+	protected void drawNormalAppearance(Perspective perspective, Graphics graphics) {
+
+		drawBoatTorso(perspective, graphics);
 		drawSail(perspective, graphics);
 		drawRuder(perspective, graphics);
-		
+
 		graphics.resetTransform();
 	}
 
@@ -56,7 +55,7 @@ public class BoatSign extends DrawingOnMap {
 		graphics.resetTransform();
 		calcDrawPosition(perspective, graphics);
 		graphics.rotate(0, 0, 270);
-		
+
 		graphics.setColor(this.passiveColor);
 		graphics.setLineWidth(2);
 
@@ -77,7 +76,7 @@ public class BoatSign extends DrawingOnMap {
 		// System.out.println("ruderDirection at " + ruderDirection.getTheta());
 
 		ruderDirection = ruderDirection.getNormal().scale(40);
-//		System.out.println("ruder length: " + ruderDirection.length());
+		// System.out.println("ruder length: " + ruderDirection.length());
 
 		graphics.drawLine(-BOAT_SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
 	}
@@ -93,8 +92,12 @@ public class BoatSign extends DrawingOnMap {
 			
 			int Xposition = -BOAT_SIZE + (int)(BOAT_SIZE/1.4);
 			int Yposition = -BOAT_SIZE / 2;
+			int deflection = this.boatState.getSailDeflection();
 			
-			if(this.boatState.getSailDeflection()<0){
+			if(deflection<5 && deflection>-5){
+				image = new Image("graphics/sail_flaped.gif");	
+				Yposition = Yposition +1;
+			}else if(this.boatState.getSailDeflection()<0){
 				image = new Image("graphics/sail_full_right.gif");	
 				Yposition = Yposition - 2;
 			}else{

@@ -117,7 +117,7 @@ public class PolarPlotModel extends CalculationModel {
 
 	public void calcAngleDifference(BoatState boat, Enviroment env, long time) {
 		int boatDirection = (int) boat.getDirectionValue();
-		int boatTheta = (int) boat.getDirection().getTheta();
+//		int boatTheta = (int) boat.getDirection().getTheta();
 		int windDirection = (int) env.getWindState().getDirection();
 		int diff = windDirection - boatDirection;
 
