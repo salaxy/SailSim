@@ -91,50 +91,25 @@ public class PolarPlotModel extends CalculationModel {
 		
 		//calculate sailDeflection
 		int boatToWind=env.getWindState().getWindToBoat();
-//		int newSailAngle= boat.getSailDeflection();
+		int newSailAngle = boat.getSailDeflection();
+		
 		if(boatToWind>=0 && boatToWind<=180){
-			boat.setSailDeflection((int)((180-boatToWind)/2));
+			newSailAngle = (int)((180-boatToWind)/2);
 		}else{
 			//if(boatToWind<0 && boatToWind>=-180)
-			boat.setSailDeflection(-(int)((180+boatToWind)/2));
+			newSailAngle = -(int)((180+boatToWind)/2);
 		}
+		boat.setSailDeflection(newSailAngle);	
 		
 		double boatAngle = boat.getDirectionValue();
 		double windAngle = env.getWindState().getDirection();
-		double sailAngle = boat.getSailDeflection();
-		
-//		if(boatToWind>=0 && sailAngle >=0){
-//			if(boatToWind>sailAngle){
-//				this.invert(boat);
-//			}
-//		}
+		int sailAngle = boat.getSailDeflection();
 		
 		//falsche Segel stellungen durch Wende korrigieren bzw. patenthalse
-			if(windAngle>=boatAngle+60 && windAngle<=360){
+//		if(boatAngle>0){
+		if(windAngle>=boatAngle+60 && windAngle<=360){
 				this.invert(boat);				
-			}
-		
-//		if(boatAngle >=90 && boatAngle <= 120){
-//			if(windAngle>=90 && windAngle<=360){
-//				this.invert(boat);				
-//			}
-//		}else if(boatAngle >=90 && boatAngle <= 120){
-//			if(windAngle>=90 && windAngle<=360){
-//				this.invert(boat);				
-//			}
-//		}else if(boatAngle >=90 && boatAngle <= 120){
-//			if(windAngle>=90 && windAngle<=360){
-//				this.invert(boat);				
-//			}
-//		}else if(boatAngle >=90 && boatAngle <= 120){
-//			if(windAngle>=90 && windAngle<=360){
-//				this.invert(boat);				
-//			}
-//		}else if(boatAngle >=90 && boatAngle <= 120){
-//			if(windAngle>=90 && windAngle<=360){
-//				this.invert(boat);				
-//			}
-//		}
+		}			
 		
 	}
 

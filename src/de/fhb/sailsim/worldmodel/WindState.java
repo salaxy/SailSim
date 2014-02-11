@@ -22,7 +22,7 @@ public class WindState {
 
 	public WindState() {
 		super();
-		this.strength = 0d;
+		this.strength = 3d;
 		this.direction = 0d;
 	}
 
