@@ -42,9 +42,11 @@ public class BoatInformation {
 				X_POS, Y_POS + 20);
 		// graphics.drawString("Boat proA: " + this.windState.getWindToBoat(),
 		// X_POS, Y_POS + 40);
+		 graphics.drawString("Sail angle: " + this.boatState.getSailDeflection(),
+		 X_POS, Y_POS + 40);
 
 		graphics.setLineWidth(3);
-		int measureLine = 60;
+		int measureLine = 100;
 		int measureLength = 100;
 		graphics.drawString("Measure 100 m", X_POS, Y_POS + measureLine+5);
 		graphics.drawLine(X_POS, Y_POS + measureLine, X_POS + 100, Y_POS + measureLine);

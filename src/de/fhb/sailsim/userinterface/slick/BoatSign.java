@@ -30,13 +30,18 @@ public class BoatSign extends DrawingOnMap {
 	 */
 	protected void drawNormalAppearance(Perspective perspective,
 			Graphics graphics) {
+		
+		drawBoatTorso(perspective,graphics);
+		drawSail(perspective, graphics);
+		drawRuder(perspective, graphics);
+		
+		graphics.resetTransform();
+	}
 
-		// farben setzen
-		graphics.setColor(this.passiveColor);
-		Image image = null;
+	private void drawBoatTorso(Perspective perspective, Graphics graphics) {
 
 		try {
-			image = new Image("graphics/myBoatSymbol.gif");
+			Image image = new Image("graphics/myBoatSymbol.gif");
 			image = image.getScaledCopy(BOAT_SIZE * 2, BOAT_SIZE);
 			graphics.rotate(0, 0, 270);
 			graphics.drawImage(image, -BOAT_SIZE, -BOAT_SIZE / 2);
@@ -44,48 +49,15 @@ public class BoatSign extends DrawingOnMap {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		
-		// Zeichne Baum
-		// TODO in depence of sail angle
-		graphics.setLineWidth(3);
-		graphics.drawLine(0, 0, -BOAT_SIZE + 10, 0);
-		
-		// Transformationen auf Perspektive
-		graphics.resetTransform();
-		calcDrawPosition(perspective, graphics);
-//		graphics.rotate(0, 0, 90);
-		
-		try {
-			image = new Image("graphics/sail_full_left.gif");
-			image = image.getScaledCopy(BOAT_SIZE * 2, BOAT_SIZE);
-			graphics.rotate(0, 0, 90 + this.boatState.getSailDeflection());
-			graphics.drawImage(image, -BOAT_SIZE + (int)(BOAT_SIZE/1.4), -BOAT_SIZE / 2 + 2);
+	}
 
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
-		
-//		// Transformationen auf Perspektive
-//		graphics.resetTransform();
-//		calcDrawPosition(perspective, graphics);
-//		graphics.rotate(0, 0, 270);
-//
-//		try {
-//			image = new Image("graphics/sail_full_right.gif");
-//			image = image.getScaledCopy(BOAT_SIZE * 2, BOAT_SIZE);
-//			graphics.rotate(0, 0, 270);
-//			graphics.drawImage(image, -BOAT_SIZE, BOAT_SIZE/2);
-//
-//		} catch (SlickException e) {
-//			e.printStackTrace();
-//		}
-		
+	private void drawRuder(Perspective perspective, Graphics graphics) {
 		// Transformationen auf Perspektive
 		graphics.resetTransform();
 		calcDrawPosition(perspective, graphics);
 		graphics.rotate(0, 0, 270);
 		
-		// Zeichne Ruder
+		graphics.setColor(this.passiveColor);
 		graphics.setLineWidth(2);
 
 		// TODO ist noch buggy, Vektor verhält sich nciht so wie er soll
@@ -108,8 +80,35 @@ public class BoatSign extends DrawingOnMap {
 //		System.out.println("ruder length: " + ruderDirection.length());
 
 		graphics.drawLine(-BOAT_SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
+	}
+
+	private void drawSail(Perspective perspective, Graphics graphics) {
+
+		// Transformationen auf Perspektive
 		graphics.resetTransform();
-		// System.out.println("draw at " + this.position.toString());
+		calcDrawPosition(perspective, graphics);
+		
+		try {
+			Image image = null;
+			
+			int Xposition = -BOAT_SIZE + (int)(BOAT_SIZE/1.4);
+			int Yposition = -BOAT_SIZE / 2;
+			
+			if(this.boatState.getSailDeflection()<0){
+				image = new Image("graphics/sail_full_right.gif");	
+				Yposition = Yposition - 2;
+			}else{
+				image = new Image("graphics/sail_full_left.gif");
+				Yposition = Yposition + 2;
+			}
+
+			image = image.getScaledCopy(BOAT_SIZE * 2, BOAT_SIZE);
+			graphics.rotate(0, 0, 90 + this.boatState.getSailDeflection());
+			graphics.drawImage(image, Xposition, Yposition);
+
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

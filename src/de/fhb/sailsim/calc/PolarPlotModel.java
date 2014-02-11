@@ -88,10 +88,11 @@ public class PolarPlotModel extends CalculationModel {
 		//calculate sailDeflection
 		int boatToWind=env.getWindState().getWindToBoat();
 		
-		if(boatToWind>=0 && boatToWind<180){
+		if(boatToWind>=0 && boatToWind<=180){
 			boat.setSailDeflection((int)((180-boatToWind)/2));
-		}else if(boatToWind<=-10 && boatToWind<-180){
-			
+		}else{
+			//if(boatToWind<0 && boatToWind>=-180)
+			boat.setSailDeflection(-(int)(+(180+boatToWind)/2));
 		}
 		
 		
