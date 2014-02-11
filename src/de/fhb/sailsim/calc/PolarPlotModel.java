@@ -82,9 +82,12 @@ public class PolarPlotModel extends CalculationModel {
 		
 		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
 
-		this.calcAngleDifference(boat, env, time);
+		calcAngleDifference(boat, env, time);
+		calcSailDeflection(boat, env);
 		
-		
+	}
+
+	private void calcSailDeflection(BoatState boat, Enviroment env) {
 		//calculate sailDeflection
 		int boatToWind=env.getWindState().getWindToBoat();
 		
@@ -94,8 +97,6 @@ public class PolarPlotModel extends CalculationModel {
 			//if(boatToWind<0 && boatToWind>=-180)
 			boat.setSailDeflection(-(int)(+(180+boatToWind)/2));
 		}
-		
-		
 	}
 
 	private double interpolateMaxV(PolarData valueMin, PolarData valueMax) {
@@ -191,10 +192,6 @@ public class PolarPlotModel extends CalculationModel {
 		hm180.put(30, 14d);
 		hm180.put(40, 16d);
 		bigMap.put(180, hm180);
-
-	}
-
-	public void calculateIdealSailPosition() {
 
 	}
 
