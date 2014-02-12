@@ -12,11 +12,13 @@ import de.fhb.sailsim.worldmodel.Enviroment;
 public class PolarPlotModel extends CalculationModel {
 
 	// pixel/meter per sec
-	private final double ACCELERATION = 0.00005d;
+	private final double FALL_BACK_ACCELERATION = -0.00004d;
+	private final double MIN_VELOCITY = 0.1d;
 
 	// in grad pro sekunde für eien geschwindigkeit von 10 m/s
 	private final double ANGLE_VELOCITY = 40d;
 	private final double REFERENCE_PROPULSION_VELOCITY = 1d;
+	private final double MAX_VELOCITY = 5.0f;
 
 	// private ArrayList<PolarData> polarPlot = new ArrayList<PolarData>();
 	private HashMap<Integer, HashMap<Integer, Double>> bigMap = new HashMap<Integer, HashMap<Integer, Double>>();
@@ -45,13 +47,17 @@ public class PolarPlotModel extends CalculationModel {
 		// aber berechnung hier nur für die nächste Teilstrecke
 		s = (0.5 * a) * (t * t) + (v * t);
 
-		// if (boat.getCurrentPropulsionVelocity() <= boat.getMaxVelocity()) {
-		// boot geschwindigkeit erhöhen
-		// berechne neue geschwindigkeit
-		// TODO wieder einkommentieren
-		v = a * t + v;
-		boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
-		// }
+		if (boat.getCurrentPropulsionVelocity() <= MAX_VELOCITY) {
+			// boot geschwindigkeit erhöhen
+			// berechne neue geschwindigkeit
+			// TODO wieder einkommentieren
+			v = (a + FALL_BACK_ACCELERATION / SlickView.FRAMERATE) * t + v;
+			if (v > MIN_VELOCITY) {
+				boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
+			} else {
+				boat.setCurrentPropulsionVelocity(MIN_VELOCITY);
+			}
+		}
 
 		// calc angle velocity in depency of propulsion velocity
 		// TODO der Wendekreis bleibt immer gleich egal welche geschwindigkeit,
@@ -71,7 +77,7 @@ public class PolarPlotModel extends CalculationModel {
 		}
 		rotateV = (ruderHelper * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
 
-		System.out.println("rotateV: " + rotateV);
+//		System.out.println("rotateV: " + rotateV);
 
 		// berechnen des neuen Winkels
 		if (ruderAngle != 0) {
@@ -109,13 +115,13 @@ public class PolarPlotModel extends CalculationModel {
 		} else if (absoluteBoatToWind <= 15) {
 			acceleration = 1.5f;
 		} else if (absoluteBoatToWind <= 30) {
-			acceleration = 2.0f;
+			acceleration = 1.7f;
 		} else if (absoluteBoatToWind <= 45) {
-			acceleration = 1.75f;
+			acceleration = 1.5f;
 		} else if (absoluteBoatToWind <= 60) {
 			acceleration = 1.25f;
 		} else if (absoluteBoatToWind <= 75) {
-			acceleration = 1.5f;
+			acceleration = 1.1f;
 		} else if (absoluteBoatToWind <= 90) {
 			acceleration = 1.0f;
 		} else if (absoluteBoatToWind <= 105) {
@@ -128,6 +134,10 @@ public class PolarPlotModel extends CalculationModel {
 			acceleration = 0.25f;
 		} else if (absoluteBoatToWind <= 165) {
 			acceleration = 0.125f;
+		} else if (absoluteBoatToWind <= 170) {
+			acceleration = 0.1f;
+		} else if (absoluteBoatToWind <= 175) {
+			acceleration = 0.05f;
 		} else if (absoluteBoatToWind <= 180) {
 			acceleration = 0.0f;
 		}
