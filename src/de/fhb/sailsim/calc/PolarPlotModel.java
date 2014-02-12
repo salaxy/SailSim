@@ -28,36 +28,42 @@ public class PolarPlotModel extends CalculationModel {
 		double s;
 
 		// Beschleunigung m pro sekunde quadrat
-		double a = this.ACCELERATION / SlickView.FRAMERATE;
+		// double a = this.ACCELERATION / SlickView.FRAMERATE; //linear,
+		// depricated
+		double a = this.calculateActualAccelerationDummy(boat, env, SlickView.FRAMERATE);
+
 		// zeit in sekunden
 		long t = time; // t=1000/SlickView.FRAMERATE;
 		// anfangsgeschwindigkeit meter pro sekunde
 		double propulsionV = boat.getCurrentPropulsionVelocity();
 
-		// neue geschwindigkeit nach t
+		// aktuelle geschwindigkeit für ein Frame
 		double v = propulsionV / SlickView.FRAMERATE;
 
 		// berechne zurückgelegten Weg
+		// eigentlich s = (0.5 * a) * (t * t) + (v * t) + s0;
+		// aber berechnung hier nur für die nächste Teilstrecke
 		s = (0.5 * a) * (t * t) + (v * t);
 
-		if (boat.getCurrentPropulsionVelocity() <= boat.getMaxVelocity()) {
-			// boot geschwindigkeit erhöhen
-			// berechne neue geschwindigkeit
-//			v = a * t + v; TODO wieder einkommentieren
-			boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
-		}
+		// if (boat.getCurrentPropulsionVelocity() <= boat.getMaxVelocity()) {
+		// boot geschwindigkeit erhöhen
+		// berechne neue geschwindigkeit
+		// TODO wieder einkommentieren
+		v = a * t + v;
+		boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
+		// }
 
 		// calc angle velocity in depency of propulsion velocity
 		// TODO der Wendekreis bleibt immer gleich egal welche geschwindigkeit,
 		// ist das wirklich so, ist das real???
-		double rotateV = (propulsionV * ANGLE_VELOCITY)/ REFERENCE_PROPULSION_VELOCITY;
+		double rotateV = (propulsionV * ANGLE_VELOCITY) / REFERENCE_PROPULSION_VELOCITY;
 		rotateV = rotateV / SlickView.FRAMERATE;
 		int ruderAngle = boat.getRuderDeflection();
-		
+
 		if (ruderAngle < 0) {
 			rotateV = -rotateV;
 		}// else rotateV=rotateV
-		
+
 		// verhalten in Abhängigkeit davon wie stark das Ruder eingelschagen ist
 		int ruderHelper = ruderAngle;
 		if (ruderAngle < 0) {
@@ -73,44 +79,89 @@ public class PolarPlotModel extends CalculationModel {
 			boat.setDirectionValue(boat.getDirectionValue() + rotateV);
 		}
 
-		//sync boatState
+		// sync boatState
 		// berechnen der neuen Postionsvektors
 		Vector2f newPosition;
 		newPosition = VectorHelper.add(boat.getPosition(),
 				VectorHelper.mult(boat.getDirection().normalise(), (float) s));
 		boat.setPosition(newPosition);
-		
+
 		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
 
 		calcAngleDifference(boat, env, time);
 		calcSailDeflection(boat, env);
-		
+
+	}
+
+	private double calculateActualAccelerationDummy(BoatState boat, Enviroment env, int framerate) {
+
+		// here pick up values from polar-modell
+
+		int absoluteBoatToWind = env.getWindState().getWindToBoat();
+		float acceleration = 0;
+
+		if (env.getWindState().getWindToBoat() < 0) {
+			absoluteBoatToWind = -env.getWindState().getWindToBoat();
+		}
+
+		if (absoluteBoatToWind <= 5) {
+			acceleration = 1.0f;
+		} else if (absoluteBoatToWind <= 15) {
+			acceleration = 1.5f;
+		} else if (absoluteBoatToWind <= 30) {
+			acceleration = 2.0f;
+		} else if (absoluteBoatToWind <= 45) {
+			acceleration = 1.75f;
+		} else if (absoluteBoatToWind <= 60) {
+			acceleration = 1.25f;
+		} else if (absoluteBoatToWind <= 75) {
+			acceleration = 1.5f;
+		} else if (absoluteBoatToWind <= 90) {
+			acceleration = 1.0f;
+		} else if (absoluteBoatToWind <= 105) {
+			acceleration = 0.75f;
+		} else if (absoluteBoatToWind <= 120) {
+			acceleration = 0.5f;
+		} else if (absoluteBoatToWind <= 135) {
+			acceleration = 0.375f;
+		} else if (absoluteBoatToWind <= 150) {
+			acceleration = 0.25f;
+		} else if (absoluteBoatToWind <= 165) {
+			acceleration = 0.125f;
+		} else if (absoluteBoatToWind <= 180) {
+			acceleration = 0.0f;
+		}
+
+		acceleration = acceleration / 10000;
+
+		// return this.ACCELERATION / SlickView.FRAMERATE;
+		return acceleration / framerate;
 	}
 
 	private void calcSailDeflection(BoatState boat, Enviroment env) {
-		
-		//calculate sailDeflection
-		int boatToWind=env.getWindState().getWindToBoat();
+
+		// calculate sailDeflection
+		int boatToWind = env.getWindState().getWindToBoat();
 		int newSailAngle = boat.getSailDeflection();
-		
-		if(boatToWind>=0 && boatToWind<=180){
-			newSailAngle = (int)((180-boatToWind)/2);
-		}else{
-			//if(boatToWind<0 && boatToWind>=-180)
-			newSailAngle = -(int)((180+boatToWind)/2);
+
+		if (boatToWind >= 0 && boatToWind <= 180) {
+			newSailAngle = (int) ((180 - boatToWind) / 2);
+		} else {
+			// if(boatToWind<0 && boatToWind>=-180)
+			newSailAngle = -(int) ((180 + boatToWind) / 2);
 		}
-		boat.setSailDeflection(newSailAngle);	
-		
+		boat.setSailDeflection(newSailAngle);
+
 		double boatAngle = boat.getDirectionValue();
 		double windAngle = env.getWindState().getDirection();
 		int sailAngle = boat.getSailDeflection();
-		
-		//falsche Segel stellungen durch Wende korrigieren bzw. patenthalse
-//		if(boatAngle>0){
-		if(windAngle>=boatAngle+60 && windAngle<=360){
-				this.invert(boat);				
-		}			
-		
+
+		// falsche Segel stellungen durch Wende korrigieren bzw. patenthalse
+		// if(boatAngle>0){
+		if (windAngle >= boatAngle + 60 && windAngle <= 360) {
+			this.invert(boat);
+		}
+
 	}
 
 	private void invert(BoatState boat) {
@@ -135,7 +186,7 @@ public class PolarPlotModel extends CalculationModel {
 
 	public void calcAngleDifference(BoatState boat, Enviroment env, long time) {
 		int boatDirection = (int) boat.getDirectionValue();
-//		int boatTheta = (int) boat.getDirection().getTheta();
+		// int boatTheta = (int) boat.getDirection().getTheta();
 		int windDirection = (int) env.getWindState().getDirection();
 		int diff = windDirection - boatDirection;
 
