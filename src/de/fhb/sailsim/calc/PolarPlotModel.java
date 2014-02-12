@@ -32,7 +32,7 @@ public class PolarPlotModel extends CalculationModel {
 		// Beschleunigung m pro sekunde quadrat
 		// double a = this.ACCELERATION / SlickView.FRAMERATE; //linear,
 		// depricated
-		double a = this.calculateActualAccelerationDummy(boat, env, SlickView.FRAMERATE);
+		double a = this.calculateActualAcceleration(boat, env, SlickView.FRAMERATE);
 
 		// zeit in sekunden
 		long t = time; // t=1000/SlickView.FRAMERATE;
@@ -52,10 +52,10 @@ public class PolarPlotModel extends CalculationModel {
 			// berechne neue geschwindigkeit
 			// TODO wieder einkommentieren
 			v = (a + FALL_BACK_ACCELERATION / SlickView.FRAMERATE) * t + v;
-			if (v > MIN_VELOCITY) {
+			if (v > 0) {
 				boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
 			} else {
-				boat.setCurrentPropulsionVelocity(MIN_VELOCITY);
+				boat.setCurrentPropulsionVelocity(0);
 			}
 		}
 
@@ -77,7 +77,7 @@ public class PolarPlotModel extends CalculationModel {
 		}
 		rotateV = (ruderHelper * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
 
-//		System.out.println("rotateV: " + rotateV);
+		// System.out.println("rotateV: " + rotateV);
 
 		// berechnen des neuen Winkels
 		if (ruderAngle != 0) {
@@ -100,7 +100,6 @@ public class PolarPlotModel extends CalculationModel {
 	}
 
 	private double calculateActualAccelerationDummy(BoatState boat, Enviroment env, int framerate) {
-
 		// here pick up values from polar-modell
 
 		int absoluteBoatToWind = env.getWindState().getWindToBoat();
@@ -217,10 +216,150 @@ public class PolarPlotModel extends CalculationModel {
 		// System.out.println("wind: " + windDirection);
 	}
 
+	private double calculateActualAcceleration(BoatState boat, Enviroment env, int framerate) {
+		// here pick up values from polar-modell
+
+		int absoluteBoatToWind = 180 - env.getWindState().getWindToBoat();
+		int windAcceleration = (int) env.getWindState().getStrength();
+		float acceleration = 0;
+
+		if (env.getWindState().getWindToBoat() < 0) {
+			absoluteBoatToWind = 180 + env.getWindState().getWindToBoat();
+		}
+
+		HashMap<Integer, Double> nextHigherMap = new HashMap<Integer, Double>();
+		HashMap<Integer, Double> nextLowerMap = new HashMap<Integer, Double>();
+
+		int nextHigherAngle = 0;
+		int nextLowerAngle = 0;
+
+		// find lower map
+		for (int i = absoluteBoatToWind; i >= 0; i--) {
+			nextLowerMap = bigMap.get(new Integer(i));
+			if (nextLowerMap != null) {
+				System.out.println("next lower windmap found");
+				nextLowerAngle = i;
+				break;
+			}
+		}
+
+		// find higher map
+		for (int i = absoluteBoatToWind; i <= 180; i++) {
+			nextHigherMap = bigMap.get(new Integer(i));
+			if (nextHigherMap != null) {
+				System.out.println("next higher windmap found");
+				nextHigherAngle = i;
+				break;
+			}
+		}
+
+		double lowerAngleWindHigh = 0;
+		double lowerAngleWindLow = 0;
+
+		double higherAngleWindHigh = 0;
+		double higherAngleWindLow = 0;
+
+		// find wind values in lower map
+		for (int i = windAcceleration; i <= 40; i++) {
+			lowerAngleWindHigh = nextLowerMap.get(new Integer(i));
+			if (nextLowerMap != null) {
+				System.out.println("next lower windmap found");
+				break;
+			}
+		}
+		for (int i = windAcceleration; i >= 0; i--) {
+			lowerAngleWindLow = nextLowerMap.get(new Integer(i));
+			if (nextLowerMap != null) {
+				System.out.println("next lower windmap found");
+				break;
+			}
+		}
+		// find wind values in higher map
+		for (int i = windAcceleration; i <= 40; i++) {
+			higherAngleWindHigh = nextHigherMap.get(new Integer(i));
+			if (nextLowerMap != null) {
+				System.out.println("next lower windmap found");
+				break;
+			}
+		}
+		for (int i = windAcceleration; i >= 0; i--) {
+			higherAngleWindLow = nextHigherMap.get(new Integer(i));
+			if (nextLowerMap != null) {
+				System.out.println("next lower windmap found");
+				break;
+			}
+		}
+		// syso alle vier werte
+		// 
+		//TODO hier weiter machen morgen
+		acceleration = this.interpolateMaxV(nextHigherAngle, nextLowerAngle, lowerAngleWindHigh,
+				lowerAngleWindLow, higherAngleWindHigh, higherAngleWindLow);
+
+		// finde Wind Geschwindigkeiten in den Maps
+
+		bigMap.get(30);
+
+		if (absoluteBoatToWind <= 5) {
+			acceleration = 1.0f;
+		} else if (absoluteBoatToWind <= 15) {
+			acceleration = 1.5f;
+		} else if (absoluteBoatToWind <= 30) {
+			acceleration = 1.7f;
+		} else if (absoluteBoatToWind <= 45) {
+			acceleration = 1.5f;
+		} else if (absoluteBoatToWind <= 60) {
+			acceleration = 1.25f;
+		} else if (absoluteBoatToWind <= 75) {
+			acceleration = 1.1f;
+		} else if (absoluteBoatToWind <= 90) {
+			acceleration = 1.0f;
+		} else if (absoluteBoatToWind <= 105) {
+			acceleration = 0.75f;
+		} else if (absoluteBoatToWind <= 120) {
+			acceleration = 0.5f;
+		} else if (absoluteBoatToWind <= 135) {
+			acceleration = 0.375f;
+		} else if (absoluteBoatToWind <= 150) {
+			acceleration = 0.25f;
+		} else if (absoluteBoatToWind <= 165) {
+			acceleration = 0.125f;
+		} else if (absoluteBoatToWind <= 170) {
+			acceleration = 0.1f;
+		} else if (absoluteBoatToWind <= 175) {
+			acceleration = 0.05f;
+		} else if (absoluteBoatToWind <= 180) {
+			acceleration = 0.0f;
+		}
+
+		acceleration = acceleration / 10000;
+
+		// return this.ACCELERATION / SlickView.FRAMERATE;
+		return acceleration / framerate;
+	}
+
+	private float interpolateMaxV(int nextHigherAngle, int nextLowerAngle,
+			double lowerAngleWindHigh, double lowerAngleWindLow, double higherAngleWindHigh,
+			double higherAngleWindLow) {
+		// TODO Auto-generated method stub
+
+		return nextLowerAngle;
+
+	}
+
 	public void createTestPolar() {
 
 		// HashMap<Integer, HashMap<Integer, Double>> bigMap = new
 		// HashMap<Integer, HashMap<Integer, Double>>();
+
+		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
+		hm00.put(3, 1d);
+		hm00.put(6, 2d);
+		hm00.put(9, 4d);
+		hm00.put(12, 10d);
+		hm00.put(20, 12d);
+		hm00.put(30, 14d);
+		hm00.put(40, 16d);
+		bigMap.put(0, hm00);
 
 		HashMap<Integer, Double> hm30 = new HashMap<Integer, Double>();
 		hm30.put(3, 2d);
@@ -272,6 +411,11 @@ public class PolarPlotModel extends CalculationModel {
 		hm180.put(40, 16d);
 		bigMap.put(180, hm180);
 
+	}
+
+	public PolarPlotModel() {
+		super();
+		createTestPolar();
 	}
 
 }
