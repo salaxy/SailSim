@@ -169,7 +169,7 @@ public class PolarPlotModel extends CalculationModel {
 		}
 
 		System.out.println("**** interpolation beginns ****");
-		System.out.println("absoluteBoatToWind: " + absoluteBoatToWind + ", " + "windStrength: "
+		System.out.println(" absoluteBoatToWind: " + absoluteBoatToWind + ", " + "windStrength: "
 				+ windAcceleration);
 
 		HashMap<Integer, Double> nextHigherMap = null;
@@ -218,7 +218,7 @@ public class PolarPlotModel extends CalculationModel {
 					break;
 				}
 			} catch (NullPointerException e) {
-				System.err.println(e.getMessage());
+//				System.err.println(e.getMessage());
 			}
 		}
 
@@ -230,7 +230,7 @@ public class PolarPlotModel extends CalculationModel {
 					break;
 				}
 			} catch (NullPointerException e) {
-				System.err.println(e.getMessage());
+//				System.err.println(e.getMessage());
 			}
 		}
 
@@ -243,7 +243,7 @@ public class PolarPlotModel extends CalculationModel {
 					break;
 				}
 			} catch (NullPointerException e) {
-				System.err.println(e.getMessage());
+//				System.err.println(e.getMessage());
 			}
 		}
 		for (int i = windAcceleration; i >= 0; i--) {
@@ -254,7 +254,7 @@ public class PolarPlotModel extends CalculationModel {
 					break;
 				}
 			} catch (NullPointerException e) {
-				System.err.println(e.getMessage());
+//				e.printStackTrace();
 			}
 		}
 
@@ -263,21 +263,21 @@ public class PolarPlotModel extends CalculationModel {
 				higherAngleWindHighKey, higherAngleWindLowKey);
 		System.out.println(" intrapoltedHigherAngleWind: " + intrapoltedHigherAngleWind
 				+ " from Values: " + higherAngleWindHighValue + ", " + higherAngleWindLowValue
-				+ "windstrenght: " + higherAngleWindHighKey + ", " + higherAngleWindLowKey);
+				+ " windstrenght: " + higherAngleWindHighKey + ", " + higherAngleWindLowKey);
 
 		double intrapoltedLowerAngleWind = interpolateValueFromValuesBetweenDiffKey(
 				windAcceleration, lowerAngleWindHighValue, lowerAngleWindLowValue,
 				lowerAngleWindHighKey, lowerAngleWindLowKey);
 		System.out.println(" intrapoltedLowerAngleWind: " + intrapoltedLowerAngleWind
 				+ " from Values: " + lowerAngleWindHighValue + ", " + lowerAngleWindLowValue
-				+ "windstrenght: " + lowerAngleWindHighKey + ", " + lowerAngleWindLowKey);
+				+ " windstrenght: " + lowerAngleWindHighKey + ", " + lowerAngleWindLowKey);
 
 		double finalIntrapoltedVelocity = interpolateValueFromValuesBetweenDiffKey(
 				absoluteBoatToWind, intrapoltedHigherAngleWind, intrapoltedLowerAngleWind,
 				nextHigherAngle, nextLowerAngle);
 		System.out.println(" finalIntrapoltedVelocity: " + finalIntrapoltedVelocity
 				+ " from Values: " + intrapoltedHigherAngleWind + ", " + intrapoltedLowerAngleWind
-				+ "angles: " + nextHigherAngle + ", " + nextLowerAngle);
+				+ " angles: " + nextHigherAngle + ", " + nextLowerAngle);
 
 		acceleration = acceleration / 10000;
 		return acceleration / framerate;
@@ -303,8 +303,8 @@ public class PolarPlotModel extends CalculationModel {
 
 		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
 		hm00.put(0, 0d);
-		hm00.put(3, 1d);
-		hm00.put(6, 2d);
+		hm00.put(2, 1d);
+		hm00.put(5, 2d);
 		hm00.put(10, 4d);
 		hm00.put(12, 10d);
 		hm00.put(20, 12d);
