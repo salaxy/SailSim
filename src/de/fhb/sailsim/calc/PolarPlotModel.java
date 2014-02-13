@@ -15,12 +15,12 @@ public class PolarPlotModel extends CalculationModel {
 	private final double FALL_BACK_ACCELERATION = -0.00004d;
 	private final double MIN_VELOCITY = 0.1d;
 
-	// in grad pro sekunde für eien geschwindigkeit von 10 m/s
+	// in grad pro sekunde für eine geschwindigkeit von 10 m/s
 	private final double ANGLE_VELOCITY = 40d;
 	private final double REFERENCE_PROPULSION_VELOCITY = 1d;
 	private final double MAX_VELOCITY = 5.0f;
 
-	// private ArrayList<PolarData> polarPlot = new ArrayList<PolarData>();
+	// Polar data
 	private HashMap<Integer, HashMap<Integer, Double>> bigMap = new HashMap<Integer, HashMap<Integer, Double>>();
 
 	public PolarPlotModel() {
@@ -169,8 +169,11 @@ public class PolarPlotModel extends CalculationModel {
 			absoluteBoatToWind = 180 + env.getWindState().getWindToBoat();
 		}
 
-		HashMap<Integer, Double> nextHigherMap = new HashMap<Integer, Double>();
-		HashMap<Integer, Double> nextLowerMap = new HashMap<Integer, Double>();
+//		HashMap<Integer, Double> nextHigherMap = new HashMap<Integer, Double>();
+//		HashMap<Integer, Double> nextLowerMap = new HashMap<Integer, Double>();
+		
+		HashMap<Integer, Double> nextHigherMap = null;
+		HashMap<Integer, Double> nextLowerMap = null;
 
 		int nextHigherAngle = 0;
 		int nextLowerAngle = 0;
@@ -189,7 +192,7 @@ public class PolarPlotModel extends CalculationModel {
 		for (int i = absoluteBoatToWind; i >= 0; i--) {
 			nextLowerMap = bigMap.get(new Integer(i));
 			if (nextLowerMap != null) {
-				// System.out.println("next lower windmap found");
+//				 System.out.println("next lower windmap found");
 				nextLowerAngle = i;
 				break;
 			}
@@ -209,15 +212,16 @@ public class PolarPlotModel extends CalculationModel {
 		// find wind=key velocity=values in lower map
 		for (int i = windAcceleration; i <= 40; i++) {
 			lowerAngleWindHighValue = nextLowerMap.get(new Integer(i));
-			if (nextLowerMap != null) {
-				higherAngleWindHighKey = i;
+			lowerAngleWindHighKey = i;
+			if (lowerAngleWindHighValue != 0) {
 				break;
 			}
 		}
+		
 		for (int i = windAcceleration; i >= 0; i--) {
 			lowerAngleWindLowValue = nextLowerMap.get(new Integer(i));
-			if (nextLowerMap != null) {
-				higherAngleWindLowKey = i;
+			lowerAngleWindLowKey = i;
+			if (lowerAngleWindLowValue != 0) {
 				break;
 			}
 		}
@@ -225,15 +229,15 @@ public class PolarPlotModel extends CalculationModel {
 		// find wind=key velocity=values in higher map
 		for (int i = windAcceleration; i <= 40; i++) {
 			higherAngleWindHighValue = nextHigherMap.get(new Integer(i));
-			if (nextLowerMap != null) {
-				higherAngleWindHighKey = i;
+			higherAngleWindHighKey = i;
+			if (higherAngleWindHighValue != 0) {
 				break;
 			}
 		}
 		for (int i = windAcceleration; i >= 0; i--) {
 			higherAngleWindLowValue = nextHigherMap.get(new Integer(i));
-			if (nextLowerMap != null) {
-				higherAngleWindLowKey = i;
+			higherAngleWindLowKey = i;
+			if (higherAngleWindLowValue != 0) {
 				break;
 			}
 		}
@@ -289,9 +293,10 @@ public class PolarPlotModel extends CalculationModel {
 	public void createTestPolar() {
 
 		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
-		hm00.put(3, 1d);
-		hm00.put(6, 2d);
-		hm00.put(9, 4d);
+//		hm00.put(0, 0d);
+		hm00.put(2, 1d);
+		hm00.put(5, 2d);
+		hm00.put(10, 4d);
 		hm00.put(12, 10d);
 		hm00.put(20, 12d);
 		hm00.put(30, 14d);
@@ -299,9 +304,10 @@ public class PolarPlotModel extends CalculationModel {
 		bigMap.put(0, hm00);
 
 		HashMap<Integer, Double> hm30 = new HashMap<Integer, Double>();
-		hm30.put(3, 2d);
-		hm30.put(6, 4d);
-		hm30.put(9, 8d);
+//		hm30.put(0, 0d);
+		hm30.put(2, 2d);
+		hm30.put(5, 4d);
+		hm30.put(10, 8d);
 		hm30.put(12, 10d);
 		hm30.put(20, 12d);
 		hm30.put(30, 14d);
@@ -309,9 +315,10 @@ public class PolarPlotModel extends CalculationModel {
 		bigMap.put(30, hm30);
 
 		HashMap<Integer, Double> hm60 = new HashMap<Integer, Double>();
-		hm60.put(3, 2d);
-		hm60.put(6, 4d);
-		hm60.put(9, 8d);
+//		hm60.put(0, 0d);
+		hm60.put(2, 2d);
+		hm60.put(5, 4d);
+		hm60.put(10, 8d);
 		hm60.put(12, 10d);
 		hm60.put(20, 12d);
 		hm60.put(30, 14d);
@@ -319,9 +326,10 @@ public class PolarPlotModel extends CalculationModel {
 		bigMap.put(60, hm60);
 
 		HashMap<Integer, Double> hm90 = new HashMap<Integer, Double>();
-		hm90.put(3, 2d);
-		hm90.put(6, 4d);
-		hm90.put(9, 8d);
+//		hm90.put(0, 0d);
+		hm90.put(2, 2d);
+		hm90.put(5, 4d);
+		hm90.put(10, 8d);
 		hm90.put(12, 10d);
 		hm90.put(20, 12d);
 		hm90.put(30, 14d);
@@ -329,9 +337,10 @@ public class PolarPlotModel extends CalculationModel {
 		bigMap.put(90, hm90);
 
 		HashMap<Integer, Double> hm120 = new HashMap<Integer, Double>();
-		hm120.put(3, 3d);
-		hm120.put(6, 6d);
-		hm120.put(9, 9d);
+//		hm120.put(0, 0d);
+		hm120.put(2, 3d);
+		hm120.put(5, 6d);
+		hm120.put(10, 9d);
 		hm120.put(12, 14d);
 		hm120.put(20, 20d);
 		hm120.put(30, 27d);
@@ -339,9 +348,10 @@ public class PolarPlotModel extends CalculationModel {
 		bigMap.put(120, hm120);
 
 		HashMap<Integer, Double> hm180 = new HashMap<Integer, Double>();
-		hm180.put(3, 2d);
-		hm180.put(6, 4d);
-		hm180.put(9, 8d);
+		hm180.put(0, 0d);
+		hm180.put(2, 2d);
+		hm180.put(5, 4d);
+		hm180.put(10, 8d);
 		hm180.put(12, 10d);
 		hm180.put(20, 12d);
 		hm180.put(30, 14d);
