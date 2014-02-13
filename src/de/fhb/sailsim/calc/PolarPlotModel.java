@@ -23,6 +23,11 @@ public class PolarPlotModel extends CalculationModel {
 	// private ArrayList<PolarData> polarPlot = new ArrayList<PolarData>();
 	private HashMap<Integer, HashMap<Integer, Double>> bigMap = new HashMap<Integer, HashMap<Integer, Double>>();
 
+	public PolarPlotModel() {
+		super();
+		createTestPolar();
+	}
+
 	@Override
 	public void calculateNextState(BoatState boat, Enviroment env, long time) {
 
@@ -32,7 +37,7 @@ public class PolarPlotModel extends CalculationModel {
 		// Beschleunigung m pro sekunde quadrat
 		// double a = this.ACCELERATION / SlickView.FRAMERATE; //linear,
 		// depricated
-		double a = this.calculateActualAcceleration(boat, env, SlickView.FRAMERATE);
+		double a = this.calculateMaxVelocityFromPolar(boat, env, SlickView.FRAMERATE);
 
 		// zeit in sekunden
 		long t = time; // t=1000/SlickView.FRAMERATE;
@@ -99,53 +104,6 @@ public class PolarPlotModel extends CalculationModel {
 
 	}
 
-	private double calculateActualAccelerationDummy(BoatState boat, Enviroment env, int framerate) {
-		// here pick up values from polar-modell
-
-		int absoluteBoatToWind = env.getWindState().getWindToBoat();
-		float acceleration = 0;
-
-		if (env.getWindState().getWindToBoat() < 0) {
-			absoluteBoatToWind = -env.getWindState().getWindToBoat();
-		}
-
-		if (absoluteBoatToWind <= 5) {
-			acceleration = 1.0f;
-		} else if (absoluteBoatToWind <= 15) {
-			acceleration = 1.5f;
-		} else if (absoluteBoatToWind <= 30) {
-			acceleration = 1.7f;
-		} else if (absoluteBoatToWind <= 45) {
-			acceleration = 1.5f;
-		} else if (absoluteBoatToWind <= 60) {
-			acceleration = 1.25f;
-		} else if (absoluteBoatToWind <= 75) {
-			acceleration = 1.1f;
-		} else if (absoluteBoatToWind <= 90) {
-			acceleration = 1.0f;
-		} else if (absoluteBoatToWind <= 105) {
-			acceleration = 0.75f;
-		} else if (absoluteBoatToWind <= 120) {
-			acceleration = 0.5f;
-		} else if (absoluteBoatToWind <= 135) {
-			acceleration = 0.375f;
-		} else if (absoluteBoatToWind <= 150) {
-			acceleration = 0.25f;
-		} else if (absoluteBoatToWind <= 165) {
-			acceleration = 0.125f;
-		} else if (absoluteBoatToWind <= 170) {
-			acceleration = 0.1f;
-		} else if (absoluteBoatToWind <= 175) {
-			acceleration = 0.05f;
-		} else if (absoluteBoatToWind <= 180) {
-			acceleration = 0.0f;
-		}
-
-		acceleration = acceleration / 10000;
-
-		// return this.ACCELERATION / SlickView.FRAMERATE;
-		return acceleration / framerate;
-	}
 
 	private void calcSailDeflection(BoatState boat, Enviroment env) {
 
@@ -177,22 +135,6 @@ public class PolarPlotModel extends CalculationModel {
 		boat.setSailDeflection(-boat.getSailDeflection());
 	}
 
-	private double interpolateMaxV(PolarData valueMin, PolarData valueMax) {
-		// TODO
-		return 0;
-	}
-
-	public void readInPolarPlotAsCsv(PolarData valueMin, PolarData valueMax) {
-		// TODO
-
-	}
-
-	// public void calculateMaxVelocityDepencyOfWinddirection(BoatState boat,
-	// Enviroment env, long time){
-	// //TODO
-	//
-	// }
-
 	public void calcAngleDifference(BoatState boat, Enviroment env, long time) {
 		int boatDirection = (int) boat.getDirectionValue();
 		// int boatTheta = (int) boat.getDirection().getTheta();
@@ -216,7 +158,7 @@ public class PolarPlotModel extends CalculationModel {
 		// System.out.println("wind: " + windDirection);
 	}
 
-	private double calculateActualAcceleration(BoatState boat, Enviroment env, int framerate) {
+	private double calculateMaxVelocityFromPolar(BoatState boat, Enviroment env, int framerate) {
 		// here pick up values from polar-modell
 
 		int absoluteBoatToWind = 180 - env.getWindState().getWindToBoat();
@@ -233,26 +175,6 @@ public class PolarPlotModel extends CalculationModel {
 		int nextHigherAngle = 0;
 		int nextLowerAngle = 0;
 
-		// find lower map
-		for (int i = absoluteBoatToWind; i >= 0; i--) {
-			nextLowerMap = bigMap.get(new Integer(i));
-			if (nextLowerMap != null) {
-				System.out.println("next lower windmap found");
-				nextLowerAngle = i;
-				break;
-			}
-		}
-
-		// find higher map
-		for (int i = absoluteBoatToWind; i <= 180; i++) {
-			nextHigherMap = bigMap.get(new Integer(i));
-			if (nextHigherMap != null) {
-				System.out.println("next higher windmap found");
-				nextHigherAngle = i;
-				break;
-			}
-		}
-
 		double lowerAngleWindHighValue = 0;
 		double lowerAngleWindLowValue = 0;
 		double lowerAngleWindHighKey = 0;
@@ -263,14 +185,32 @@ public class PolarPlotModel extends CalculationModel {
 		double higherAngleWindHighKey = 0;
 		double higherAngleWindLowKey = 0;
 
-		// finde Wind Geschwindigkeiten in den Maps
+		// find lower map
+		for (int i = absoluteBoatToWind; i >= 0; i--) {
+			nextLowerMap = bigMap.get(new Integer(i));
+			if (nextLowerMap != null) {
+				// System.out.println("next lower windmap found");
+				nextLowerAngle = i;
+				break;
+			}
+		}
 
-		// find wind values in lower map
+		// find higher map
+		for (int i = absoluteBoatToWind; i <= 180; i++) {
+			nextHigherMap = bigMap.get(new Integer(i));
+			if (nextHigherMap != null) {
+				// System.out.println("next higher windmap found");
+				nextHigherAngle = i;
+				break;
+			}
+		}
+
+		// find velocities in maps
+		// find wind=key velocity=values in lower map
 		for (int i = windAcceleration; i <= 40; i++) {
 			lowerAngleWindHighValue = nextLowerMap.get(new Integer(i));
 			if (nextLowerMap != null) {
 				higherAngleWindHighKey = i;
-				System.out.println("next lower windmap found");
 				break;
 			}
 		}
@@ -278,16 +218,15 @@ public class PolarPlotModel extends CalculationModel {
 			lowerAngleWindLowValue = nextLowerMap.get(new Integer(i));
 			if (nextLowerMap != null) {
 				higherAngleWindLowKey = i;
-				System.out.println("next lower windmap found");
 				break;
 			}
 		}
-		// find wind values in higher map
+
+		// find wind=key velocity=values in higher map
 		for (int i = windAcceleration; i <= 40; i++) {
 			higherAngleWindHighValue = nextHigherMap.get(new Integer(i));
 			if (nextLowerMap != null) {
 				higherAngleWindHighKey = i;
-				System.out.println("next lower windmap found");
 				break;
 			}
 		}
@@ -295,107 +234,59 @@ public class PolarPlotModel extends CalculationModel {
 			higherAngleWindLowValue = nextHigherMap.get(new Integer(i));
 			if (nextLowerMap != null) {
 				higherAngleWindLowKey = i;
-				System.out.println("next lower windmap found");
 				break;
 			}
 		}
-		// syso alle vier werte
-		//
-		// TODO hier weiter machen morgen
-		// acceleration = this.interpolateMaxV(nextHigherAngle, nextLowerAngle,
-		// lowerAngleWindHighValue,
-		// lowerAngleWindLowValue, higherAngleWindHighValue,
-		// higherAngleWindLowValue, windAcceleration, absoluteBoatToWind);
 
-		// finde Mittelwert nextHigherAngle
-
-		double intrapoltedHigherAngleWind = intrapolateVelocityBetweenDiffWindStrength(
+		System.out.println("**** interpolation beginns ****");
+		System.out.println("absoluteBoatToWind: " + absoluteBoatToWind + ", " + "windStrength"
+				+ windAcceleration);
+		double intrapoltedHigherAngleWind = interpolateValueFromValuesBetweenDiffKey(
 				windAcceleration, higherAngleWindHighValue, higherAngleWindLowValue,
 				higherAngleWindHighKey, higherAngleWindLowKey);
-		
-		//TODO lower einarbeiten
-		double intrapoltedLowerAngleWind = intrapolateVelocityBetweenDiffWindStrength(
+		System.out.println(" intrapoltedHigherAngleWind: " + intrapoltedHigherAngleWind
+				+ " from Values: " + higherAngleWindHighValue + ", " + higherAngleWindLowValue
+				+ "windstrenght:" + higherAngleWindHighKey + ", " + higherAngleWindLowKey);
+
+		double intrapoltedLowerAngleWind = interpolateValueFromValuesBetweenDiffKey(
 				windAcceleration, lowerAngleWindHighValue, lowerAngleWindLowValue,
 				lowerAngleWindHighKey, lowerAngleWindLowKey);
-		
-		double finalIntrapoltedVelocity = intrapolateVelocityBetweenDiffWindStrength(
+		System.out.println(" intrapoltedLowerAngleWind: " + intrapoltedLowerAngleWind
+				+ " from Values: " + lowerAngleWindHighValue + ", " + lowerAngleWindLowValue
+				+ "windstrenght:" + lowerAngleWindHighKey + ", " + lowerAngleWindLowKey);
+
+		double finalIntrapoltedVelocity = interpolateValueFromValuesBetweenDiffKey(
 				absoluteBoatToWind, intrapoltedHigherAngleWind, intrapoltedLowerAngleWind,
 				nextHigherAngle, nextLowerAngle);
+		System.out.println(" finalIntrapoltedVelocity: " + finalIntrapoltedVelocity
+				+ " from Values: " + intrapoltedHigherAngleWind + ", " + intrapoltedLowerAngleWind
+				+ "angles:" + nextHigherAngle + ", " + nextLowerAngle);
 
-
-		if (absoluteBoatToWind <= 5) {
-			acceleration = 1.0f;
-		} else if (absoluteBoatToWind <= 15) {
-			acceleration = 1.5f;
-		} else if (absoluteBoatToWind <= 30) {
-			acceleration = 1.7f;
-		} else if (absoluteBoatToWind <= 45) {
-			acceleration = 1.5f;
-		} else if (absoluteBoatToWind <= 60) {
-			acceleration = 1.25f;
-		} else if (absoluteBoatToWind <= 75) {
-			acceleration = 1.1f;
-		} else if (absoluteBoatToWind <= 90) {
-			acceleration = 1.0f;
-		} else if (absoluteBoatToWind <= 105) {
-			acceleration = 0.75f;
-		} else if (absoluteBoatToWind <= 120) {
-			acceleration = 0.5f;
-		} else if (absoluteBoatToWind <= 135) {
-			acceleration = 0.375f;
-		} else if (absoluteBoatToWind <= 150) {
-			acceleration = 0.25f;
-		} else if (absoluteBoatToWind <= 165) {
-			acceleration = 0.125f;
-		} else if (absoluteBoatToWind <= 170) {
-			acceleration = 0.1f;
-		} else if (absoluteBoatToWind <= 175) {
-			acceleration = 0.05f;
-		} else if (absoluteBoatToWind <= 180) {
-			acceleration = 0.0f;
-		}
+		System.out.println("interpolation : " + "absWindToBoat: " + absoluteBoatToWind
+				+ "absWindToBoat: " + absoluteBoatToWind + "absWindToBoat: " + absoluteBoatToWind
+				+ "absWindToBoat: " + absoluteBoatToWind);
 
 		acceleration = acceleration / 10000;
-
-		// return this.ACCELERATION / SlickView.FRAMERATE;
 		return acceleration / framerate;
 	}
 
-	private double intrapolateVelocityBetweenDiffWindStrength(int windAcceleration,
+	private double interpolateValueFromValuesBetweenDiffKey(int windAcceleration,
 			double angleWindHighValue, double angleWindLowValue, double angleWindHighKey,
 			double angleWindLowKey) {
+
+		if (angleWindHighKey == angleWindLowKey) {
+			return angleWindHighValue;
+		}
 
 		double diffWindKeys = angleWindHighKey - angleWindLowKey;
 		double diffWindValue = angleWindHighValue - angleWindLowValue;
 		double diffActualWindStrength = windAcceleration - angleWindLowKey;
-		double intrapolatedWindVelocity = angleWindLowValue
+		double interpolatedWindVelocity = angleWindLowValue
 				+ (diffActualWindStrength * (diffWindValue / diffWindKeys));
-		return intrapolatedWindVelocity;
+		return interpolatedWindVelocity;
 	}
 
-	// private float interpolateMaxV(int nextHigherAngle, int nextLowerAngle,
-	// double lowerAngleWindHigh, double lowerAngleWindLow, double
-	// higherAngleWindHigh,
-	// double higherAngleWindLow, int windAcceleration, int absoluteBoatToWind)
-	// {
-	// // TODO Auto-generated method stub
-	//
-	// //TODO Test ob einer der gefundenen Werte bereits genau der richtige ist
-	//
-	// //finde Mittelwert nextHigherAngle
-	// higherAngleWindLow
-	// higherAngleWindHigh
-	//
-	//
-	//
-	// return nextLowerAngle;
-	//
-	// }
-
 	public void createTestPolar() {
-
-		// HashMap<Integer, HashMap<Integer, Double>> bigMap = new
-		// HashMap<Integer, HashMap<Integer, Double>>();
 
 		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
 		hm00.put(3, 1d);
@@ -459,9 +350,49 @@ public class PolarPlotModel extends CalculationModel {
 
 	}
 
-	public PolarPlotModel() {
-		super();
-		createTestPolar();
+	private double calculateActualAccelerationDummy(BoatState boat, Enviroment env, int framerate) {
+
+		int absoluteBoatToWind = env.getWindState().getWindToBoat();
+		float velocity = 0;
+
+		if (env.getWindState().getWindToBoat() < 0) {
+			absoluteBoatToWind = -env.getWindState().getWindToBoat();
+		}
+
+		if (absoluteBoatToWind <= 5) {
+			velocity = 1.0f;
+		} else if (absoluteBoatToWind <= 15) {
+			velocity = 1.5f;
+		} else if (absoluteBoatToWind <= 30) {
+			velocity = 1.7f;
+		} else if (absoluteBoatToWind <= 45) {
+			velocity = 1.5f;
+		} else if (absoluteBoatToWind <= 60) {
+			velocity = 1.25f;
+		} else if (absoluteBoatToWind <= 75) {
+			velocity = 1.1f;
+		} else if (absoluteBoatToWind <= 90) {
+			velocity = 1.0f;
+		} else if (absoluteBoatToWind <= 105) {
+			velocity = 0.75f;
+		} else if (absoluteBoatToWind <= 120) {
+			velocity = 0.5f;
+		} else if (absoluteBoatToWind <= 135) {
+			velocity = 0.375f;
+		} else if (absoluteBoatToWind <= 150) {
+			velocity = 0.25f;
+		} else if (absoluteBoatToWind <= 165) {
+			velocity = 0.125f;
+		} else if (absoluteBoatToWind <= 170) {
+			velocity = 0.1f;
+		} else if (absoluteBoatToWind <= 175) {
+			velocity = 0.05f;
+		} else if (absoluteBoatToWind <= 180) {
+			velocity = 0.0f;
+		}
+
+		velocity = velocity / 10000;
+		return velocity / framerate;
 	}
 
 }
