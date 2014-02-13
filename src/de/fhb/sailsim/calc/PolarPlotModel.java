@@ -253,51 +253,75 @@ public class PolarPlotModel extends CalculationModel {
 			}
 		}
 
-		double lowerAngleWindHigh = 0;
-		double lowerAngleWindLow = 0;
+		double lowerAngleWindHighValue = 0;
+		double lowerAngleWindLowValue = 0;
+		double lowerAngleWindHighKey = 0;
+		double lowerAngleWindLowKey = 0;
 
-		double higherAngleWindHigh = 0;
-		double higherAngleWindLow = 0;
+		double higherAngleWindHighValue = 0;
+		double higherAngleWindLowValue = 0;
+		double higherAngleWindHighKey = 0;
+		double higherAngleWindLowKey = 0;
+
+		// finde Wind Geschwindigkeiten in den Maps
 
 		// find wind values in lower map
 		for (int i = windAcceleration; i <= 40; i++) {
-			lowerAngleWindHigh = nextLowerMap.get(new Integer(i));
+			lowerAngleWindHighValue = nextLowerMap.get(new Integer(i));
 			if (nextLowerMap != null) {
+				higherAngleWindHighKey = i;
 				System.out.println("next lower windmap found");
 				break;
 			}
 		}
 		for (int i = windAcceleration; i >= 0; i--) {
-			lowerAngleWindLow = nextLowerMap.get(new Integer(i));
+			lowerAngleWindLowValue = nextLowerMap.get(new Integer(i));
 			if (nextLowerMap != null) {
+				higherAngleWindLowKey = i;
 				System.out.println("next lower windmap found");
 				break;
 			}
 		}
 		// find wind values in higher map
 		for (int i = windAcceleration; i <= 40; i++) {
-			higherAngleWindHigh = nextHigherMap.get(new Integer(i));
+			higherAngleWindHighValue = nextHigherMap.get(new Integer(i));
 			if (nextLowerMap != null) {
+				higherAngleWindHighKey = i;
 				System.out.println("next lower windmap found");
 				break;
 			}
 		}
 		for (int i = windAcceleration; i >= 0; i--) {
-			higherAngleWindLow = nextHigherMap.get(new Integer(i));
+			higherAngleWindLowValue = nextHigherMap.get(new Integer(i));
 			if (nextLowerMap != null) {
+				higherAngleWindLowKey = i;
 				System.out.println("next lower windmap found");
 				break;
 			}
 		}
 		// syso alle vier werte
-		// 
-		//TODO hier weiter machen morgen
-		acceleration = this.interpolateMaxV(nextHigherAngle, nextLowerAngle, lowerAngleWindHigh,
-				lowerAngleWindLow, higherAngleWindHigh, higherAngleWindLow);
+		//
+		// TODO hier weiter machen morgen
+		// acceleration = this.interpolateMaxV(nextHigherAngle, nextLowerAngle,
+		// lowerAngleWindHighValue,
+		// lowerAngleWindLowValue, higherAngleWindHighValue,
+		// higherAngleWindLowValue, windAcceleration, absoluteBoatToWind);
 
-		// finde Wind Geschwindigkeiten in den Maps
+		// finde Mittelwert nextHigherAngle
 
-		bigMap.get(30);
+		double intrapoltedHigherAngleWind = intrapolateVelocityBetweenDiffWindStrength(
+				windAcceleration, higherAngleWindHighValue, higherAngleWindLowValue,
+				higherAngleWindHighKey, higherAngleWindLowKey);
+		
+		//TODO lower einarbeiten
+		double intrapoltedLowerAngleWind = intrapolateVelocityBetweenDiffWindStrength(
+				windAcceleration, lowerAngleWindHighValue, lowerAngleWindLowValue,
+				lowerAngleWindHighKey, lowerAngleWindLowKey);
+		
+		double finalIntrapoltedVelocity = intrapolateVelocityBetweenDiffWindStrength(
+				absoluteBoatToWind, intrapoltedHigherAngleWind, intrapoltedLowerAngleWind,
+				nextHigherAngle, nextLowerAngle);
+
 
 		if (absoluteBoatToWind <= 5) {
 			acceleration = 1.0f;
@@ -337,14 +361,36 @@ public class PolarPlotModel extends CalculationModel {
 		return acceleration / framerate;
 	}
 
-	private float interpolateMaxV(int nextHigherAngle, int nextLowerAngle,
-			double lowerAngleWindHigh, double lowerAngleWindLow, double higherAngleWindHigh,
-			double higherAngleWindLow) {
-		// TODO Auto-generated method stub
+	private double intrapolateVelocityBetweenDiffWindStrength(int windAcceleration,
+			double angleWindHighValue, double angleWindLowValue, double angleWindHighKey,
+			double angleWindLowKey) {
 
-		return nextLowerAngle;
-
+		double diffWindKeys = angleWindHighKey - angleWindLowKey;
+		double diffWindValue = angleWindHighValue - angleWindLowValue;
+		double diffActualWindStrength = windAcceleration - angleWindLowKey;
+		double intrapolatedWindVelocity = angleWindLowValue
+				+ (diffActualWindStrength * (diffWindValue / diffWindKeys));
+		return intrapolatedWindVelocity;
 	}
+
+	// private float interpolateMaxV(int nextHigherAngle, int nextLowerAngle,
+	// double lowerAngleWindHigh, double lowerAngleWindLow, double
+	// higherAngleWindHigh,
+	// double higherAngleWindLow, int windAcceleration, int absoluteBoatToWind)
+	// {
+	// // TODO Auto-generated method stub
+	//
+	// //TODO Test ob einer der gefundenen Werte bereits genau der richtige ist
+	//
+	// //finde Mittelwert nextHigherAngle
+	// higherAngleWindLow
+	// higherAngleWindHigh
+	//
+	//
+	//
+	// return nextLowerAngle;
+	//
+	// }
 
 	public void createTestPolar() {
 
