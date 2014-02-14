@@ -37,7 +37,8 @@ public class PolarPlotModel extends CalculationModel {
 		// Beschleunigung m pro sekunde quadrat
 		// double a = this.ACCELERATION / SlickView.FRAMERATE; //linear,
 		// depricated
-		double a = this.calculateMaxVelocityFromPolar(boat, env, SlickView.FRAMERATE);
+		double maxV = this.calculateMaxVelocityFromPolar(boat, env, SlickView.FRAMERATE);
+		double a = maxV/10000/SlickView.FRAMERATE;
 
 		// zeit in sekunden
 		long t = time; // t=1000/SlickView.FRAMERATE;
@@ -51,8 +52,9 @@ public class PolarPlotModel extends CalculationModel {
 		// eigentlich s = (0.5 * a) * (t * t) + (v * t) + s0;
 		// aber berechnung hier nur für die nächste Teilstrecke
 		s = (0.5 * a) * (t * t) + (v * t);
+		 System.out.println("beschleunigung: " + a);
 
-		if (boat.getCurrentPropulsionVelocity() <= MAX_VELOCITY) {
+		if (boat.getCurrentPropulsionVelocity() <= maxV) {
 			// boot geschwindigkeit erhöhen
 			// berechne neue geschwindigkeit
 			// TODO wieder einkommentieren
@@ -279,8 +281,7 @@ public class PolarPlotModel extends CalculationModel {
 				+ " from Values: " + intrapoltedHigherAngleWind + ", " + intrapoltedLowerAngleWind
 				+ " angles: " + nextHigherAngle + ", " + nextLowerAngle);
 
-		acceleration = acceleration / 10000;
-		return acceleration / framerate;
+		return finalIntrapoltedVelocity;
 	}
 
 	private double interpolateValueFromValuesBetweenDiffKey(int windAcceleration,
@@ -366,7 +367,6 @@ public class PolarPlotModel extends CalculationModel {
 		hm180.put(30, 14d);
 		hm180.put(40, 16d);
 		bigMap.put(180, hm180);
-
 	}
 
 	private double calculateActualAccelerationDummy(BoatState boat, Enviroment env, int framerate) {
