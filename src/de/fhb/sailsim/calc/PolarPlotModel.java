@@ -13,12 +13,12 @@ public class PolarPlotModel extends CalculationModel {
 
 	// pixel/meter per sec
 	private final double FALL_BACK_ACCELERATION = -0.00004d;
-	private final double MIN_VELOCITY = 0.1d;
+//	private final double MIN_VELOCITY = 0.1d;
 
 	// in grad pro sekunde für eine geschwindigkeit von 10 m/s
 	private final double ANGLE_VELOCITY = 40d;
 	private final double REFERENCE_PROPULSION_VELOCITY = 1d;
-	private final double MAX_VELOCITY = 5.0f;
+//	private final double MAX_VELOCITY = 5.0f;
 
 	// Polar data
 	private HashMap<Integer, HashMap<Integer, Double>> bigMap = new HashMap<Integer, HashMap<Integer, Double>>();
@@ -37,8 +37,8 @@ public class PolarPlotModel extends CalculationModel {
 		// Beschleunigung m pro sekunde quadrat
 		// double a = this.ACCELERATION / SlickView.FRAMERATE; //linear,
 		// depricated
-		double maxV = this.calculateMaxVelocityFromPolar(boat, env, SlickView.FRAMERATE);
-		double a = maxV/10000/SlickView.FRAMERATE;
+		double polarMaxV = this.calculateMaxVelocityFromPolar(boat, env, SlickView.FRAMERATE);
+		double a = polarMaxV/10000/SlickView.FRAMERATE;
 
 		// zeit in sekunden
 		long t = time; // t=1000/SlickView.FRAMERATE;
@@ -54,7 +54,7 @@ public class PolarPlotModel extends CalculationModel {
 		s = (0.5 * a) * (t * t) + (v * t);
 		 System.out.println("beschleunigung: " + a);
 
-		if (boat.getCurrentPropulsionVelocity() <= maxV) {
+		if (boat.getCurrentPropulsionVelocity() <= polarMaxV) {
 			// boot geschwindigkeit erhöhen
 			// berechne neue geschwindigkeit
 			// TODO wieder einkommentieren
@@ -66,6 +66,22 @@ public class PolarPlotModel extends CalculationModel {
 			}
 		}
 
+		double rotateV = calcRotationVelocity(boat, s, propulsionV);
+
+		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
+
+		calcAngleWindToBoat(boat, env, time);
+		calcSailDeflection(boat, env);
+
+	}
+
+	/**
+	 * @param boat
+	 * @param s
+	 * @param propulsionV
+	 * @return
+	 */
+	private double calcRotationVelocity(BoatState boat, double s, double propulsionV) {
 		// calc angle velocity in depency of propulsion velocity
 		// TODO der Wendekreis bleibt immer gleich egal welche geschwindigkeit,
 		// ist das wirklich so, ist das real???
@@ -98,12 +114,7 @@ public class PolarPlotModel extends CalculationModel {
 		newPosition = VectorHelper.add(boat.getPosition(),
 				VectorHelper.mult(boat.getDirection().normalise(), (float) s));
 		boat.setPosition(newPosition);
-
-		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
-
-		calcAngleDifference(boat, env, time);
-		calcSailDeflection(boat, env);
-
+		return rotateV;
 	}
 
 	private void calcSailDeflection(BoatState boat, Enviroment env) {
@@ -127,16 +138,15 @@ public class PolarPlotModel extends CalculationModel {
 		// falsche Segel stellungen durch Wende korrigieren bzw. patenthalse
 		// if(boatAngle>0){
 		if (windAngle >= boatAngle + 60 && windAngle <= 360) {
-			this.invert(boat);
+			this.invertSailDeflection(boat);
 		}
-
 	}
 
-	private void invert(BoatState boat) {
+	private void invertSailDeflection(BoatState boat) {
 		boat.setSailDeflection(-boat.getSailDeflection());
 	}
 
-	public void calcAngleDifference(BoatState boat, Enviroment env, long time) {
+	public void calcAngleWindToBoat(BoatState boat, Enviroment env, long time) {
 		int boatDirection = (int) boat.getDirectionValue();
 		// int boatTheta = (int) boat.getDirection().getTheta();
 		int windDirection = (int) env.getWindState().getDirection();
@@ -304,13 +314,13 @@ public class PolarPlotModel extends CalculationModel {
 
 		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
 		hm00.put(0, 0d);
-		hm00.put(2, 1d);
-		hm00.put(5, 2d);
-		hm00.put(10, 4d);
-		hm00.put(12, 10d);
-		hm00.put(20, 12d);
-		hm00.put(30, 14d);
-		hm00.put(40, 16d);
+		hm00.put(2, 0.1d);
+		hm00.put(5, 0.1d);
+		hm00.put(10, 0.1d);
+		hm00.put(12, 0.1d);
+		hm00.put(20, 0.2d);
+		hm00.put(30, 0.3d);
+		hm00.put(40, 0.4d);
 		bigMap.put(0, hm00);
 
 		HashMap<Integer, Double> hm30 = new HashMap<Integer, Double>();
