@@ -13,16 +13,18 @@ public class PolarPlotModel extends CalculationModel {
 
 	// pixel/meter per sec
 	private final double FALL_BACK_ACCELERATION = -0.00004d;
-//	private final double MIN_VELOCITY = 0.1d;
+	private final int VELOCITY_DIVDIE = 10000;
 
 	// in grad pro sekunde für eine geschwindigkeit von 10 m/s
 	private final double ANGLE_VELOCITY = 40d;
 	private final double REFERENCE_PROPULSION_VELOCITY = 1d;
-//	private final double MAX_VELOCITY = 5.0f;
 
-	// Polar data
-	private HashMap<Integer, HashMap<Integer, Double>> bigMap = new HashMap<Integer, HashMap<Integer, Double>>();
+	// Polar data stored in a Hashmap
+	private HashMap<Integer, HashMap<Integer, Double>> polarMap = new HashMap<Integer, HashMap<Integer, Double>>();
 
+	/**
+	 * Kontruktur of the class with initialize a Testpolar in polarMap
+	 */
 	public PolarPlotModel() {
 		super();
 		createTestPolar();
@@ -31,40 +33,48 @@ public class PolarPlotModel extends CalculationModel {
 	@Override
 	public void calculateNextState(BoatState boat, Enviroment env, long time) {
 
-		// gesucht zurückgelegter Weg
+		// Gesucht ist der zurückgelegte Weg s
 		double s;
-
+		
+		// zeit in sekunden
+		// t=1000/SlickView.FRAMERATE;
+		long t = time; 
+		// anfangsgeschwindigkeit meter pro sekunde
+		double propulsionV = boat.getCurrentPropulsionVelocity();
+		
 		// Beschleunigung m pro sekunde quadrat
 		// double a = this.ACCELERATION / SlickView.FRAMERATE; //linear,
 		// depricated
 		double polarMaxV = this.calculateMaxVelocityFromPolar(boat, env, SlickView.FRAMERATE);
-		double a = polarMaxV/10000/SlickView.FRAMERATE;
-
-		// zeit in sekunden
-		long t = time; // t=1000/SlickView.FRAMERATE;
-		// anfangsgeschwindigkeit meter pro sekunde
-		double propulsionV = boat.getCurrentPropulsionVelocity();
+		double a = polarMaxV/VELOCITY_DIVDIE/SlickView.FRAMERATE;
+		System.out.println("beschleunigung: " + a);
 
 		// aktuelle geschwindigkeit für ein Frame
 		double v = propulsionV / SlickView.FRAMERATE;
+		// berechnete neue Geschwindigkeit
+		double nextV = 0;
 
-		// berechne zurückgelegten Weg
+		// Berechnung des zurückgelegten Weges
 		// eigentlich s = (0.5 * a) * (t * t) + (v * t) + s0;
-		// aber berechnung hier nur für die nächste Teilstrecke
-		s = (0.5 * a) * (t * t) + (v * t);
-		 System.out.println("beschleunigung: " + a);
-
-		if (boat.getCurrentPropulsionVelocity() <= polarMaxV) {
-			// boot geschwindigkeit erhöhen
-			// berechne neue geschwindigkeit
-			// TODO wieder einkommentieren
-			v = (a + FALL_BACK_ACCELERATION / SlickView.FRAMERATE) * t + v;
-			if (v > 0) {
-				boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
-			} else {
-				boat.setCurrentPropulsionVelocity(0);
-			}
+		// hier aber nur für die nächste Teilstrecke
+		s = (0.5 * a) * (t * t) + (v * t);		
+		//Berechnung der neuen Geschwindigkeit
+		v = a * t + v;
+		
+		//Beschränkung auf MaxV aus der Polarmap
+		if (v * SlickView.FRAMERATE > polarMaxV) {
+			//Entschleunigung wenn MaxV überschritten
+			v = (FALL_BACK_ACCELERATION / SlickView.FRAMERATE) * t + v;
 		}
+		
+		//Falls Beschleunigung negativ, setze 0
+		if (v > 0) {
+			nextV = v;
+		} else {
+			nextV = 0;
+		}
+		
+		boat.setCurrentPropulsionVelocity(nextV * SlickView.FRAMERATE);
 
 		double rotateV = calcRotationVelocity(boat, s, propulsionV);
 		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
@@ -200,7 +210,7 @@ public class PolarPlotModel extends CalculationModel {
 
 		// find lower map
 		for (int i = absoluteBoatToWind; i >= 0; i--) {
-			nextLowerMap = bigMap.get(new Integer(i));
+			nextLowerMap = polarMap.get(new Integer(i));
 			if (nextLowerMap != null) {
 				// System.out.println("next lower windmap found");
 				nextLowerAngle = i;
@@ -210,7 +220,7 @@ public class PolarPlotModel extends CalculationModel {
 
 		// find higher map
 		for (int i = absoluteBoatToWind; i <= 180; i++) {
-			nextHigherMap = bigMap.get(new Integer(i));
+			nextHigherMap = polarMap.get(new Integer(i));
 			if (nextHigherMap != null) {
 				// System.out.println("next higher windmap found");
 				nextHigherAngle = i;
@@ -315,49 +325,49 @@ public class PolarPlotModel extends CalculationModel {
 		hm00.put(2, 0.1d);
 		hm00.put(5, 0.1d);
 		hm00.put(10, 0.1d);
-		bigMap.put(0, hm00);
+		polarMap.put(0, hm00);
 
 		HashMap<Integer, Double> hm30 = new HashMap<Integer, Double>();
 		hm30.put(0, 0d);
 		hm30.put(3, 0.25d);
 		hm30.put(6, 0.5d);
 		hm30.put(10, 4d);
-		bigMap.put(30, hm30);
+		polarMap.put(30, hm30);
 
 		HashMap<Integer, Double> hm60 = new HashMap<Integer, Double>();
 		hm60.put(0, 0d);
 		hm60.put(2, 0.625d);
 		hm60.put(5, 1.25d);
 		hm60.put(10, 2.5d);
-		bigMap.put(60, hm60);
+		polarMap.put(60, hm60);
 
 		HashMap<Integer, Double> hm90 = new HashMap<Integer, Double>();
 		hm90.put(0, 0d);
 		hm90.put(2, 0.5d);
 		hm90.put(5, 1.0d);
 		hm90.put(10, 2d);
-		bigMap.put(90, hm90);
+		polarMap.put(90, hm90);
 
 		HashMap<Integer, Double> hm120 = new HashMap<Integer, Double>();
 		hm120.put(0, 0d);
 		hm120.put(2, 0.85d);
 		hm120.put(5, 1.25d);
 		hm120.put(10, 2.5d);
-		bigMap.put(120, hm120);
+		polarMap.put(120, hm120);
 		
 		HashMap<Integer, Double> hm150 = new HashMap<Integer, Double>();
 		hm150.put(0, 0d);
 		hm150.put(2, 0.85d);
 		hm150.put(5, 1.7d);
 		hm150.put(10, 3.4d);
-		bigMap.put(150, hm150);
+		polarMap.put(150, hm150);
 
 		HashMap<Integer, Double> hm180 = new HashMap<Integer, Double>();
 		hm180.put(0, 0d);
 		hm180.put(2, 0.5d);
 		hm180.put(5, 1.0d);
 		hm180.put(10, 2d);
-		bigMap.put(180, hm180);
+		polarMap.put(180, hm180);
 	}
 
 	private double calcVelocityDummy(BoatState boat, Enviroment env, int framerate) {
@@ -401,8 +411,7 @@ public class PolarPlotModel extends CalculationModel {
 			velocity = 0.0f;
 		}
 
-		velocity = velocity / 10000;
-		return velocity / framerate;
+		return velocity;
 	}
 
 }
