@@ -67,12 +67,10 @@ public class PolarPlotModel extends CalculationModel {
 		}
 
 		double rotateV = calcRotationVelocity(boat, s, propulsionV);
-
 		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
 
 		calcAngleWindToBoat(boat, env, time);
 		calcSailDeflection(boat, env);
-
 	}
 
 	/**
@@ -317,69 +315,52 @@ public class PolarPlotModel extends CalculationModel {
 		hm00.put(2, 0.1d);
 		hm00.put(5, 0.1d);
 		hm00.put(10, 0.1d);
-		hm00.put(12, 0.1d);
-		hm00.put(20, 0.2d);
-		hm00.put(30, 0.3d);
-		hm00.put(40, 0.4d);
 		bigMap.put(0, hm00);
 
 		HashMap<Integer, Double> hm30 = new HashMap<Integer, Double>();
 		hm30.put(0, 0d);
-		hm30.put(3, 2d);
-		hm30.put(6, 4d);
-		hm30.put(10, 8d);
-		hm30.put(12, 10d);
-		hm30.put(20, 12d);
-		hm30.put(30, 14d);
-		hm30.put(40, 16d);
+		hm30.put(3, 0.25d);
+		hm30.put(6, 0.5d);
+		hm30.put(10, 4d);
 		bigMap.put(30, hm30);
 
 		HashMap<Integer, Double> hm60 = new HashMap<Integer, Double>();
 		hm60.put(0, 0d);
-		hm60.put(2, 2d);
-		hm60.put(5, 4d);
-		hm60.put(10, 8d);
-		hm60.put(12, 10d);
-		hm60.put(20, 12d);
-		hm60.put(30, 14d);
-		hm60.put(40, 16d);
+		hm60.put(2, 0.625d);
+		hm60.put(5, 1.25d);
+		hm60.put(10, 2.5d);
 		bigMap.put(60, hm60);
 
 		HashMap<Integer, Double> hm90 = new HashMap<Integer, Double>();
 		hm90.put(0, 0d);
-		hm90.put(2, 2d);
-		hm90.put(5, 4d);
-		hm90.put(10, 8d);
-		hm90.put(12, 10d);
-		hm90.put(20, 12d);
-		hm90.put(30, 14d);
-		hm90.put(40, 16d);
+		hm90.put(2, 0.5d);
+		hm90.put(5, 1.0d);
+		hm90.put(10, 2d);
 		bigMap.put(90, hm90);
 
 		HashMap<Integer, Double> hm120 = new HashMap<Integer, Double>();
 		hm120.put(0, 0d);
-		hm120.put(2, 3d);
-		hm120.put(5, 6d);
-		hm120.put(10, 9d);
-		hm120.put(12, 14d);
-		hm120.put(20, 20d);
-		hm120.put(30, 27d);
-		hm120.put(40, 36d);
+		hm120.put(2, 0.85d);
+		hm120.put(5, 1.25d);
+		hm120.put(10, 2.5d);
 		bigMap.put(120, hm120);
+		
+		HashMap<Integer, Double> hm150 = new HashMap<Integer, Double>();
+		hm150.put(0, 0d);
+		hm150.put(2, 0.85d);
+		hm150.put(5, 1.7d);
+		hm150.put(10, 3.4d);
+		bigMap.put(150, hm150);
 
 		HashMap<Integer, Double> hm180 = new HashMap<Integer, Double>();
 		hm180.put(0, 0d);
-		hm180.put(2, 2d);
-		hm180.put(5, 4d);
-		hm180.put(10, 8d);
-		hm180.put(12, 10d);
-		hm180.put(20, 12d);
-		hm180.put(30, 14d);
-		hm180.put(40, 16d);
+		hm180.put(2, 0.5d);
+		hm180.put(5, 1.0d);
+		hm180.put(10, 2d);
 		bigMap.put(180, hm180);
 	}
 
-	private double calculateActualAccelerationDummy(BoatState boat, Enviroment env, int framerate) {
+	private double calcVelocityDummy(BoatState boat, Enviroment env, int framerate) {
 
 		int absoluteBoatToWind = env.getWindState().getWindToBoat();
 		float velocity = 0;
