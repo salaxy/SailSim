@@ -74,22 +74,31 @@ public class PolarPlotModel extends CalculationModel {
 			v = a * t + v;
 		}
 
-		boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
-
 		double rotateV = calcRotationVelocity(boat, s, propulsionV);
+		
+		syncBoatPosition(boat, s, v * SlickView.FRAMERATE, rotateV* SlickView.FRAMERATE);
+		calcAngleWindToBoat(boat, env, time);
+		calcAndSetSailDeflection(boat, env);
+	}
 
-		// sync boatState
-		// berechnen der neuen Postionsvektors
+	/**
+	 * @param boat
+	 * @param s
+	 * @param v
+	 * @param rotateV
+	 */
+	private void syncBoatPosition(BoatState boat, double s, double v, double rotateV) {
+		//sync velocities
+		boat.setCurrentPropulsionVelocity(v);
+		boat.setCurrentSpinVelocity(rotateV);	
+		
+		// Berechnen des neuen Postionsvektors
 		Vector2f newPosition;
 		newPosition = VectorHelper.add(boat.getPosition(),
 				VectorHelper.mult(boat.getDirection().normalise(), (float) s));
 		boat.setPosition(newPosition);
-
-		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
-
-		calcAngleWindToBoat(boat, env, time);
-		calcSailDeflection(boat, env);
 	}
+
 
 	/**
 	 * @param boat
@@ -126,7 +135,7 @@ public class PolarPlotModel extends CalculationModel {
 		return rotateV;
 	}
 
-	private void calcSailDeflection(BoatState boat, Enviroment env) {
+	private void calcAndSetSailDeflection(BoatState boat, Enviroment env) {
 
 		// calculate sailDeflection
 		int boatToWind = env.getWindState().getWindToBoat();
@@ -157,7 +166,6 @@ public class PolarPlotModel extends CalculationModel {
 
 	public void calcAngleWindToBoat(BoatState boat, Enviroment env, long time) {
 		int boatDirection = (int) boat.getDirectionValue();
-		// int boatTheta = (int) boat.getDirection().getTheta();
 		int windDirection = (int) env.getWindState().getDirection();
 		int diff = windDirection - boatDirection;
 
