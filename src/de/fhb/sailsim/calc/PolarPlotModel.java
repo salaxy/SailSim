@@ -35,48 +35,56 @@ public class PolarPlotModel extends CalculationModel {
 
 		// Gesucht ist der zurückgelegte Weg s
 		double s;
-		
+
 		// zeit in sekunden
 		// t=1000/SlickView.FRAMERATE;
-		long t = time; 
-		// anfangsgeschwindigkeit meter pro sekunde
+		long t = time;
+		// Anfangsgeschwindigkeit in Meter pro Sekunde
 		double propulsionV = boat.getCurrentPropulsionVelocity();
-		
-		// Beschleunigung m pro sekunde quadrat
-		// double a = this.ACCELERATION / SlickView.FRAMERATE; //linear,
-		// depricated
+
+		// Beschleunigung Meter pro Sekunde quadrat in Abhängigkeit von MaxV
 		double polarMaxV = this.calculateMaxVelocityFromPolar(boat, env, SlickView.FRAMERATE);
-		double a = polarMaxV/VELOCITY_DIVDIE/SlickView.FRAMERATE;
+		double a = polarMaxV / VELOCITY_DIVDIE / SlickView.FRAMERATE;
+
 		System.out.println("beschleunigung: " + a);
+		System.out.println("polarMaxV: " + polarMaxV);
 
 		// aktuelle geschwindigkeit für ein Frame
 		double v = propulsionV / SlickView.FRAMERATE;
-		// berechnete neue Geschwindigkeit
-		double nextV = 0;
 
 		// Berechnung des zurückgelegten Weges
 		// eigentlich s = (0.5 * a) * (t * t) + (v * t) + s0;
 		// hier aber nur für die nächste Teilstrecke
-		s = (0.5 * a) * (t * t) + (v * t);		
-		//Berechnung der neuen Geschwindigkeit
-		v = a * t + v;
-		
-		//Beschränkung auf MaxV aus der Polarmap
-		if (v * SlickView.FRAMERATE > polarMaxV) {
-			//Entschleunigung wenn MaxV überschritten
-			v = (FALL_BACK_ACCELERATION / SlickView.FRAMERATE) * t + v;
-		}
-		
-		//Falls Beschleunigung negativ, setze 0
-		if (v > 0) {
-			nextV = v;
+		s = (0.5 * a) * (t * t) + (v * t);
+
+		// Berechnung der neuen Geschwindigkeit
+		// Beschränkung von V auf MaxV aus der Polarmap
+		if ((v * SlickView.FRAMERATE) > polarMaxV) {
+
+			// Entschleunigung wenn MaxV überschritten
+			double fallbackAcceleration = FALL_BACK_ACCELERATION / SlickView.FRAMERATE;
+			v = fallbackAcceleration * t + v;
+
+			// Falls Beschleunigung negativ, setze 0
+			if (v < 0) {
+				v = 0;
+			}
 		} else {
-			nextV = 0;
+			// sonst Beschleunigung
+			v = a * t + v;
 		}
-		
-		boat.setCurrentPropulsionVelocity(nextV * SlickView.FRAMERATE);
+
+		boat.setCurrentPropulsionVelocity(v * SlickView.FRAMERATE);
 
 		double rotateV = calcRotationVelocity(boat, s, propulsionV);
+
+		// sync boatState
+		// berechnen der neuen Postionsvektors
+		Vector2f newPosition;
+		newPosition = VectorHelper.add(boat.getPosition(),
+				VectorHelper.mult(boat.getDirection().normalise(), (float) s));
+		boat.setPosition(newPosition);
+
 		boat.setCurrentSpinVelocity(rotateV * SlickView.FRAMERATE);
 
 		calcAngleWindToBoat(boat, env, time);
@@ -107,7 +115,6 @@ public class PolarPlotModel extends CalculationModel {
 			ruderHelper = -ruderAngle;
 		}
 		rotateV = (ruderHelper * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
-
 		// System.out.println("rotateV: " + rotateV);
 
 		// berechnen des neuen Winkels
@@ -116,12 +123,6 @@ public class PolarPlotModel extends CalculationModel {
 			boat.setDirectionValue(boat.getDirectionValue() + rotateV);
 		}
 
-		// sync boatState
-		// berechnen der neuen Postionsvektors
-		Vector2f newPosition;
-		newPosition = VectorHelper.add(boat.getPosition(),
-				VectorHelper.mult(boat.getDirection().normalise(), (float) s));
-		boat.setPosition(newPosition);
 		return rotateV;
 	}
 
@@ -182,7 +183,6 @@ public class PolarPlotModel extends CalculationModel {
 
 		int absoluteBoatToWind = 180 - env.getWindState().getWindToBoat();
 		int windAcceleration = (int) env.getWindState().getStrength();
-		float acceleration = 0;
 
 		if (env.getWindState().getWindToBoat() < 0) {
 			absoluteBoatToWind = 180 + env.getWindState().getWindToBoat();
@@ -238,7 +238,7 @@ public class PolarPlotModel extends CalculationModel {
 					break;
 				}
 			} catch (NullPointerException e) {
-//				System.err.println(e.getMessage());
+				// System.err.println(e.getMessage());
 			}
 		}
 
@@ -250,7 +250,7 @@ public class PolarPlotModel extends CalculationModel {
 					break;
 				}
 			} catch (NullPointerException e) {
-//				System.err.println(e.getMessage());
+				// System.err.println(e.getMessage());
 			}
 		}
 
@@ -263,7 +263,7 @@ public class PolarPlotModel extends CalculationModel {
 					break;
 				}
 			} catch (NullPointerException e) {
-//				System.err.println(e.getMessage());
+				// System.err.println(e.getMessage());
 			}
 		}
 		for (int i = windAcceleration; i >= 0; i--) {
@@ -274,7 +274,7 @@ public class PolarPlotModel extends CalculationModel {
 					break;
 				}
 			} catch (NullPointerException e) {
-//				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 
@@ -322,8 +322,8 @@ public class PolarPlotModel extends CalculationModel {
 
 		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
 		hm00.put(0, 0d);
-		hm00.put(2, 0.1d);
-		hm00.put(5, 0.1d);
+		hm00.put(2, 0.05d);
+		hm00.put(5, 0.07d);
 		hm00.put(10, 0.1d);
 		polarMap.put(0, hm00);
 
@@ -354,7 +354,7 @@ public class PolarPlotModel extends CalculationModel {
 		hm120.put(5, 1.25d);
 		hm120.put(10, 2.5d);
 		polarMap.put(120, hm120);
-		
+
 		HashMap<Integer, Double> hm150 = new HashMap<Integer, Double>();
 		hm150.put(0, 0d);
 		hm150.put(2, 0.85d);

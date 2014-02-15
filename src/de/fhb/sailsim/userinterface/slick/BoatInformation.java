@@ -40,7 +40,7 @@ public class BoatInformation {
 				Y_POS);
 		graphics.drawString("Boat spinV: " + f.format(this.boatState.getCurrentSpinVelocity())+" °/s",
 				X_POS, Y_POS + 20);
-		 graphics.drawString("Boat direct: " + this.boatState.getDirectionValue(),
+		 graphics.drawString("Boat direct: " + f.format(this.boatState.getDirectionValue()),
 		 X_POS, Y_POS + 40);
 		 graphics.drawString("Sail angle: " + this.boatState.getSailDeflection(),
 		 X_POS, Y_POS + 60);
