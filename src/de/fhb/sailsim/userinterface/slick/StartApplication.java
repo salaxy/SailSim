@@ -12,7 +12,7 @@ public class StartApplication extends StateBasedGame {
 	 *  Konstruktor
 	 */
 	public StartApplication() {
-		super("SailSim v.0.2.45");
+		super("SailSim v.0.3.0");
 	}
 
 	/**
@@ -35,8 +35,7 @@ public class StartApplication extends StateBasedGame {
         simulatorView.setVSync(true);
         simulatorView.setShowFPS(false);
         simulatorView.setAlwaysRender(true);
-        //TODO schickes Icon
-//        defender.setIcon("data/logos/DefenderTouchDeluxe32.png");
+        simulatorView.setIcon("graphics/sailsim_icon_32.gif");
         simulatorView.start();
 	}
 }
