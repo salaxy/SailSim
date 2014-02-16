@@ -9,7 +9,7 @@ import de.fhb.sailsim.worldmodel.WindState;
 
 public class WindSign {
 
-	private final int X_POS = 60;
+	private final int X_POS = 20;
 	private final int Y_POS = 60;
 	private final int WIDTH = 40;
 	private final int LENGTH = 70;
@@ -43,14 +43,14 @@ public class WindSign {
 
 	private void displayInformationText(Graphics graphics) {
 		graphics.setColor(Color.green);
-		// graphics.rotate(0, 0, 0);
-		// graphics.scale(0.9f, 0.9f);
-		graphics.drawString("Direction: " + this.windState.getDirection() + " degree", X_POS, Y_POS
-				+ LENGTH);
-		graphics.drawString("Strength: " + this.windState.getStrength() + " km/h", X_POS, Y_POS
+
+		graphics.drawString("Windstate", X_POS, Y_POS + LENGTH);
+		graphics.drawString("Direction: " + this.windState.getDirection() + " d", X_POS, Y_POS
 				+ LENGTH + 20);
-		graphics.drawString("WindToBoat: " + this.windState.getWindToBoat() + " degree", X_POS, Y_POS
+		graphics.drawString("Strength: " + this.windState.getStrength() + " km/h", X_POS, Y_POS
 				+ LENGTH + 40);
+		graphics.drawString("WindToBoat: " + this.windState.getWindToBoat() + " d", X_POS, Y_POS
+				+ LENGTH + 60);
 
 		graphics.resetTransform();
 	}

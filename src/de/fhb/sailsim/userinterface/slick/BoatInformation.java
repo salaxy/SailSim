@@ -10,8 +10,8 @@ import de.fhb.sailsim.boat.BoatState;
 
 public class BoatInformation {
 
-	private final int X_POS = 60;
-	private final int Y_POS = 200;
+	private final int X_POS = 20;
+	private final int Y_POS = 220;
 
 	private BoatState boatState;
 
@@ -30,26 +30,29 @@ public class BoatInformation {
 	public void paint(Perspective perspective, Graphics graphics) {
 
 		graphics.setColor(Color.green);
-		// graphics.scale(0.9f, 0.9f);
 		DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance();
 		dfs.setDecimalSeparator('.');
-		DecimalFormat f = new DecimalFormat("#0.00", dfs);
+		DecimalFormat f2 = new DecimalFormat("#0.00", dfs);
+		DecimalFormat f0 = new DecimalFormat("#0", dfs);
 
+		//draw boat information
+		graphics.drawString("Boatstate", X_POS, Y_POS);
+		graphics.drawString("proV: " + f2.format(this.boatState.getCurrentPropulsionVelocity())
+				+ " m/s", X_POS, Y_POS + 20);
 		graphics.drawString(
-				"Boat proV: " + f.format(this.boatState.getCurrentPropulsionVelocity())+" m/s", X_POS,
-				Y_POS);
-		graphics.drawString("Boat spinV: " + f.format(this.boatState.getCurrentSpinVelocity())+" °/s",
-				X_POS, Y_POS + 20);
-		 graphics.drawString("Boat direct: " + f.format(this.boatState.getDirectionValue()),
-		 X_POS, Y_POS + 40);
-		 graphics.drawString("Sail angle: " + this.boatState.getSailDeflection(),
-		 X_POS, Y_POS + 60);
+				"spinV: " + f2.format(this.boatState.getCurrentSpinVelocity()) + " d/s", X_POS,
+				Y_POS + 40);
+		graphics.drawString("Direction: " + f0.format(this.boatState.getDirectionValue()) + " d",
+				X_POS, Y_POS + 60);
+		graphics.drawString("Sailangle: " + this.boatState.getSailDeflection() + " d", X_POS,
+				Y_POS + 80);
 
+		//draw measurement line
 		graphics.setLineWidth(3);
-		int measureLine = 100;
-		int measureLength = 100;
-		graphics.drawString("Measure 100 m", X_POS, Y_POS + measureLine+5);
-		graphics.drawLine(X_POS, Y_POS + measureLine, X_POS + 100, Y_POS + measureLine);
+		int measureLine = 140;
+		int measureLength = (int) (100 * perspective.getActualZoom());
+		graphics.drawString("Measure 100 m", X_POS, Y_POS + measureLine + 5);
+		graphics.drawLine(X_POS, Y_POS + measureLine, X_POS + measureLength, Y_POS + measureLine);
 		graphics.drawLine(X_POS, Y_POS + measureLine - 5, X_POS, Y_POS + measureLine + 5);
 		graphics.drawLine(X_POS + measureLength, Y_POS + measureLine - 5, X_POS + measureLength,
 				Y_POS + measureLine + 5);

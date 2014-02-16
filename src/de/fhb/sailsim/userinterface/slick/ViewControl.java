@@ -61,13 +61,6 @@ public class ViewControl {
 		this.windSymbol.paint(this.perspective, graphics);
 		this.boatInformation.paint(this.perspective, graphics);
 
-		// info zeichnen
-		graphics.setColor(Color.black);
-		graphics.rotate(0, 0, 90);
-		graphics.scale(1.2f, 1.2f);
-		graphics.drawString("Test-Information: " + perspective.getCredits(),
-				100, -15);
-
 		graphics.resetTransform();
 		// zeichenbereich leoschen
 		// graphics.clearClip();

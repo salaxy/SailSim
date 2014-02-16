@@ -9,6 +9,12 @@ import de.fhb.sailsim.userinterface.slick.SlickView;
 import de.fhb.sailsim.userinterface.slick.VectorHelper;
 import de.fhb.sailsim.worldmodel.Enviroment;
 
+/**
+ * 
+ * 
+ * @author Andy Klay <klay@fh-brandenburg.de>
+ * 
+ */
 public class PolarPlotModel extends CalculationModel {
 
 	// pixel/meter per sec

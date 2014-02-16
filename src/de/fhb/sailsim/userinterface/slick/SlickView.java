@@ -17,10 +17,9 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class SlickView extends BasicGameState {
 
-//	public static final int FRAMERATE = 20;
 	public static final int FRAMERATE = 25;
 	// berechne milisekunden für Echtzeitberechnungen
-	//daher immer 1 Sekunde durch Framerate
+	// daher immer 1 Sekunde durch Framerate
 	public static final int CALCULATION_TIME = 1000 / FRAMERATE;
 
 	/**
@@ -48,8 +47,7 @@ public class SlickView extends BasicGameState {
 	/**
 	 * initialisierung
 	 */
-	public void init(GameContainer gc, StateBasedGame game)
-			throws SlickException {
+	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 
 		control = new ViewControl();
 
@@ -61,8 +59,7 @@ public class SlickView extends BasicGameState {
 	/**
 	 * Berechnung, die jeden Frame gemacht werden müssen.
 	 */
-	public void update(GameContainer gc, StateBasedGame game, int delta)
-			throws SlickException {
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 
 		// Abfangen der Eingabegeräte
 		// Input input = gc.getInput();
@@ -71,8 +68,7 @@ public class SlickView extends BasicGameState {
 	/**
 	 * Rendern eines Frames
 	 */
-	public void render(GameContainer gc, StateBasedGame game, Graphics g)
-			throws SlickException {
+	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 
 		g.setAntiAlias(true);
 		g.setBackground(Color.white);
@@ -88,8 +84,7 @@ public class SlickView extends BasicGameState {
 
 		// Klickvektor holen
 		Vector2f clickVector = new Vector2f(x, y);
-		Vector2f mapCoords = GraphicTools.calcInputVector(clickVector,
-				control.getPlayerOne());
+		Vector2f mapCoords = GraphicTools.calcInputVector(clickVector, control.getPlayerOne());
 	}
 
 	/**
