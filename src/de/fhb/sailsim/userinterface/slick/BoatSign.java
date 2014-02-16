@@ -3,13 +3,13 @@ package de.fhb.sailsim.userinterface.slick;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 
 import de.fhb.sailsim.boat.BoatState;
 
 /**
  * BoatSign represents the boat on the display
  * 
+ * @author Andy Klay <klay@fh-brandenburg.de>
  */
 public class BoatSign extends DrawingOnMap {
 
@@ -17,13 +17,17 @@ public class BoatSign extends DrawingOnMap {
 
 	private BoatState boatState;
 
+	/**
+	 * Constructor, sets boatState
+	 * @param boatState
+	 */
 	public BoatSign(BoatState boatState) {
 		super(MODE_NORMAL);
 		this.boatState = boatState;
 	}
 
 	/**
-	 * zeichne Figur im Normalen Zustand
+	 * draws figure in normal state
 	 * 
 	 * @param perspective
 	 * @param graphics
@@ -50,45 +54,19 @@ public class BoatSign extends DrawingOnMap {
 	}
 
 	private void drawRuder(Perspective perspective, Graphics graphics) {
-		// Transformationen auf Perspektive
+
 		graphics.resetTransform();
 		calcDrawPosition(perspective, graphics);
-//		graphics.rotate(0, 0, 90);
 
-		graphics.setColor(this.passiveColor);
-		graphics.setLineWidth(2);
+		int Xposition = 0;
+		int Yposition = 0 + BOAT_SIZE - 2;
 
-		// TODO ist noch buggy, Vektor verhält sich nciht so wie er soll
-		// 60 grad entspriht hierbei 90 grad ??? wtf
-		Vector2f ruderDirection = new Vector2f(100, 0);
-		double ausgangstellung = 270d;
-		int ruderAngle = this.boatState.getRuderDeflection();
-		ruderDirection.setTheta(180);
-
-		if (ruderAngle <= 90 && ruderAngle > 0)
-			ruderDirection.setTheta(ausgangstellung + ruderAngle);
-
-		if (ruderAngle >= -90 && ruderAngle < 0)
-			ruderDirection.setTheta(ausgangstellung + ruderAngle);
-
-		// System.out.println("ruder at " + this.ruderAngle);
-		// System.out.println("ruderDirection at " + ruderDirection.getTheta());
-
-		ruderDirection = ruderDirection.getNormal().scale(40);
-		// System.out.println("ruder length: " + ruderDirection.length());
-
-//		graphics.drawLine(-BOAT_SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
-		
 		try {
-			int Xposition = 0 ;
-			int Yposition = 0 + BOAT_SIZE -2;
-			
 			Image image = new Image("graphics/ruder.gif");
-			image = image.getScaledCopy(BOAT_SIZE , BOAT_SIZE/4);
-			graphics.rotate(Xposition, image.getCenterOfRotationY() + Yposition, (float)(90 + ruderAngle));
-//			graphics.rotate(-BOAT_SIZE / 2 - 10, 0, (float)(ausgangstellung + ruderAngle));
+			image = image.getScaledCopy(BOAT_SIZE, BOAT_SIZE / 4);
+			graphics.rotate(Xposition, image.getCenterOfRotationY() + Yposition,
+					(float) (90 + this.boatState.getRuderDeflection()));
 			graphics.drawImage(image, Xposition, Yposition);
-//			graphics.drawImage(image, 0, 0);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -96,7 +74,6 @@ public class BoatSign extends DrawingOnMap {
 
 	private void drawSail(Perspective perspective, Graphics graphics) {
 
-		// Transformationen auf Perspektive
 		graphics.resetTransform();
 		calcDrawPosition(perspective, graphics);
 
@@ -136,7 +113,7 @@ public class BoatSign extends DrawingOnMap {
 	protected void calcDrawPosition(Perspective perspective, Graphics graphics) {
 		GraphicTools.calcDrawTransformationForSlick(perspective, graphics,
 				this.boatState.getPosition());
-		// eigendrehung hinzurechnen
+		//Eigendrehung hinzurechnen
 		graphics.rotate(0, 0, (float) this.boatState.getDirectionValue());
 	}
 
