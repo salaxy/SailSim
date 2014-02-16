@@ -1,5 +1,6 @@
 package de.fhb.sailsim.userinterface.slick;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -26,11 +27,7 @@ public class Map {
 	public Map() {
 
 		try {
-
-			// Neue Map:
-			visibleMap = new Image("./maps/background.png");
-			// informationalMap = new Image("./maps/inewmap.png");
-
+			visibleMap = new Image("./maps/background.gif");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -52,6 +49,7 @@ public class Map {
 		// Feldumrandung zeichnen
 		// graphics.setColor(new Color(255, 255, 0,55));
 		// graphics.fillRect(0f, 0f, 1024, 768);
+		graphics.setBackground(new Color(10,10, 255,55));
 
 		graphics.resetTransform();
 	}
