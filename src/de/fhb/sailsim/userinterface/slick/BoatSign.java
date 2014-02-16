@@ -44,7 +44,6 @@ public class BoatSign extends DrawingOnMap {
 			image = image.getScaledCopy(BOAT_SIZE * 2, BOAT_SIZE);
 			graphics.rotate(0, 0, 270);
 			graphics.drawImage(image, -BOAT_SIZE, -BOAT_SIZE / 2);
-
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +53,7 @@ public class BoatSign extends DrawingOnMap {
 		// Transformationen auf Perspektive
 		graphics.resetTransform();
 		calcDrawPosition(perspective, graphics);
-		graphics.rotate(0, 0, 270);
+//		graphics.rotate(0, 0, 90);
 
 		graphics.setColor(this.passiveColor);
 		graphics.setLineWidth(2);
@@ -62,7 +61,7 @@ public class BoatSign extends DrawingOnMap {
 		// TODO ist noch buggy, Vektor verhält sich nciht so wie er soll
 		// 60 grad entspriht hierbei 90 grad ??? wtf
 		Vector2f ruderDirection = new Vector2f(100, 0);
-		double ausgangstellung = 180d;
+		double ausgangstellung = 270d;
 		int ruderAngle = this.boatState.getRuderDeflection();
 		ruderDirection.setTheta(180);
 
@@ -78,7 +77,21 @@ public class BoatSign extends DrawingOnMap {
 		ruderDirection = ruderDirection.getNormal().scale(40);
 		// System.out.println("ruder length: " + ruderDirection.length());
 
-		graphics.drawLine(-BOAT_SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
+//		graphics.drawLine(-BOAT_SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
+		
+		try {
+			int Xposition = -BOAT_SIZE + (int) (BOAT_SIZE / 1.4);
+			int Yposition = -BOAT_SIZE / 2;
+			
+			Image image = new Image("graphics/ruder.gif");
+			image = image.getScaledCopy(BOAT_SIZE , BOAT_SIZE/4);
+			graphics.rotate(BOAT_SIZE-2, image.getCenterOfRotationY(), (float)(90 + ruderAngle));
+//			graphics.rotate(-BOAT_SIZE / 2 - 10, 0, (float)(ausgangstellung + ruderAngle));
+			graphics.drawImage(image, BOAT_SIZE-2, 0 - 2);
+//			graphics.drawImage(image, 0, 0);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void drawSail(Perspective perspective, Graphics graphics) {
