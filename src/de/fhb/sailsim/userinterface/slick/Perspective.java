@@ -23,8 +23,9 @@ public class Perspective {
 	 */
 	private Vector2f originPosition;
 
-	private final float zoomMin = 0.3f;
-	private final float zoomMax = 0.55f;
+	private final float ZOOM_MIN = 0.3f;
+	private final float ZOMM_MAX = 0.55f;
+	private final float VIEW_BORDER = 1000;
 
 	/**
 	 * Relative Position der Sicht im Verhältnis zum Ursprung (originPosition)
@@ -102,7 +103,7 @@ public class Perspective {
 	 * @param viewPosition
 	 */
 	public void setOriginOffset(Vector2f viewPosition) {
-		if (viewPosition.length() < 700) {
+		if (viewPosition.length() < VIEW_BORDER) {
 			this.originOffset = viewPosition;
 		}
 	}
@@ -114,7 +115,7 @@ public class Perspective {
 	public void setActualZoom(float actualZoom) {
 
 		// wenn minimum oder maximum nicht überschritten
-		if (!(actualZoom > zoomMax || actualZoom < zoomMin)) {
+		if (!(actualZoom > ZOMM_MAX || actualZoom < ZOOM_MIN)) {
 			this.actualZoom = actualZoom;
 		}
 
