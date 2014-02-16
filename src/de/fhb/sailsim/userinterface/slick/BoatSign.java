@@ -80,14 +80,14 @@ public class BoatSign extends DrawingOnMap {
 //		graphics.drawLine(-BOAT_SIZE / 2 - 10, 0, ruderDirection.x, ruderDirection.y);
 		
 		try {
-			int Xposition = -BOAT_SIZE + (int) (BOAT_SIZE / 1.4);
-			int Yposition = -BOAT_SIZE / 2;
+			int Xposition = 0 ;
+			int Yposition = 0 + BOAT_SIZE -2;
 			
 			Image image = new Image("graphics/ruder.gif");
 			image = image.getScaledCopy(BOAT_SIZE , BOAT_SIZE/4);
-			graphics.rotate(BOAT_SIZE-2, image.getCenterOfRotationY(), (float)(90 + ruderAngle));
+			graphics.rotate(Xposition, image.getCenterOfRotationY() + Yposition, (float)(90 + ruderAngle));
 //			graphics.rotate(-BOAT_SIZE / 2 - 10, 0, (float)(ausgangstellung + ruderAngle));
-			graphics.drawImage(image, BOAT_SIZE-2, 0 - 2);
+			graphics.drawImage(image, Xposition, Yposition);
 //			graphics.drawImage(image, 0, 0);
 		} catch (SlickException e) {
 			e.printStackTrace();

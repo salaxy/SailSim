@@ -15,7 +15,7 @@ import de.fhb.sailsim.worldmodel.BoatHistory;
 public class ViewControl {
 
 	private SimulationControl simulation;
-	
+
 	public static final int MOUSE_LEFT = 0;
 	public static final int MOUSE_RIGHT = 1;
 
@@ -40,11 +40,10 @@ public class ViewControl {
 
 	public ViewControl() {
 		map = new Map();
-		perspective = new Perspective(this, 0, 0.6f, new Vector2f(0f, 0f),
-				Color.blue);
+		perspective = new Perspective(this, 0, 1.6f, new Vector2f(0f, 0f), Color.blue);
 		simulation = new SimulationControl();
-		
-		boatInformation =  new BoatInformation(simulation.getBoatState());
+
+		boatInformation = new BoatInformation(simulation.getBoatState());
 		boatSymbol = new BoatSign(simulation.getBoatState());
 		windSymbol = new WindSign(simulation.getEnviroment().getWindState());
 		historie = new BoatHistory();
@@ -55,7 +54,7 @@ public class ViewControl {
 		// graphics.setClip(0, 0, 510, 768);
 
 		this.map.paint(graphics, perspective);
-		
+
 		this.historie.paint(this.perspective, graphics);
 		this.boatSymbol.paint(this.perspective, graphics);
 		this.windSymbol.paint(this.perspective, graphics);
@@ -76,21 +75,17 @@ public class ViewControl {
 	 */
 	public void zoomInterface(int oldx, int oldy, int newx, int newy) {
 
-		Vector2f old = GraphicTools.calcInputVector(new Vector2f(newx, newy),
-				this.perspective);
+		Vector2f old = GraphicTools.calcInputVector(new Vector2f(newx, newy), this.perspective);
 
 		this.getPlayerOne().setActualZoom(
 				this.getPlayerOne().getActualZoom() + (newy - oldy) * 0.01f);
 
-		Vector2f neu = GraphicTools.calcInputVector(new Vector2f(newx, newy),
-				this.perspective);
+		Vector2f neu = GraphicTools.calcInputVector(new Vector2f(newx, newy), this.perspective);
 
 		// Experiment Zoompunkt setzen
 		Vector2f difference = VectorHelper.sub(old, neu);
-		this.getPlayerOne().setOriginOffset(
-				this.getPlayerOne().getOriginOffset().sub(difference));
-		this.getPlayerOne().getOriginOffset()
-				.scale(1 + ((oldy - newy) * 0.01f));
+		this.getPlayerOne().setOriginOffset(this.getPlayerOne().getOriginOffset().sub(difference));
+		this.getPlayerOne().getOriginOffset().scale(1 + ((oldy - newy) * 0.01f));
 	}
 
 	/**
@@ -106,7 +101,7 @@ public class ViewControl {
 		Vector2f tempVec = this.getPlayerOne().getOriginOffset().copy();
 		tempVec.y = tempVec.y + newy - oldy;
 		tempVec.x = tempVec.x + newx - oldx;
-		
+
 		this.getPlayerOne().setOriginOffset(tempVec);
 	}
 
@@ -115,9 +110,9 @@ public class ViewControl {
 	}
 
 	public void updateGame() {
-		//calculate states
+		// calculate states
 		this.simulation.execute(SlickView.CALCULATION_TIME);
-		//add position to history
+		// add position to history
 		this.historie.addPosition(this.simulation.getBoatState());
 	}
 
