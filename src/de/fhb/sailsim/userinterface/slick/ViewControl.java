@@ -27,16 +27,7 @@ public class ViewControl {
 	private BoatSign boatSymbol;
 	private BoatInformation boatInformation;
 	private WindSign windSymbol;
-
 	private BoatHistory historie;
-
-	public BoatSign getBoatSymbol() {
-		return boatSymbol;
-	}
-
-	public SimulationControl getSimulationControl() {
-		return simulation;
-	}
 
 	public ViewControl() {
 		map = new Map();
@@ -54,7 +45,6 @@ public class ViewControl {
 		// graphics.setClip(0, 0, 510, 768);
 
 		this.map.paint(graphics, perspective);
-
 		this.historie.paint(this.perspective, graphics);
 		this.boatSymbol.paint(this.perspective, graphics);
 		this.windSymbol.paint(this.perspective, graphics);
@@ -77,15 +67,16 @@ public class ViewControl {
 
 		Vector2f old = GraphicTools.calcInputVector(new Vector2f(newx, newy), this.perspective);
 
-		this.getPlayerOne().setActualZoom(
-				this.getPlayerOne().getActualZoom() + (newy - oldy) * 0.01f);
+		this.getPerspectiveOne().setActualZoom(
+				this.getPerspectiveOne().getActualZoom() + (newy - oldy) * 0.01f);
 
 		Vector2f neu = GraphicTools.calcInputVector(new Vector2f(newx, newy), this.perspective);
 
 		// Experiment Zoompunkt setzen
 		Vector2f difference = VectorHelper.sub(old, neu);
-		this.getPlayerOne().setOriginOffset(this.getPlayerOne().getOriginOffset().sub(difference));
-		this.getPlayerOne().getOriginOffset().scale(1 + ((oldy - newy) * 0.01f));
+		this.getPerspectiveOne().setOriginOffset(
+				this.getPerspectiveOne().getOriginOffset().sub(difference));
+		this.getPerspectiveOne().getOriginOffset().scale(1 + ((oldy - newy) * 0.01f));
 	}
 
 	/**
@@ -98,30 +89,39 @@ public class ViewControl {
 	 */
 	public void schiebeInterface(float oldx, float oldy, float newx, float newy) {
 
-		Vector2f tempVec = this.getPlayerOne().getOriginOffset().copy();
+		Vector2f tempVec = this.getPerspectiveOne().getOriginOffset().copy();
 		tempVec.y = tempVec.y + newy - oldy;
 		tempVec.x = tempVec.x + newx - oldx;
 
-		this.getPlayerOne().setOriginOffset(tempVec);
+		this.getPerspectiveOne().setOriginOffset(tempVec);
 	}
 
 	public BoatSign getBoatDrawing() {
 		return boatSymbol;
 	}
 
-	public void updateGame() {
-		// calculate states
+	/**
+	 * calculate states and adds position to history
+	 */
+	public void update() {
 		this.simulation.execute(SlickView.CALCULATION_TIME);
-		// add position to history
 		this.historie.addPosition(this.simulation.getBoatState());
 	}
 
-	public Perspective getPlayerOne() {
+	public Perspective getPerspectiveOne() {
 		return perspective;
 	}
 
 	public Map getMap() {
 		return map;
+	}
+
+	public BoatSign getBoatSymbol() {
+		return boatSymbol;
+	}
+
+	public SimulationControl getSimulationControl() {
+		return simulation;
 	}
 
 }

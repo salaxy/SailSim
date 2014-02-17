@@ -53,7 +53,6 @@ public class SlickView extends BasicGameState {
 
 		gc.setShowFPS(true);
 		gc.setTargetFrameRate(FRAMERATE);
-
 	}
 
 	/**
@@ -63,6 +62,7 @@ public class SlickView extends BasicGameState {
 
 		// Abfangen der Eingabegeräte
 		// Input input = gc.getInput();
+		this.control.update();
 	}
 
 	/**
@@ -74,7 +74,6 @@ public class SlickView extends BasicGameState {
 		g.setBackground(Color.white);
 
 		this.control.drawViewContent(g);
-		this.control.updateGame();
 	}
 
 	/**
@@ -84,7 +83,7 @@ public class SlickView extends BasicGameState {
 
 		// Klickvektor holen
 		Vector2f clickVector = new Vector2f(x, y);
-		Vector2f mapCoords = GraphicTools.calcInputVector(clickVector, control.getPlayerOne());
+		Vector2f mapCoords = GraphicTools.calcInputVector(clickVector, control.getPerspectiveOne());
 	}
 
 	/**
@@ -159,7 +158,7 @@ public class SlickView extends BasicGameState {
 	 * What happens when mousewhell is scrolled
 	 */
 	public void mouseWheelMoved(int change) {
-
+		//TODO Map zoom in and out
 	}
 
 	public void mousePressed(int button, int x, int y) {
