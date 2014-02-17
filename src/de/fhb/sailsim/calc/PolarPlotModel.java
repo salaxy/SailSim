@@ -10,14 +10,16 @@ import de.fhb.sailsim.userinterface.slick.VectorHelper;
 import de.fhb.sailsim.worldmodel.Enviroment;
 
 /**
- * 
+ * PolarPlotModel calculates the next state of model of simulation
+ * based on the polarmap with maxmium velocities
+ * at a specific angle to wind and windstrength
  * 
  * @author Andy Klay <klay@fh-brandenburg.de>
  * 
  */
 public class PolarPlotModel extends CalculationModel {
 
-	// pixel/meter per sec
+	// meter(pixel) per sec
 	private final double FALL_BACK_ACCELERATION = -0.00004d;
 	private final int VELOCITY_DIVDIE = 10000;
 
@@ -29,7 +31,7 @@ public class PolarPlotModel extends CalculationModel {
 	private HashMap<Integer, HashMap<Integer, Double>> polarMap = new HashMap<Integer, HashMap<Integer, Double>>();
 
 	/**
-	 * Kontruktur of the class with initialize a Testpolar in polarMap
+	 * Constructur of the class with initialize a Testpolar in polarMap
 	 */
 	public PolarPlotModel() {
 		super();
