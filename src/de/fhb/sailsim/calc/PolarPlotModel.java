@@ -10,9 +10,8 @@ import de.fhb.sailsim.userinterface.slick.VectorHelper;
 import de.fhb.sailsim.worldmodel.Enviroment;
 
 /**
- * PolarPlotModel calculates the next state of model of simulation
- * based on the polarmap with maxmium velocities
- * at a specific angle to wind and windstrength
+ * PolarPlotModel calculates the next state of model of simulation based on the
+ * polarmap with maxmium velocities at a specific angle to wind and windstrength
  * 
  * @author Andy Klay <klay@fh-brandenburg.de>
  * 
@@ -83,9 +82,9 @@ public class PolarPlotModel extends CalculationModel {
 		}
 
 		double rotateV = calcRotationVelocity(boat, s, propulsionV);
-		
-		syncBoatPosition(boat, s, v * SlickView.FRAMERATE, rotateV* SlickView.FRAMERATE);
-		calcAngleWindToBoat(boat, env, time);
+
+		syncBoatPosition(boat, s, v * SlickView.FRAMERATE, rotateV * SlickView.FRAMERATE);
+		calcAngleWindToBoat(boat, env);
 		calcAndSetSailDeflection(boat, env);
 	}
 
@@ -96,17 +95,16 @@ public class PolarPlotModel extends CalculationModel {
 	 * @param rotateV
 	 */
 	private void syncBoatPosition(BoatState boat, double s, double v, double rotateV) {
-		//sync velocities
+		// sync velocities
 		boat.setCurrentPropulsionVelocity(v);
-		boat.setCurrentSpinVelocity(rotateV);	
-		
+		boat.setCurrentSpinVelocity(rotateV);
+
 		// Berechnen des neuen Postionsvektors
 		Vector2f newPosition;
 		newPosition = VectorHelper.add(boat.getPosition(),
 				VectorHelper.mult(boat.getDirection().normalise(), (float) s));
 		boat.setPosition(newPosition);
 	}
-
 
 	/**
 	 * calc angle velocity in depency of propulsion velocity
@@ -168,26 +166,26 @@ public class PolarPlotModel extends CalculationModel {
 		boat.setSailDeflection(-boat.getSailDeflection());
 	}
 
-	public void calcAngleWindToBoat(BoatState boat, Enviroment env, long time) {
+	/**
+	 * Berechnet den Winkel von Boot zum Wind im Wertebereich von 180 bis -180
+	 * grad positiv = Wind von rechts negativ = Wind von links
+	 * 
+	 * @param boat
+	 * @param env
+	 */
+	public void calcAngleWindToBoat(BoatState boat, Enviroment env) {
 		int boatDirection = (int) boat.getDirectionValue();
 		int windDirection = (int) env.getWindState().getDirection();
-		int diff = windDirection - boatDirection;
+		int absDiff = Math.abs(windDirection - boatDirection);
 
-		if (diff < 0) {
-			diff = -diff;
+		// bilde absDiff auf den Wertebereich 180 bis -180 grad ab
+		if (absDiff > 180) {
+			absDiff = -(360 - absDiff);
 		}
+		env.getWindState().setWindToBoat(absDiff);
 
-		if (diff > 180) {
-			diff = 180 - diff;
-			if (diff < 0) {
-				diff = -(180 + diff);
-			}
-		}
-		env.getWindState().setWindToBoat(diff);
-
-		// System.out.println("boat: " + boatDirection);
-		// System.out.println("boat theta: " + boatTheta);
-		// System.out.println("wind: " + windDirection);
+		System.out.println("calcAngleWindToBoat" + "(boat: " + boatDirection + ", wind: "
+				+ windDirection + ", absDiff: " + absDiff + ")");
 	}
 
 	private double calculateMaxVelocityFromPolar(BoatState boat, Enviroment env, int framerate) {
