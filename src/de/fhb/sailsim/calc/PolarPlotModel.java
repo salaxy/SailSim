@@ -24,7 +24,7 @@ public class PolarPlotModel extends CalculationModel {
 	private final int VELOCITY_DIVDIE = 10000;
 
 	// in grad pro sekunde für eine geschwindigkeit von 10 m/s
-	private final double ANGLE_VELOCITY = 40d;
+	private final double ANGLE_VELOCITY_REFERENCE = 40d;
 	private final double REFERENCE_PROPULSION_VELOCITY = 1d;
 
 	// Polar data stored in a Hashmap
@@ -118,7 +118,7 @@ public class PolarPlotModel extends CalculationModel {
 		// calc angle velocity in depency of propulsion velocity
 		// TODO der Wendekreis bleibt immer gleich egal welche geschwindigkeit,
 		// ist das wirklich so, ist das real???
-		double rotateV = (propulsionV * ANGLE_VELOCITY) / REFERENCE_PROPULSION_VELOCITY;
+		double rotateV = (propulsionV * ANGLE_VELOCITY_REFERENCE) / REFERENCE_PROPULSION_VELOCITY;
 		rotateV = rotateV / SlickView.FRAMERATE;
 		int ruderAngle = boat.getRuderDeflection();
 
@@ -131,13 +131,13 @@ public class PolarPlotModel extends CalculationModel {
 		if (ruderAngle < 0) {
 			ruderHelper = -ruderAngle;
 		}
-		rotateV = (ruderHelper * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
+		double rotateS = (ruderHelper * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
 		// System.out.println("rotateV: " + rotateV);
 
 		// berechnen des neuen Winkels
 		if (ruderAngle != 0) {
-			boat.getDirection().add(rotateV);
-			boat.setDirectionValue(boat.getDirectionValue() + rotateV);
+			boat.getDirection().add(rotateS);
+			boat.setDirectionValue(boat.getDirectionValue() + rotateS);
 		}
 
 		return rotateV;
