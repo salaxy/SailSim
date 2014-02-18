@@ -109,13 +109,14 @@ public class PolarPlotModel extends CalculationModel {
 
 
 	/**
+	 * calc angle velocity in depency of propulsion velocity
+	 * 
 	 * @param boat
 	 * @param s
 	 * @param propulsionV
 	 * @return
 	 */
 	private double calcRotationVelocity(BoatState boat, double s, double propulsionV) {
-		// calc angle velocity in depency of propulsion velocity
 		// TODO der Wendekreis bleibt immer gleich egal welche geschwindigkeit,
 		// ist das wirklich so, ist das real???
 		double rotateV = (propulsionV * ANGLE_VELOCITY_REFERENCE) / REFERENCE_PROPULSION_VELOCITY;
@@ -127,12 +128,7 @@ public class PolarPlotModel extends CalculationModel {
 		}// else rotateV=rotateV
 
 		// verhalten in Abhängigkeit davon wie stark das Ruder eingelschagen ist
-		int ruderHelper = ruderAngle;
-		if (ruderAngle < 0) {
-			ruderHelper = -ruderAngle;
-		}
-		double rotateS = (ruderHelper * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
-		// System.out.println("rotateV: " + rotateV);
+		double rotateS = (Math.abs(ruderAngle) * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
 
 		// berechnen des neuen Winkels
 		if (ruderAngle != 0) {
