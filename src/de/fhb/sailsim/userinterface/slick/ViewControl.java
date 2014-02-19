@@ -15,6 +15,7 @@ import de.fhb.sailsim.worldmodel.BoatHistory;
 public class ViewControl {
 
 	private SimulationControl simulation;
+	private final float GLOBAL_ZOOM = 1.0f;
 
 	public static final int MOUSE_LEFT = 0;
 	public static final int MOUSE_RIGHT = 1;
@@ -31,7 +32,7 @@ public class ViewControl {
 
 	public ViewControl() {
 		map = new Map();
-		perspective = new Perspective(this, 0, 0.6f, new Vector2f(0f, 0f), Color.blue);
+		perspective = new Perspective(this, 0, GLOBAL_ZOOM, new Vector2f(0f, 0f), Color.blue);
 		simulation = new SimulationControl();
 
 		boatInformation = new BoatInformation(simulation.getBoatState());

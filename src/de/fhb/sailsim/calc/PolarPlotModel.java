@@ -40,6 +40,9 @@ public class PolarPlotModel extends CalculationModel {
 	@Override
 	public void calculateNextState(BoatState boat, Enviroment env, long time) {
 
+		calcAngleWindToBoat(boat, env);
+		calcAndSetSailDeflection(boat, env);
+		
 		// Gesucht ist der zurückgelegte Weg s
 		double s;
 
@@ -82,10 +85,7 @@ public class PolarPlotModel extends CalculationModel {
 		}
 
 		double rotateV = calcRotationVelocity(boat, s, propulsionV);
-
 		syncBoatPosition(boat, s, v * SlickView.FRAMERATE, rotateV * SlickView.FRAMERATE);
-		calcAngleWindToBoat(boat, env);
-		calcAndSetSailDeflection(boat, env);
 	}
 
 	/**
@@ -137,26 +137,26 @@ public class PolarPlotModel extends CalculationModel {
 		return rotateV;
 	}
 
+	/**
+	 * Berechnet und setzt die Segelauslenkung
+	 * 
+	 * @param boat
+	 * @param env
+	 */
 	private void calcAndSetSailDeflection(BoatState boat, Enviroment env) {
-
-		// calculate sailDeflection
 		int boatToWind = env.getWindState().getWindToBoat();
 		int newSailAngle = boat.getSailDeflection();
+		double boatAngle = boat.getDirectionValue();
+		double windAngle = env.getWindState().getDirection();
 
-		if (boatToWind >= 0 && boatToWind <= 180) {
+		if (boatToWind >= 0) {
 			newSailAngle = (int) ((180 - boatToWind) / 2);
 		} else {
-			// if(boatToWind<0 && boatToWind>=-180)
 			newSailAngle = -(int) ((180 + boatToWind) / 2);
 		}
 		boat.setSailDeflection(newSailAngle);
 
-		double boatAngle = boat.getDirectionValue();
-		double windAngle = env.getWindState().getDirection();
-		int sailAngle = boat.getSailDeflection();
-
-		// falsche Segel stellungen durch Wende korrigieren bzw. patenthalse
-		// if(boatAngle>0){
+		// falsche Segelstellungen durch Wende des Segels korrigieren
 		if (windAngle >= boatAngle + 60 && windAngle <= 360) {
 			this.invertSailDeflection(boat);
 		}
@@ -168,12 +168,12 @@ public class PolarPlotModel extends CalculationModel {
 
 	/**
 	 * Berechnet den Winkel von Boot zum Wind im Wertebereich von 180 bis -180
-	 * grad positiv = Wind von rechts negativ = Wind von links
+	 * grad positiv = Wind von rechts, negativ = Wind von links
 	 * 
 	 * @param boat
 	 * @param env
 	 */
-	public void calcAngleWindToBoat(BoatState boat, Enviroment env) {
+	private void calcAngleWindToBoat(BoatState boat, Enviroment env) {
 		int boatDirection = (int) boat.getDirectionValue();
 		int windDirection = (int) env.getWindState().getDirection();
 		int absDiff = Math.abs(windDirection - boatDirection);
@@ -328,7 +328,7 @@ public class PolarPlotModel extends CalculationModel {
 		return interpolatedWindVelocity;
 	}
 
-	public void createTestPolar() {
+	private void createTestPolar() {
 
 		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
 		hm00.put(0, 0d);
