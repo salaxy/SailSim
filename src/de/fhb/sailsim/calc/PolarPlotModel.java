@@ -20,7 +20,7 @@ public class PolarPlotModel extends CalculationModel {
 
 	// meter(pixel) per sec
 	private final double FALL_BACK_ACCELERATION = -0.00004d;
-	private final int VELOCITY_DIVDIE = 10000;
+	private final int VELOCITY_DIVDER = 10000;
 
 	// in grad pro sekunde für eine geschwindigkeit von 10 m/s
 	private final double ANGLE_VELOCITY_REFERENCE = 40d;
@@ -42,7 +42,7 @@ public class PolarPlotModel extends CalculationModel {
 
 		calcAngleWindToBoat(boat, env);
 		calcAndSetSailDeflection(boat, env);
-		
+
 		// Gesucht ist der zurückgelegte Weg s
 		double s;
 
@@ -53,8 +53,8 @@ public class PolarPlotModel extends CalculationModel {
 		double propulsionV = boat.getCurrentPropulsionVelocity();
 
 		// Beschleunigung Meter pro Sekunde quadrat in Abhängigkeit von MaxV
-		double polarMaxV = this.calculateMaxVelocityFromPolar(boat, env, SlickView.FRAMERATE);
-		double a = polarMaxV / VELOCITY_DIVDIE / SlickView.FRAMERATE;
+		double polarMaxV = this.interpolateMaxVelocityFromPolar(boat, env);
+		double a = polarMaxV / VELOCITY_DIVDER / SlickView.FRAMERATE;
 
 		System.out.println("beschleunigung: " + a);
 		System.out.println("polarMaxV: " + polarMaxV);
@@ -75,7 +75,7 @@ public class PolarPlotModel extends CalculationModel {
 			double fallbackAcceleration = FALL_BACK_ACCELERATION / SlickView.FRAMERATE;
 			v = fallbackAcceleration * t + v;
 
-			// Falls Beschleunigung negativ, setze 0
+			// Falls Geschwindigkeit negativ, setze 0
 			if (v < 0) {
 				v = 0;
 			}
@@ -84,11 +84,13 @@ public class PolarPlotModel extends CalculationModel {
 			v = a * t + v;
 		}
 
-		double rotateV = calcRotationVelocity(boat, s, propulsionV);
+		double rotateV = calcRotationValues(boat, s, propulsionV);
 		syncBoatPosition(boat, s, v * SlickView.FRAMERATE, rotateV * SlickView.FRAMERATE);
 	}
 
 	/**
+	 * setzt neue Bootsposition
+	 * 
 	 * @param boat
 	 * @param s
 	 * @param v
@@ -107,16 +109,18 @@ public class PolarPlotModel extends CalculationModel {
 	}
 
 	/**
-	 * calc angle velocity in depency of propulsion velocity
+	 * calc angle rotateV and rotateS in depency of propulsion velocity
 	 * 
 	 * @param boat
 	 * @param s
 	 * @param propulsionV
 	 * @return
 	 */
-	private double calcRotationVelocity(BoatState boat, double s, double propulsionV) {
+	private double calcRotationValues(BoatState boat, double s, double propulsionV) {
 		// TODO der Wendekreis bleibt immer gleich egal welche geschwindigkeit,
 		// ist das wirklich so, ist das real???
+		// Berechnung der Rotationsgeschwindigkeit abhängig von
+		// Referenzgeschwindigkeiten
 		double rotateV = (propulsionV * ANGLE_VELOCITY_REFERENCE) / REFERENCE_PROPULSION_VELOCITY;
 		rotateV = rotateV / SlickView.FRAMERATE;
 		int ruderAngle = boat.getRuderDeflection();
@@ -125,7 +129,7 @@ public class PolarPlotModel extends CalculationModel {
 			rotateV = -rotateV;
 		}// else rotateV=rotateV
 
-		// verhalten in Abhängigkeit davon wie stark das Ruder eingelschagen ist
+		// Wegberechnung in Abhängigkeit des Ruderwinkels
 		double rotateS = (Math.abs(ruderAngle) * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
 
 		// berechnen des neuen Winkels
@@ -188,9 +192,17 @@ public class PolarPlotModel extends CalculationModel {
 				+ windDirection + ", absDiff: " + absDiff + ")");
 	}
 
-	private double calculateMaxVelocityFromPolar(BoatState boat, Enviroment env, int framerate) {
+	/**
+	 * interpoliert maximal erreichbare Geschwindigkeit des Bootes zu einem
+	 * bestimmten Winkel zum Wind
+	 * 
+	 * @param boat
+	 * @param env
+	 * @param framerate
+	 * @return
+	 */
+	private double interpolateMaxVelocityFromPolar(BoatState boat, Enviroment env) {
 		// here pick up values from polar-modell
-
 		int absoluteBoatToWind = 180 - env.getWindState().getWindToBoat();
 		int windAcceleration = (int) env.getWindState().getStrength();
 
@@ -312,20 +324,18 @@ public class PolarPlotModel extends CalculationModel {
 		return finalIntrapoltedVelocity;
 	}
 
-	private double interpolateValueFromValuesBetweenDiffKey(int windAcceleration,
-			double angleWindHighValue, double angleWindLowValue, double angleWindHighKey,
-			double angleWindLowKey) {
+	private double interpolateValueFromValuesBetweenDiffKey(int actualKey, double highValue,
+			double lowValue, double highKey, double lowKey) {
 
-		if (angleWindHighKey == angleWindLowKey) {
-			return angleWindHighValue;
+		if (highKey == lowKey) {
+			return highValue;
 		}
 
-		double diffWindKeys = angleWindHighKey - angleWindLowKey;
-		double diffWindValue = angleWindHighValue - angleWindLowValue;
-		double diffActualWindStrength = windAcceleration - angleWindLowKey;
-		double interpolatedWindVelocity = angleWindLowValue
-				+ (diffActualWindStrength * (diffWindValue / diffWindKeys));
-		return interpolatedWindVelocity;
+		double diffKeys = highKey - lowKey;
+		double diffValue = highValue - lowValue;
+		double diffActualToLowKey = actualKey - lowKey;
+		double interpolatedValue = lowValue + (diffActualToLowKey * (diffValue / diffKeys));
+		return interpolatedValue;
 	}
 
 	private void createTestPolar() {
@@ -339,9 +349,9 @@ public class PolarPlotModel extends CalculationModel {
 
 		HashMap<Integer, Double> hm30 = new HashMap<Integer, Double>();
 		hm30.put(0, 0d);
-		hm30.put(3, 0.25d);
+		hm30.put(2, 0.25d);
 		hm30.put(6, 0.5d);
-		hm30.put(10, 4d);
+		hm30.put(10, 1d);
 		polarMap.put(30, hm30);
 
 		HashMap<Integer, Double> hm60 = new HashMap<Integer, Double>();
@@ -367,9 +377,9 @@ public class PolarPlotModel extends CalculationModel {
 
 		HashMap<Integer, Double> hm150 = new HashMap<Integer, Double>();
 		hm150.put(0, 0d);
-		hm150.put(2, 0.85d);
+		hm150.put(2, 0.9d);
 		hm150.put(5, 1.7d);
-		hm150.put(10, 3.4d);
+		hm150.put(10, 3d);
 		polarMap.put(150, hm150);
 
 		HashMap<Integer, Double> hm180 = new HashMap<Integer, Double>();
