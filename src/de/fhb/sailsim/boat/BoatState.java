@@ -202,6 +202,10 @@ public class BoatState {
 	public void setBack() {
 		this.position = new Vector2f(startX, startY);
 		this.currentPropulsionVelocity = 0.0f;
+		this.currentSpinVelocity= 0f;
+		this.sailDeflection=0;
+		this.directionValue=180;
+		this.direction = new Vector2f(0, 1);
 	}
 
 }
