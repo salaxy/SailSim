@@ -300,30 +300,40 @@ public class PolarPlotModel extends CalculationModel {
 			}
 		}
 
-		double intrapoltedHigherAngleWind = interpolateValueFromValuesBetweenDiffKey(
+		double interpoltedHigherAngleWind = interpolateValueFromValuesBetweenDiffKey(
 				windAcceleration, higherAngleWindHighValue, higherAngleWindLowValue,
 				higherAngleWindHighKey, higherAngleWindLowKey);
-		System.out.println(" intrapoltedHigherAngleWind: " + intrapoltedHigherAngleWind
+		System.out.println(" intrapoltedHigherAngleWind: " + interpoltedHigherAngleWind
 				+ " from Values: " + higherAngleWindHighValue + ", " + higherAngleWindLowValue
 				+ " windstrenght: " + higherAngleWindHighKey + ", " + higherAngleWindLowKey);
 
-		double intrapoltedLowerAngleWind = interpolateValueFromValuesBetweenDiffKey(
+		double interpolatedLowerAngleWind = interpolateValueFromValuesBetweenDiffKey(
 				windAcceleration, lowerAngleWindHighValue, lowerAngleWindLowValue,
 				lowerAngleWindHighKey, lowerAngleWindLowKey);
-		System.out.println(" intrapoltedLowerAngleWind: " + intrapoltedLowerAngleWind
+		System.out.println(" intrapoltedLowerAngleWind: " + interpolatedLowerAngleWind
 				+ " from Values: " + lowerAngleWindHighValue + ", " + lowerAngleWindLowValue
 				+ " windstrenght: " + lowerAngleWindHighKey + ", " + lowerAngleWindLowKey);
 
-		double finalIntrapoltedVelocity = interpolateValueFromValuesBetweenDiffKey(
-				absoluteBoatToWind, intrapoltedHigherAngleWind, intrapoltedLowerAngleWind,
+		double finalInterpolatedVelocity = interpolateValueFromValuesBetweenDiffKey(
+				absoluteBoatToWind, interpoltedHigherAngleWind, interpolatedLowerAngleWind,
 				nextHigherAngle, nextLowerAngle);
-		System.out.println(" finalIntrapoltedVelocity: " + finalIntrapoltedVelocity
-				+ " from Values: " + intrapoltedHigherAngleWind + ", " + intrapoltedLowerAngleWind
+		System.out.println(" finalIntrapoltedVelocity: " + finalInterpolatedVelocity
+				+ " from Values: " + interpoltedHigherAngleWind + ", " + interpolatedLowerAngleWind
 				+ " angles: " + nextHigherAngle + ", " + nextLowerAngle);
 
-		return finalIntrapoltedVelocity;
+		return finalInterpolatedVelocity;
 	}
 
+	/**
+	 * interpolates linear between two key-value pairs
+	 * 
+	 * @param actualKey
+	 * @param highValue
+	 * @param lowValue
+	 * @param highKey
+	 * @param lowKey
+	 * @return interpolatedValue
+	 */
 	private double interpolateValueFromValuesBetweenDiffKey(int actualKey, double highValue,
 			double lowValue, double highKey, double lowKey) {
 
@@ -338,6 +348,9 @@ public class PolarPlotModel extends CalculationModel {
 		return interpolatedValue;
 	}
 
+	/**
+	 * creates polardata
+	 */
 	private void createTestPolar() {
 
 		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
