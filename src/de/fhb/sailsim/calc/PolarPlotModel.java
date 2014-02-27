@@ -66,7 +66,7 @@ public class PolarPlotModel extends CalculationModel {
 
 		calcAngleWindToBoat(boat, env);
 		calcAndSetSailDeflection(boat, env);
-//		calcAndSetSeeminglyWind(boat, env);
+		calcAndSetSeeminglyWind(boat, env);
 
 		// Gesucht ist der zur¸ckgelegte Weg s
 		double s;
@@ -122,8 +122,8 @@ public class PolarPlotModel extends CalculationModel {
 	private void calcAndSetSeeminglyWind(BoatState boat, Enviroment env) {
 
 		// gegeben
-		double wfDirection = (int) boat.getDirectionValue();
-		double wwDirection = (int) env.getWindState().getDirection();
+		double wfDirection = boat.getDirectionValue();
+		double wwDirection = env.getWindState().getDirection();
 
 		double wfStrength = boat.getCurrentPropulsionVelocity();
 		double wwStrength = env.getWindState().getStrength();
@@ -145,25 +145,41 @@ public class PolarPlotModel extends CalculationModel {
 
 		// berechnen von winkel und st‰rke
 		double wsStrength = Math.sqrt((ws.x * ws.x) + (ws.y * ws.y));
-		double wsDirection = Math.acos(ws.y / wsStrength);
+		double cosAngle=ws.y / wsStrength;
+		if(cosAngle>=1d){
+			cosAngle=1d;
+		}
+		if(cosAngle<=-1d){
+			cosAngle=-1d;
+		}
+		double wsDirection = Math.acos(cosAngle);
+		
 		System.out.println(ws.y / wsStrength);
 		// double wsDirection = Math.acos((ws.x * ww.x) + (ws.y * ww.y)
 		// / (Math.sqrt((ww.x * ww.x) + (ww.y * ww.y))
 		// * Math.sqrt((ws.x * ws.x) + (ws.y * ws.y))));
 		// wsDirection= wfDirection+wsDirection;
 		
-		//Via Cosinussatz
+//		//Via Cosinussatz
 //		double beta = (env.getWindState().getWindToBoat() + 180) % 360;
 //		double a = wwStrength;
 //		double c = wfStrength;
 //		double b = Math.sqrt((a * a) + (c * c) - 2 * a * c * Math.cos(beta));
-//		double gamma = Math.acos(Math.abs(((a * a) + (c * c) + (b * b)) / (2 * a * b)));
+//		double cosGamma=((a * a) + (c * c) + (b * b)) / (2 * a * b);
+//		double gamma = Math.acos(cosGamma);
 //		System.out.println(gamma);
 //		System.out.println(Math.abs(((a * a) + (c * c) + (b * b)) / (2 * a * b)));
+//		
+//		if(cosGamma>=1d){
+//			cosGamma=1d;
+//		}
+//		if(cosGamma>=-1d){
+//			cosGamma=-1d;
+//		}
 //
 //		// berechnen von winkel und st‰rke
-//		double wsStrength = b;
-//		double wsDirection = env.getWindState().getWindToBoat() + gamma;
+//		wsStrength = b;
+//		wsDirection = env.getWindState().getWindToBoat() + gamma;
 		
 		//Formel von Wikipedia
 //		// berechnen von winkel und st‰rke
@@ -172,9 +188,20 @@ public class PolarPlotModel extends CalculationModel {
 //		double alpha = env.getWindState().getDirection();
 //		double A = Math.sqrt((W * W) + (V * V) + ((2 * W * V) * Math.cos(alpha)));
 //
-//		double wsStrength = A;
-//		double wsDirection = Math.acos(((W*Math.cos(alpha))+V)/A);
+//		wsStrength = A;
+//		double cosAlpha=((W*Math.cos(alpha))+V)/A;
+//		if(cosAlpha>=1d){
+//			cosAlpha=1d;
+//		}
+//		if(cosAlpha>=-1d){
+//			cosAlpha=-1d;
+//		}
+//		wsDirection = Math.acos(cosAlpha);
 
+		
+		//Umrechnung von Bogenmaﬂ auf Gradmaﬂ
+		wsDirection=(360/(2*Math.PI))*wsDirection;
+		
 		// setze Boat variablen
 		boat.getSeeminglyWind().setDirection(wsDirection);
 		boat.getSeeminglyWind().setStrength(wsStrength);
