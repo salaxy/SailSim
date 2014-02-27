@@ -45,6 +45,13 @@ public class ViewControl {
 		// zeichenbereich setzen
 		// graphics.setClip(0, 0, 510, 768);
 
+		// if boat following view, follow
+		if (this.getPerspectiveOne().isBoatFollowing()) {
+			Vector2f old = simulation.getBoatState().getOldPosition();
+			Vector2f next = simulation.getBoatState().getPosition();
+			this.slipViewPoint(next.x, next.y, old.x, old.y);
+		}
+
 		this.map.paint(graphics, perspective);
 		this.historie.paint(this.perspective, graphics);
 		this.boatSymbol.paint(this.perspective, graphics);
@@ -88,7 +95,7 @@ public class ViewControl {
 	 * @param newx
 	 * @param newy
 	 */
-	public void schiebeInterface(float oldx, float oldy, float newx, float newy) {
+	public void slipViewPoint(float oldx, float oldy, float newx, float newy) {
 
 		Vector2f tempVec = this.getPerspectiveOne().getOriginOffset().copy();
 		tempVec.y = tempVec.y + newy - oldy;

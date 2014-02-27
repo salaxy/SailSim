@@ -48,7 +48,7 @@ public class BoatInformation {
 				Y_POS + 80);
 		graphics.drawString("WS Strength: " + f2.format(this.boatState.getSeeminglyWind().getStrength()) + " m/s", X_POS,
 				Y_POS + 100);
-		graphics.drawString("WS Direction: " + f2.format(this.boatState.getSeeminglyWind().getDirection()) + " d", X_POS,
+		graphics.drawString("WS Direction: " + f0.format(this.boatState.getSeeminglyWind().getDirection()) + " d", X_POS,
 				Y_POS + 120);
 
 		//draw measurement line

@@ -25,7 +25,7 @@ public class Perspective {
 
 	private final float ZOOM_MIN = 0.3f;
 	private final float ZOMM_MAX = 0.55f;
-	private final float VIEW_BORDER = 1000;
+	private final float VIEW_BORDER = 10000;
 
 	/**
 	 * Relative Position der Sicht im Verhältnis zum Ursprung (originPosition)
@@ -41,11 +41,8 @@ public class Perspective {
 	 * Einheitenfarbe des Spielers
 	 */
 	private Color unitColor;
-
-	/**
-	 * Ressourceneinheiten des Spielers
-	 */
-	private int credits = 500;
+	
+	private boolean followBoat=false;
 
 	/**
 	 * Liste der aktivierten Units des Spielers
@@ -71,13 +68,6 @@ public class Perspective {
 		return activeUnits;
 	}
 
-	public int getCredits() {
-		return credits;
-	}
-
-	public void setCredits(int credits) {
-		this.credits = credits;
-	}
 
 	/**
 	 * Gibt den Ursprungsvector des Players zurueck
@@ -103,9 +93,10 @@ public class Perspective {
 	 * @param viewPosition
 	 */
 	public void setOriginOffset(Vector2f viewPosition) {
-		if (viewPosition.length() < VIEW_BORDER) {
+		//TODO disable Border? together with zoom user input
+//		if (viewPosition.length() < VIEW_BORDER) {
 			this.originOffset = viewPosition;
-		}
+//		}
 	}
 
 	public float getActualZoom() {
@@ -125,8 +116,15 @@ public class Perspective {
 		return generalAngle;
 	}
 
-	public void addCredits(int credits) {
-		this.credits = this.credits + credits;
+	/**
+	 * sets Bootcentral view on/off
+	 */
+	public void setBootOnCentral() {
+		followBoat=!followBoat;
+	}
+
+	public boolean isBoatFollowing() {
+		return followBoat;
 	}
 
 }

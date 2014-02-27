@@ -72,7 +72,7 @@ public class SlickView extends BasicGameState {
 
 		g.setAntiAlias(true);
 		g.setBackground(Color.white);
-
+		
 		this.control.drawViewContent(g);
 	}
 
@@ -92,11 +92,11 @@ public class SlickView extends BasicGameState {
 	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
 
 		if (mouseButton == 0) {
-			control.schiebeInterface(oldx, oldy, newx, newy);
+			control.slipViewPoint(oldx, oldy, newx, newy);
 		}
 
 		if (mouseButton == 1) {
-			// control.zoomInterface(oldx, oldy, newx, newy);
+			 control.zoomInterface(oldx, oldy, newx, newy);
 		}
 	}
 
@@ -150,6 +150,10 @@ public class SlickView extends BasicGameState {
 		case Input.KEY_Z:
 			System.out.println("pressed KEY_Z");
 			control.getSimulationControl().getBoatState().setBack();
+			break;
+		case Input.KEY_A:
+			System.out.println("pressed KEY_A");
+			control.getPerspectiveOne().setBootOnCentral();
 			break;
 		}
 	}

@@ -11,9 +11,11 @@ public class BoatState {
 
 	public static final int MAX_RUDER_AMPLITUDE = 60;
 
-	public WindState seeminglyWind = new WindState(0, 0);;
+	public WindState seeminglyWind = new WindState(0, 0);
 
 	private Vector2f position = new Vector2f(0, 0);
+
+	private Vector2f oldPosition = new Vector2f(0, 0);
 
 	private Vector2f direction = new Vector2f(0, 1);
 
@@ -139,7 +141,12 @@ public class BoatState {
 		return position;
 	}
 
+	public Vector2f getOldPosition() {
+		return oldPosition;
+	}
+
 	public void setPosition(Vector2f position) {
+		oldPosition = this.position;
 		this.position = position;
 	}
 

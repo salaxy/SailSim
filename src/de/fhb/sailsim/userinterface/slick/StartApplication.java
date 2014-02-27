@@ -12,7 +12,7 @@ public class StartApplication extends StateBasedGame {
 	 *  Konstruktor
 	 */
 	public StartApplication() {
-		super("SailSim v.0.3.0");
+		super("SailSim v.0.3.5");
 	}
 
 	/**
