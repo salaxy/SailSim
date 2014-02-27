@@ -2,12 +2,16 @@ package de.fhb.sailsim.boat;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import de.fhb.sailsim.worldmodel.WindState;
+
 public class BoatState {
 
 	private final int RUDER_STEP = 5;
 	private final float SPEEDUP_STEP = 0.1f;
 
 	public static final int MAX_RUDER_AMPLITUDE = 60;
+	
+	public WindState seeminglyWind;
 
 	private Vector2f position = new Vector2f(0, 0);
 
@@ -47,6 +51,7 @@ public class BoatState {
 		this.currentSpinVelocity = currentSpinVelocity;
 		this.sailWinch = sailWinch;
 		this.ruderDeflection = ruderPostion;
+		seeminglyWind = new WindState(0, 0);
 	}
 
 	/**
