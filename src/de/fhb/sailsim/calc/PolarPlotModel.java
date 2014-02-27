@@ -96,40 +96,47 @@ public class PolarPlotModel extends CalculationModel {
 	 * @param env
 	 */
 	private void calcAndSetSeeminglyWind(BoatState boat, Enviroment env) {
-		
+
 		// gegeben
 		double wfDirection = (int) boat.getDirectionValue();
 		double wwDirection = (int) env.getWindState().getDirection();
-		
+
 		double wfStrength = boat.getCurrentPropulsionVelocity();
 		double wwStrength = env.getWindState().getStrength();
 
 		// Fahrtwindstärke anpassen Fahrt von m/s in km/h
 		// und Fahrtrichtung umkehren
-		wfStrength= (wfStrength *60*60)/1000;
-		wfDirection = (wfDirection+180)%360;
+		wfStrength = (wfStrength * 60 * 60) / 1000;
+		wfDirection = (wfDirection + 180) % 360;
 
 		// Vektoren erstellen
-		Vector2f wf=WindValuesToVector2f(wfDirection, wfStrength);
-		Vector2f ww= WindValuesToVector2f(wwDirection, wwStrength);
+		Vector2f wf = WindValuesToVector2f(wfDirection, wfStrength);
+		Vector2f ww = WindValuesToVector2f(wwDirection, wwStrength);
 
 		// neuen Vektor für den scheinbaren wind berechnen
-		
-		
+		Vector2f ws = new Vector2f(wf.x + ww.x, wf.y + ww.y);
 
+		// berechnen von winkel und stärke
+		double wsStrength = Math.sqrt(ws.x * ws.x + ws.y * ws.y);
+		double wsDirection = Math.acos(ws.y / wsStrength);
+
+		// setze Boat variablen
+		boat.getSeeminglyWind().setDirection(wsDirection);
+		boat.getSeeminglyWind().setStrength(wsStrength);
 	}
 
 	/**
 	 * calculates a Vector2f from wind stength and direction
+	 * 
 	 * @param wDirection
 	 * @param wStrength
-	 * @return 
+	 * @return
 	 */
 	private Vector2f WindValuesToVector2f(double wDirection, double wStrength) {
-		double wfX=Math.sin(wDirection);
-		double wfY=Math.sin(wDirection);
-		double faktorWf=wStrength/(Math.sqrt(wfX*wfX + wfY*wfY));
-		return new Vector2f((float)(faktorWf*wfX), (float) (faktorWf*wfY));
+		double x = Math.sin(wDirection);
+		double y = Math.sin(wDirection);
+		double normFactor = wStrength / (Math.sqrt(x * x + y * y));
+		return new Vector2f((float) (normFactor * x), (float) (normFactor * y));
 	}
 
 	/**

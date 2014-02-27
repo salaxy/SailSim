@@ -10,7 +10,7 @@ public class BoatState {
 	private final float SPEEDUP_STEP = 0.1f;
 
 	public static final int MAX_RUDER_AMPLITUDE = 60;
-	
+
 	public WindState seeminglyWind;
 
 	private Vector2f position = new Vector2f(0, 0);
@@ -37,8 +37,8 @@ public class BoatState {
 
 	/** from 60 degree to - 60 degree */
 	private int sailDeflection = 0;
-	
-	/**start coordinates */
+
+	/** start coordinates */
 	private float startX = 0f;
 	private float startY = 0f;
 
@@ -163,6 +163,10 @@ public class BoatState {
 		}
 	}
 
+	public WindState getSeeminglyWind() {
+		return seeminglyWind;
+	}
+
 	// next methods for manual control
 	// *****************************************************
 
@@ -207,9 +211,9 @@ public class BoatState {
 	public void setBack() {
 		this.position = new Vector2f(startX, startY);
 		this.currentPropulsionVelocity = 0.0f;
-		this.currentSpinVelocity= 0f;
-		this.sailDeflection=0;
-		this.directionValue=180;
+		this.currentSpinVelocity = 0f;
+		this.sailDeflection = 0;
+		this.directionValue = 180;
 		this.direction = new Vector2f(0, 1);
 	}
 
