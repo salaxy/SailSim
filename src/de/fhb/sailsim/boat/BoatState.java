@@ -11,7 +11,7 @@ public class BoatState {
 
 	public static final int MAX_RUDER_AMPLITUDE = 60;
 
-	public WindState seeminglyWind;
+	public WindState seeminglyWind = new WindState(0, 0);;
 
 	private Vector2f position = new Vector2f(0, 0);
 
@@ -51,7 +51,6 @@ public class BoatState {
 		this.currentSpinVelocity = currentSpinVelocity;
 		this.sailWinch = sailWinch;
 		this.ruderDeflection = ruderPostion;
-		seeminglyWind = new WindState(0, 0);
 	}
 
 	/**
