@@ -42,7 +42,7 @@ public class PolarPlotModel extends CalculationModel {
 
 		calcAngleWindToBoat(boat, env);
 		calcAndSetSailDeflection(boat, env);
-		calcAndSetSeeminglyWind(boat, env);
+		versuch3(boat, env);
 
 		// Gesucht ist der zurückgelegte Weg s
 		double s;
@@ -118,11 +118,38 @@ public class PolarPlotModel extends CalculationModel {
 		// neuen Vektor für den scheinbaren wind berechnen
 		Vector2f ws = new Vector2f(wf.x + ww.x, wf.y + ww.y);
 		System.out.println("ws.x " + ws.x + " ws.y " + ws.y);
-		
+
 		// berechnen von winkel und stärke
-		double wsStrength = Math.sqrt(ws.x * ws.x + ws.y * ws.y);
+		double wsStrength = Math.sqrt((ws.x * ws.x) + (ws.y * ws.y));
 		double wsDirection = Math.acos(ws.y / wsStrength);
 		System.out.println(ws.y / wsStrength);
+		// double wsDirection = Math.acos((ws.x * ww.x) + (ws.y * ww.y)
+		// / (Math.sqrt((ww.x * ww.x) + (ww.y * ww.y))
+		// * Math.sqrt((ws.x * ws.x) + (ws.y * ws.y))));
+		// wsDirection= wfDirection+wsDirection;
+		
+		//Via Cosinussatz
+//		double beta = (env.getWindState().getWindToBoat() + 180) % 360;
+//		double a = wwStrength;
+//		double c = wfStrength;
+//		double b = Math.sqrt((a * a) + (c * c) - 2 * a * c * Math.cos(beta));
+//		double gamma = Math.acos(Math.abs(((a * a) + (c * c) + (b * b)) / (2 * a * b)));
+//		System.out.println(gamma);
+//		System.out.println(Math.abs(((a * a) + (c * c) + (b * b)) / (2 * a * b)));
+//
+//		// berechnen von winkel und stärke
+//		double wsStrength = b;
+//		double wsDirection = env.getWindState().getWindToBoat() + gamma;
+		
+		//Formel von Wikipedia
+//		// berechnen von winkel und stärke
+//		double V = boat.getCurrentPropulsionVelocity();
+//		double W = env.getWindState().getStrength();
+//		double alpha = env.getWindState().getDirection();
+//		double A = Math.sqrt((W * W) + (V * V) + ((2 * W * V) * Math.cos(alpha)));
+//
+//		double wsStrength = A;
+//		double wsDirection = Math.acos(((W*Math.cos(alpha))+V)/A);
 
 		// setze Boat variablen
 		boat.getSeeminglyWind().setDirection(wsDirection);
@@ -131,11 +158,14 @@ public class PolarPlotModel extends CalculationModel {
 				+ wsDirection);
 	}
 
+
 	/**
 	 * calculates a Vector2f from wind stength and direction
 	 * 
-	 * @param direction - 0 to 360 degree
-	 * @param strength  - velocity
+	 * @param direction
+	 *            - 0 to 360 degree
+	 * @param strength
+	 *            - velocity
 	 * @return
 	 */
 	private Vector2f WindValuesToVector2f(double direction, double strength) {
