@@ -46,10 +46,14 @@ public class BoatInformation {
 				X_POS, Y_POS + 60);
 		graphics.drawString("Sailangle: " + this.boatState.getSailDeflection() + " d", X_POS,
 				Y_POS + 80);
+		graphics.drawString("WS Strength: " + f2.format(this.boatState.getSeeminglyWind().getStrength()) + " m/s", X_POS,
+				Y_POS + 100);
+		graphics.drawString("WS Direction: " + f0.format(this.boatState.getSeeminglyWind().getDirection()) + " d", X_POS,
+				Y_POS + 120);
 
 		//draw measurement line
 		graphics.setLineWidth(3);
-		int measureLine = 140;
+		int measureLine = 160;
 		int measureLength = (int) (100 * perspective.getActualZoom());
 		graphics.drawString("Measure 100 m", X_POS, Y_POS + measureLine + 5);
 		graphics.drawLine(X_POS, Y_POS + measureLine, X_POS + measureLength, Y_POS + measureLine);
