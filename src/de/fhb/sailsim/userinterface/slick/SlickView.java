@@ -155,6 +155,14 @@ public class SlickView extends BasicGameState {
 			System.out.println("pressed KEY_A");
 			control.getPerspectiveOne().setBootOnCentral();
 			break;
+		case Input.KEY_I:
+			System.out.println("pressed KEY_I");
+			control.getPerspectiveOne().zoomIn();
+			break;
+		case Input.KEY_O:
+			System.out.println("pressed KEY_O");
+			control.getPerspectiveOne().zoomOut();
+			break;
 		}
 	}
 

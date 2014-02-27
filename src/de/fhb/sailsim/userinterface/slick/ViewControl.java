@@ -47,8 +47,9 @@ public class ViewControl {
 
 		// if boat following view, follow
 		if (this.getPerspectiveOne().isBoatFollowing()) {
-			Vector2f old = simulation.getBoatState().getOldPosition();
-			Vector2f next = simulation.getBoatState().getPosition();
+			float actualZoom= this.getPerspectiveOne().getActualZoom();
+			Vector2f old = simulation.getBoatState().getOldPosition().copy().scale(actualZoom);
+			Vector2f next = simulation.getBoatState().getPosition().copy().scale(actualZoom);;
 			this.slipViewPoint(next.x, next.y, old.x, old.y);
 		}
 

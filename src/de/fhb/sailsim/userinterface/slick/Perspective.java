@@ -24,7 +24,8 @@ public class Perspective {
 	private Vector2f originPosition;
 
 	private final float ZOOM_MIN = 0.3f;
-	private final float ZOMM_MAX = 0.55f;
+	private final float ZOOM_MAX = 1.2f;
+	private final float ZOOM_STEP = 0.1f;
 	private final float VIEW_BORDER = 10000;
 
 	/**
@@ -104,12 +105,10 @@ public class Perspective {
 	}
 
 	public void setActualZoom(float actualZoom) {
-
 		// wenn minimum oder maximum nicht überschritten
-		if (!(actualZoom > ZOMM_MAX || actualZoom < ZOOM_MIN)) {
+		if (!(actualZoom > ZOOM_MAX || actualZoom < ZOOM_MIN)) {
 			this.actualZoom = actualZoom;
 		}
-
 	}
 
 	public float getGeneralAngle() {
@@ -125,6 +124,14 @@ public class Perspective {
 
 	public boolean isBoatFollowing() {
 		return followBoat;
+	}
+
+	public void zoomIn() {
+		this.setActualZoom(this.getActualZoom()+ZOOM_STEP);
+	}
+
+	public void zoomOut() {
+		this.setActualZoom(this.getActualZoom()-ZOOM_STEP);
 	}
 
 }
