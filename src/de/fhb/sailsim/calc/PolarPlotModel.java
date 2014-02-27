@@ -1,6 +1,11 @@
 package de.fhb.sailsim.calc;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Properties;
 
 import org.newdawn.slick.geom.Vector2f;
 
@@ -34,7 +39,26 @@ public class PolarPlotModel extends CalculationModel {
 	 */
 	public PolarPlotModel() {
 		super();
-		createTestPolar();
+		
+		InputStream input = null;
+		
+		try {
+			//Load polars from properties  
+			loadPolarsFromProperties(input);
+	 
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			//		createTestPolar();
+		}
+		
 	}
 
 	@Override
@@ -42,7 +66,7 @@ public class PolarPlotModel extends CalculationModel {
 
 		calcAngleWindToBoat(boat, env);
 		calcAndSetSailDeflection(boat, env);
-		versuch3(boat, env);
+//		calcAndSetSeeminglyWind(boat, env);
 
 		// Gesucht ist der zurückgelegte Weg s
 		double s;
@@ -450,7 +474,7 @@ public class PolarPlotModel extends CalculationModel {
 		HashMap<Integer, Double> hm30 = new HashMap<Integer, Double>();
 		hm30.put(0, 0d);
 		hm30.put(2, 0.25d);
-		hm30.put(6, 0.5d);
+		hm30.put(5, 0.5d);
 		hm30.put(10, 1d);
 		polarMap.put(30, hm30);
 
@@ -488,6 +512,63 @@ public class PolarPlotModel extends CalculationModel {
 		hm180.put(5, 1.0d);
 		hm180.put(10, 2d);
 		polarMap.put(180, hm180);
+	}
+	
+	private void loadPolarsFromProperties(InputStream input) throws IOException {
+		
+		Properties prop = new Properties();
+		input = new FileInputStream("polar.properties");
+		prop.load(input);
+		
+		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
+		hm00.put(0, Double.parseDouble(prop.getProperty("hm00_0")));
+		hm00.put(2, Double.parseDouble(prop.getProperty("hm00_2")));
+		hm00.put(5, Double.parseDouble(prop.getProperty("hm00_5")));
+		hm00.put(10, Double.parseDouble(prop.getProperty("hm00_10")));
+		polarMap.put(0, hm00);
+
+		HashMap<Integer, Double> hm30 = new HashMap<Integer, Double>();
+		hm30.put(0, Double.parseDouble(prop.getProperty("hm30_0")));
+		hm30.put(2, Double.parseDouble(prop.getProperty("hm30_2")));
+		hm30.put(5, Double.parseDouble(prop.getProperty("hm30_5")));
+		hm30.put(10, Double.parseDouble(prop.getProperty("hm30_10")));
+		polarMap.put(30, hm30);
+
+		HashMap<Integer, Double> hm60 = new HashMap<Integer, Double>();
+		hm60.put(0, Double.parseDouble(prop.getProperty("hm60_0")));
+		hm60.put(2, Double.parseDouble(prop.getProperty("hm60_2")));
+		hm60.put(5, Double.parseDouble(prop.getProperty("hm60_5")));
+		hm60.put(10, Double.parseDouble(prop.getProperty("hm60_10")));
+		polarMap.put(60, hm60);
+
+		HashMap<Integer, Double> hm90 = new HashMap<Integer, Double>();
+		hm90.put(0, Double.parseDouble(prop.getProperty("hm90_0")));
+		hm90.put(2, Double.parseDouble(prop.getProperty("hm90_2")));
+		hm90.put(5, Double.parseDouble(prop.getProperty("hm90_5")));
+		hm90.put(10, Double.parseDouble(prop.getProperty("hm90_10")));
+		polarMap.put(90, hm90);
+
+		HashMap<Integer, Double> hm120 = new HashMap<Integer, Double>();
+		hm120.put(0, Double.parseDouble(prop.getProperty("hm120_0")));
+		hm120.put(2, Double.parseDouble(prop.getProperty("hm120_2")));
+		hm120.put(5, Double.parseDouble(prop.getProperty("hm120_5")));
+		hm120.put(10, Double.parseDouble(prop.getProperty("hm120_10")));
+		polarMap.put(120, hm120);
+
+		HashMap<Integer, Double> hm150 = new HashMap<Integer, Double>();
+		hm150.put(0, Double.parseDouble(prop.getProperty("hm150_0")));
+		hm150.put(2, Double.parseDouble(prop.getProperty("hm150_2")));
+		hm150.put(5, Double.parseDouble(prop.getProperty("hm150_5")));
+		hm150.put(10, Double.parseDouble(prop.getProperty("hm150_10")));
+		polarMap.put(150, hm150);
+
+		HashMap<Integer, Double> hm180 = new HashMap<Integer, Double>();
+		hm180.put(0, Double.parseDouble(prop.getProperty("hm180_0")));
+		hm180.put(2, Double.parseDouble(prop.getProperty("hm180_2")));
+		hm180.put(5, Double.parseDouble(prop.getProperty("hm180_5")));
+		hm180.put(10, Double.parseDouble(prop.getProperty("hm180_10")));
+		polarMap.put(180, hm180);
+		
 	}
 
 	private double calcVelocityDummy(BoatState boat, Enviroment env, int framerate) {
