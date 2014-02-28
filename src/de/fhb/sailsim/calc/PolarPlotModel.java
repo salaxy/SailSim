@@ -259,24 +259,26 @@ public class PolarPlotModel extends CalculationModel {
 		// ist das wirklich so, ist das real???
 		// Berechnung der Rotationsgeschwindigkeit abhängig von
 		// Referenzgeschwindigkeiten
-		double rotateV = (propulsionV * ANGLE_VELOCITY_REFERENCE) / REFERENCE_PROPULSION_VELOCITY;
-		rotateV = rotateV / SlickView.FRAMERATE;
 		int ruderAngle = boat.getRuderDeflection();
+		double maxRotateV = (propulsionV * ANGLE_VELOCITY_REFERENCE) / REFERENCE_PROPULSION_VELOCITY;
+		maxRotateV = maxRotateV/ SlickView.FRAMERATE;
 
 		if (ruderAngle < 0) {
-			rotateV = -rotateV;
+			maxRotateV = -maxRotateV;
 		}// else rotateV=rotateV
 
-		// Wegberechnung in Abhängigkeit des Ruderwinkels
-		double rotateS = (Math.abs(ruderAngle) * rotateV) / BoatState.MAX_RUDER_AMPLITUDE;
-
+		// Berechnung der Rotationsgeschw. in Abhängigkeit des Ruderwinkels
+		double actualRotateV = (Math.abs(ruderAngle) * maxRotateV) / BoatState.MAX_RUDER_AMPLITUDE;
+		//Wegberechnung s=v ohne (+a*t)
+		double rotateS = actualRotateV;
+		
 		// berechnen des neuen Winkels
 		if (ruderAngle != 0) {
 			boat.getDirection().add(rotateS);
-			boat.setDirectionValue(boat.getDirectionValue() + rotateS);
+			boat.setDirectionValue(boat.getDirectionValue() + actualRotateV);
 		}
 
-		return rotateV;
+		return actualRotateV;
 	}
 
 	/**
