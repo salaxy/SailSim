@@ -1,7 +1,6 @@
 package de.fhb.sailsim.calc;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -248,11 +247,12 @@ public class PolarPlotModel extends CalculationModel {
 
 	/**
 	 * calc angle rotateV and rotateS in depency of propulsion velocity
+	 * in depency of Framerate
 	 * 
 	 * @param boat
 	 * @param s
 	 * @param propulsionV
-	 * @return
+	 * @return actualRotateV for a single timesnipet (actualRotateV/ SlickView.FRAMERATE)
 	 */
 	private double calcRotationValues(BoatState boat, double s, double propulsionV) {
 		// TODO der Wendekreis bleibt immer gleich egal welche geschwindigkeit,
@@ -282,7 +282,7 @@ public class PolarPlotModel extends CalculationModel {
 	}
 
 	/**
-	 * Berechnet und setzt die Segelauslenkung
+	 * calc and sets the sailDeflection
 	 * 
 	 * @param boat
 	 * @param env
@@ -490,6 +490,8 @@ public class PolarPlotModel extends CalculationModel {
 
 	/**
 	 * creates polardata
+	 * @deprecated only implemented for tests
+	 * 
 	 */
 	private void createTestPolar() {
 
@@ -600,6 +602,13 @@ public class PolarPlotModel extends CalculationModel {
 		
 	}
 
+	/**
+	 * @deprecated only implemented for tests
+	 * @param boat
+	 * @param env
+	 * @param framerate
+	 * @return propulsion velocity
+	 */
 	private double calcVelocityDummy(BoatState boat, Enviroment env, int framerate) {
 
 		int absoluteBoatToWind = env.getWindState().getWindToBoat();
