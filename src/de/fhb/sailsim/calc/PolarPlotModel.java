@@ -38,13 +38,13 @@ public class PolarPlotModel extends CalculationModel {
 	 */
 	public PolarPlotModel() {
 		super();
-		
+
 		InputStream input = null;
-		
+
 		try {
-			//Load polars from properties  
+			// Load polars from properties
 			loadPolarsFromProperties(input);
-	 
+
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -55,9 +55,9 @@ public class PolarPlotModel extends CalculationModel {
 					e.printStackTrace();
 				}
 			}
-			//		createTestPolar();
+			// createTestPolar();
 		}
-		
+
 	}
 
 	@Override
@@ -131,6 +131,11 @@ public class PolarPlotModel extends CalculationModel {
 		// und Fahrtrichtung umkehren
 		wfStrength = (wfStrength * 60 * 60) / 1000;
 		wfDirection = (wfDirection + 180) % 360;
+		// Direction umwandeln in Bogenmaß!!!
+		wfDirection = (2 * Math.PI) / 360 * wfDirection;
+		wwDirection = (2 * Math.PI) / 360 * wwDirection;		
+		System.out.println("wfDirection " + wfDirection);
+		// soweit in ordnung die Berechnung **********************************
 
 		// Vektoren erstellen
 		Vector2f wf = WindValuesToVector2f(wfDirection, wfStrength);
@@ -144,70 +149,69 @@ public class PolarPlotModel extends CalculationModel {
 
 		// berechnen von winkel und stärke
 		double wsStrength = Math.sqrt((ws.x * ws.x) + (ws.y * ws.y));
-		double cosAngle=ws.y / wsStrength;
-		if(cosAngle>=1d){
-			cosAngle=1d;
+		double cosAngle = ws.y / wsStrength;
+		if (cosAngle >= 1d) {
+			cosAngle = 1d;
 		}
-		if(cosAngle<=-1d){
-			cosAngle=-1d;
+		if (cosAngle <= -1d) {
+			cosAngle = -1d;
 		}
 		double wsDirection = Math.acos(cosAngle);
-		
-		System.out.println(ws.y / wsStrength);
-		// double wsDirection = Math.acos((ws.x * ww.x) + (ws.y * ww.y)
-		// / (Math.sqrt((ww.x * ww.x) + (ww.y * ww.y))
-		// * Math.sqrt((ws.x * ws.x) + (ws.y * ws.y))));
-		// wsDirection= wfDirection+wsDirection;
-		
-//		//Via Cosinussatz
-//		double beta = (env.getWindState().getWindToBoat() + 180) % 360;
-//		double a = wwStrength;
-//		double c = wfStrength;
-//		double b = Math.sqrt((a * a) + (c * c) - 2 * a * c * Math.cos(beta));
-//		double cosGamma=((a * a) + (c * c) + (b * b)) / (2 * a * b);
-//		double gamma = Math.acos(cosGamma);
-//		System.out.println(gamma);
-//		System.out.println(Math.abs(((a * a) + (c * c) + (b * b)) / (2 * a * b)));
-//		
-//		if(cosGamma>=1d){
-//			cosGamma=1d;
-//		}
-//		if(cosGamma>=-1d){
-//			cosGamma=-1d;
-//		}
-//
-//		// berechnen von winkel und stärke
-//		wsStrength = b;
-//		wsDirection = env.getWindState().getWindToBoat() + gamma;
-		
-		//Formel von Wikipedia
-//		// berechnen von winkel und stärke
-//		double V = boat.getCurrentPropulsionVelocity();
-//		double W = env.getWindState().getStrength();
-//		double alpha = env.getWindState().getDirection();
-//		double A = Math.sqrt((W * W) + (V * V) + ((2 * W * V) * Math.cos(alpha)));
-//
-//		wsStrength = A;
-//		double cosAlpha=((W*Math.cos(alpha))+V)/A;
-//		if(cosAlpha>=1d){
-//			cosAlpha=1d;
-//		}
-//		if(cosAlpha>=-1d){
-//			cosAlpha=-1d;
-//		}
-//		wsDirection = Math.acos(cosAlpha);
 
-		
-		//Umrechnung von Bogenmaß auf Gradmaß
-		wsDirection=(360/(2*Math.PI))*wsDirection;
-		
+		System.out.println(ws.y / wsStrength);
+		wsDirection = Math.acos((ws.x * ww.x)
+				+ (ws.y * ww.y)
+				/ (Math.sqrt((ww.x * ww.x) + (ww.y * ww.y)) * Math.sqrt((ws.x * ws.x)
+						+ (ws.y * ws.y))));
+		// wsDirection= ws.getTheta();
+
+		// //Via Cosinussatz
+		// double beta = (env.getWindState().getWindToBoat() + 180) % 360;
+		// double a = wwStrength;
+		// double c = wfStrength;
+		// double b = Math.sqrt((a * a) + (c * c) - 2 * a * c * Math.cos(beta));
+		// double cosGamma=((a * a) + (c * c) + (b * b)) / (2 * a * b);
+		// double gamma = Math.acos(cosGamma);
+		// System.out.println(gamma);
+		// System.out.println(Math.abs(((a * a) + (c * c) + (b * b)) / (2 * a *
+		// b)));
+		// if(cosGamma>=1d){
+		// cosGamma=1d;
+		// }
+		// if(cosGamma<=-1d){
+		// cosGamma=-1d;
+		// }
+		// // berechnen von winkel und stärke
+		// wsStrength = b;
+		// wsDirection = env.getWindState().getWindToBoat() + gamma;
+
+		// Formel von Wikipedia
+		// // berechnen von winkel und stärke
+		// double V = boat.getCurrentPropulsionVelocity();
+		// double W = env.getWindState().getStrength();
+		// double alpha = env.getWindState().getDirection();
+		// double A = Math.sqrt((W * W) + (V * V) + ((2 * W * V) *
+		// Math.cos(alpha)));
+		//
+		// wsStrength = A;
+		// double cosAlpha=((W*Math.cos(alpha))+V)/A;
+		// if(cosAlpha>=1d){
+		// cosAlpha=1d;
+		// }
+		// if(cosAlpha<=-1d){
+		// cosAlpha=-1d;
+		// }
+		// wsDirection = Math.acos(cosAlpha);
+
+		// Umrechnung von Bogenmaß auf Gradmaß
+		wsDirection = (360 / (2 * Math.PI)) * wsDirection;
+
 		// setze Boat variablen
 		boat.getSeeminglyWind().setDirection(wsDirection);
 		boat.getSeeminglyWind().setStrength(wsStrength);
 		System.out.println("Scheinbarer Wind: " + "wsStrength: " + wsStrength + " wsDirection: "
 				+ wsDirection);
 	}
-
 
 	/**
 	 * calculates a Vector2f from wind stength and direction
@@ -221,8 +225,10 @@ public class PolarPlotModel extends CalculationModel {
 	private Vector2f WindValuesToVector2f(double direction, double strength) {
 		double x = Math.sin(direction);
 		double y = Math.cos(direction);
-		double normFactor = strength / Math.sqrt(x * x + y * y);
+		double normFactor = strength / Math.sqrt((x * x) + (y * y));
 		return new Vector2f((float) (normFactor * x), (float) (normFactor * y));
+		// double normFactor = strength / Math.sqrt(x * x + y * y);
+		// return new Vector2f((float) ( x), (float) ( y));
 	}
 
 	/**
@@ -246,22 +252,22 @@ public class PolarPlotModel extends CalculationModel {
 	}
 
 	/**
-	 * calc angle rotateV and rotateS in depency of propulsion velocity
-	 * in depency of Framerate
+	 * calc angle rotateV and rotateS in depency of propulsion velocity in
+	 * depency of Framerate
 	 * 
 	 * @param boat
 	 * @param s
 	 * @param propulsionV
-	 * @return actualRotateV for a single timesnipet (actualRotateV/ SlickView.FRAMERATE)
+	 * @return actualRotateV for a single timesnipet (actualRotateV/
+	 *         SlickView.FRAMERATE)
 	 */
 	private double calcRotationValues(BoatState boat, double s, double propulsionV) {
-		// TODO der Wendekreis bleibt immer gleich egal welche geschwindigkeit,
-		// ist das wirklich so, ist das real???
 		// Berechnung der Rotationsgeschwindigkeit abhängig von
 		// Referenzgeschwindigkeiten
 		int ruderAngle = boat.getRuderDeflection();
-		double maxRotateV = (propulsionV * ANGLE_VELOCITY_REFERENCE) / REFERENCE_PROPULSION_VELOCITY;
-		maxRotateV = maxRotateV/ SlickView.FRAMERATE;
+		double maxRotateV = (propulsionV * ANGLE_VELOCITY_REFERENCE)
+				/ REFERENCE_PROPULSION_VELOCITY;
+		maxRotateV = maxRotateV / SlickView.FRAMERATE;
 
 		if (ruderAngle < 0) {
 			maxRotateV = -maxRotateV;
@@ -269,9 +275,9 @@ public class PolarPlotModel extends CalculationModel {
 
 		// Berechnung der Rotationsgeschw. in Abhängigkeit des Ruderwinkels
 		double actualRotateV = (Math.abs(ruderAngle) * maxRotateV) / BoatState.MAX_RUDER_AMPLITUDE;
-		//Wegberechnung s=v ohne (+a*t)
+		// Wegberechnung s=v ohne (+a*t)
 		double rotateS = actualRotateV;
-		
+
 		// berechnen des neuen Winkels
 		if (ruderAngle != 0) {
 			boat.getDirection().add(rotateS);
@@ -490,6 +496,7 @@ public class PolarPlotModel extends CalculationModel {
 
 	/**
 	 * creates polardata
+	 * 
 	 * @deprecated only implemented for tests
 	 * 
 	 */
@@ -544,13 +551,13 @@ public class PolarPlotModel extends CalculationModel {
 		hm180.put(10, 2d);
 		polarMap.put(180, hm180);
 	}
-	
+
 	private void loadPolarsFromProperties(InputStream input) throws IOException {
-		
+
 		Properties prop = new Properties();
 		input = new FileInputStream("polar.properties");
 		prop.load(input);
-		
+
 		HashMap<Integer, Double> hm00 = new HashMap<Integer, Double>();
 		hm00.put(0, Double.parseDouble(prop.getProperty("hm00_0")));
 		hm00.put(2, Double.parseDouble(prop.getProperty("hm00_2")));
@@ -599,7 +606,7 @@ public class PolarPlotModel extends CalculationModel {
 		hm180.put(5, Double.parseDouble(prop.getProperty("hm180_5")));
 		hm180.put(10, Double.parseDouble(prop.getProperty("hm180_10")));
 		polarMap.put(180, hm180);
-		
+
 	}
 
 	/**
