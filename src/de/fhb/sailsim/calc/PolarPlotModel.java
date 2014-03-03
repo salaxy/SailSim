@@ -65,7 +65,7 @@ public class PolarPlotModel extends CalculationModel {
 
 		calcAngleWindToBoat(boat, env);
 		calcAndSetSailDeflection(boat, env);
-		calcAndSetSeeminglyWind(boat, env);
+		calcAndSetApparentWind(boat, env);
 
 		// Gesucht ist der zurückgelegte Weg s
 		double s;
@@ -118,7 +118,7 @@ public class PolarPlotModel extends CalculationModel {
 	 * @param boat
 	 * @param env
 	 */
-	private void calcAndSetSeeminglyWind(BoatState boat, Enviroment env) {
+	private void calcAndSetApparentWind(BoatState boat, Enviroment env) {
 
 		// gegeben
 		double wfDirection = boat.getDirectionValue();
@@ -131,11 +131,10 @@ public class PolarPlotModel extends CalculationModel {
 		// und Fahrtrichtung umkehren
 		wfStrength = (wfStrength * 60 * 60) / 1000;
 		wfDirection = (wfDirection + 180) % 360;
-		// Direction umwandeln in Bogenmaß!!!
+		// umwandeln in Bogenmaß!
 		wfDirection = (2 * Math.PI) / 360 * wfDirection;
 		wwDirection = (2 * Math.PI) / 360 * wwDirection;		
 		System.out.println("wfDirection " + wfDirection);
-		// soweit in ordnung die Berechnung **********************************
 
 		// Vektoren erstellen
 		Vector2f wf = WindValuesToVector2f(wfDirection, wfStrength);

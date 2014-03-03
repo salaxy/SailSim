@@ -11,7 +11,7 @@ public class BoatState {
 
 	public static final int MAX_RUDER_AMPLITUDE = 60;
 
-	private WindState seeminglyWind = new WindState(0, 0);
+	private WindState apparentWind = new WindState(0, 0);
 
 	private Vector2f position = new Vector2f(0, 0);
 
@@ -170,7 +170,7 @@ public class BoatState {
 	}
 
 	public WindState getSeeminglyWind() {
-		return seeminglyWind;
+		return apparentWind;
 	}
 
 	// next methods for manual control
