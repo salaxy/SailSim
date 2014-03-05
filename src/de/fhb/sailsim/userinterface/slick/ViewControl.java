@@ -36,7 +36,7 @@ public class ViewControl {
 		simulation = new SimulationControl();
 
 		boatInformation = new BoatInformation(simulation.getBoatState());
-		boatSymbol = new BoatSign(simulation.getBoatState());
+		boatSymbol = new BoatSign(simulation.getBoatState(), simulation.getEnviroment());
 		windSymbol = new WindSign(simulation.getEnviroment().getWindState());
 		historie = new BoatHistory();
 	}

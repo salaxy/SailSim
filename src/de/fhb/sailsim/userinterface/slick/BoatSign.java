@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import de.fhb.sailsim.boat.BoatState;
+import de.fhb.sailsim.worldmodel.Enviroment;
 
 /**
  * BoatSign represents the boat on the display
@@ -17,13 +18,18 @@ public class BoatSign extends DrawingOnMap {
 
 	private BoatState boatState;
 
+	private Enviroment envirmoent;
+
 	/**
 	 * Constructor, sets boatState
+	 * 
 	 * @param boatState
+	 * @param enviroment
 	 */
-	public BoatSign(BoatState boatState) {
+	public BoatSign(BoatState boatState, Enviroment enviroment) {
 		super(MODE_NORMAL);
 		this.boatState = boatState;
+		this.envirmoent = enviroment;
 	}
 
 	/**
@@ -37,8 +43,58 @@ public class BoatSign extends DrawingOnMap {
 		drawBoatTorso(perspective, graphics);
 		drawSail(perspective, graphics);
 		drawRuder(perspective, graphics);
+		drawAppentWindArrow(perspective, graphics);
+		drawTrueWindArrow(perspective, graphics);
 
 		graphics.resetTransform();
+	}
+
+	private void drawAppentWindArrow(Perspective perspective, Graphics graphics) {
+
+		graphics.resetTransform();
+		calcDrawPosition(perspective, graphics);
+
+		double direction = this.boatState.getSeeminglyWind().getDirection();
+
+		if (Double.isNaN(direction)) {
+			direction = 0;
+		}
+
+		try {
+			Image image = new Image("graphics/apparentWind.gif");
+			image = image.getScaledCopy(20, 40);
+			graphics.rotate(0, 0, (float) direction);
+			// graphics.rotate(-BOAT_SIZE, -BOAT_SIZE / 2, (float) direction);
+			// graphics.drawImage(image,-2*BOAT_SIZE, -4*BOAT_SIZE);
+			graphics.drawImage(image, -BOAT_SIZE / 2, -3 * BOAT_SIZE);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void drawTrueWindArrow(Perspective perspective, Graphics graphics) {
+
+		graphics.resetTransform();
+		calcDrawPosition(perspective, graphics);
+
+		double direction = this.envirmoent.getWindState().getWindToBoat();
+
+		if (Double.isNaN(direction)) {
+			direction = 0;
+		}
+
+		try {
+			Image image = new Image("graphics/trueWind.gif");
+			image = image.getScaledCopy(20, 40);
+			graphics.rotate(0, 0, 180 - (float) direction);
+			// graphics.rotate(-BOAT_SIZE, -BOAT_SIZE / 2, (float) direction);
+			// graphics.drawImage(image,-2*BOAT_SIZE, -4*BOAT_SIZE);
+			graphics.drawImage(image, -BOAT_SIZE / 2, -4 * BOAT_SIZE);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void drawBoatTorso(Perspective perspective, Graphics graphics) {
@@ -113,7 +169,7 @@ public class BoatSign extends DrawingOnMap {
 	protected void calcDrawPosition(Perspective perspective, Graphics graphics) {
 		GraphicTools.calcDrawTransformationForSlick(perspective, graphics,
 				this.boatState.getPosition());
-		//Eigendrehung hinzurechnen
+		// Eigendrehung hinzurechnen
 		graphics.rotate(0, 0, (float) this.boatState.getDirectionValue());
 	}
 

@@ -133,7 +133,7 @@ public class PolarPlotModel extends CalculationModel {
 		wfDirection = (wfDirection + 180) % 360;
 		// umwandeln in Bogenmaﬂ!
 		wfDirection = (2 * Math.PI) / 360 * wfDirection;
-		wwDirection = (2 * Math.PI) / 360 * wwDirection;		
+		wwDirection = (2 * Math.PI) / 360 * wwDirection;
 		System.out.println("wfDirection " + wfDirection);
 
 		// Vektoren erstellen
@@ -204,6 +204,11 @@ public class PolarPlotModel extends CalculationModel {
 
 		// Umrechnung von Bogenmaﬂ auf Gradmaﬂ
 		wsDirection = (360 / (2 * Math.PI)) * wsDirection;
+
+		//Seiten korrektur, berechnung evtl. vorher nciht richtig?
+		if (env.getWindState().getWindToBoat() < 0) {
+			wsDirection = - wsDirection;
+		}
 
 		// setze Boat variablen
 		boat.getSeeminglyWind().setDirection(wsDirection);
