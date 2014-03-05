@@ -170,6 +170,10 @@ public class PolarPlotModel extends CalculationModel {
 		if (env.getWindState().getWindToBoat() < 0) {
 			wsDirection = - wsDirection;
 		}
+		
+		if (Double.isNaN(wsDirection)) {
+			wsDirection = 0;
+		}
 
 		// setze Boat variablen
 		boat.getApparentWind().setDirection(wsDirection);
