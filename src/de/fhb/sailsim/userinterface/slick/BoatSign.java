@@ -54,7 +54,7 @@ public class BoatSign extends DrawingOnMap {
 		graphics.resetTransform();
 		calcDrawPosition(perspective, graphics);
 
-		double direction = this.boatState.getSeeminglyWind().getDirection();
+		double direction = this.boatState.getApparentWind().getDirection();
 
 		if (Double.isNaN(direction)) {
 			direction = 0;
@@ -64,8 +64,6 @@ public class BoatSign extends DrawingOnMap {
 			Image image = new Image("graphics/apparentWind.gif");
 			image = image.getScaledCopy(20, 40);
 			graphics.rotate(0, 0, (float) direction);
-			// graphics.rotate(-BOAT_SIZE, -BOAT_SIZE / 2, (float) direction);
-			// graphics.drawImage(image,-2*BOAT_SIZE, -4*BOAT_SIZE);
 			graphics.drawImage(image, -BOAT_SIZE / 2, -3 * BOAT_SIZE);
 		} catch (SlickException e) {
 			e.printStackTrace();
@@ -88,8 +86,6 @@ public class BoatSign extends DrawingOnMap {
 			Image image = new Image("graphics/trueWind.gif");
 			image = image.getScaledCopy(20, 40);
 			graphics.rotate(0, 0, 180 - (float) direction);
-			// graphics.rotate(-BOAT_SIZE, -BOAT_SIZE / 2, (float) direction);
-			// graphics.drawImage(image,-2*BOAT_SIZE, -4*BOAT_SIZE);
 			graphics.drawImage(image, -BOAT_SIZE / 2, -4 * BOAT_SIZE);
 		} catch (SlickException e) {
 			e.printStackTrace();

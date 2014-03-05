@@ -169,7 +169,7 @@ public class BoatState {
 		}
 	}
 
-	public WindState getSeeminglyWind() {
+	public WindState getApparentWind() {
 		return apparentWind;
 	}
 

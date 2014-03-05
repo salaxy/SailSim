@@ -162,45 +162,6 @@ public class PolarPlotModel extends CalculationModel {
 				+ (ws.y * ww.y)
 				/ (Math.sqrt((ww.x * ww.x) + (ww.y * ww.y)) * Math.sqrt((ws.x * ws.x)
 						+ (ws.y * ws.y))));
-		// wsDirection= ws.getTheta();
-
-		// //Via Cosinussatz
-		// double beta = (env.getWindState().getWindToBoat() + 180) % 360;
-		// double a = wwStrength;
-		// double c = wfStrength;
-		// double b = Math.sqrt((a * a) + (c * c) - 2 * a * c * Math.cos(beta));
-		// double cosGamma=((a * a) + (c * c) + (b * b)) / (2 * a * b);
-		// double gamma = Math.acos(cosGamma);
-		// System.out.println(gamma);
-		// System.out.println(Math.abs(((a * a) + (c * c) + (b * b)) / (2 * a *
-		// b)));
-		// if(cosGamma>=1d){
-		// cosGamma=1d;
-		// }
-		// if(cosGamma<=-1d){
-		// cosGamma=-1d;
-		// }
-		// // berechnen von winkel und stärke
-		// wsStrength = b;
-		// wsDirection = env.getWindState().getWindToBoat() + gamma;
-
-		// Formel von Wikipedia
-		// // berechnen von winkel und stärke
-		// double V = boat.getCurrentPropulsionVelocity();
-		// double W = env.getWindState().getStrength();
-		// double alpha = env.getWindState().getDirection();
-		// double A = Math.sqrt((W * W) + (V * V) + ((2 * W * V) *
-		// Math.cos(alpha)));
-		//
-		// wsStrength = A;
-		// double cosAlpha=((W*Math.cos(alpha))+V)/A;
-		// if(cosAlpha>=1d){
-		// cosAlpha=1d;
-		// }
-		// if(cosAlpha<=-1d){
-		// cosAlpha=-1d;
-		// }
-		// wsDirection = Math.acos(cosAlpha);
 
 		// Umrechnung von Bogenmaß auf Gradmaß
 		wsDirection = (360 / (2 * Math.PI)) * wsDirection;
@@ -211,8 +172,8 @@ public class PolarPlotModel extends CalculationModel {
 		}
 
 		// setze Boat variablen
-		boat.getSeeminglyWind().setDirection(wsDirection);
-		boat.getSeeminglyWind().setStrength(wsStrength);
+		boat.getApparentWind().setDirection(wsDirection);
+		boat.getApparentWind().setStrength(wsStrength);
 		System.out.println("Scheinbarer Wind: " + "wsStrength: " + wsStrength + " wsDirection: "
 				+ wsDirection);
 	}
